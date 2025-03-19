@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Wallet</title>
+    <link href="/frontend/src/output.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="sidebar hidden md:flex md:flex-shrink-0">
+            <div class="flex flex-col w-64 bg-white border-r">
+                <div class="flex items-center justify-center h-16 border-b">
+                    <h1 class="text-xl font-bold text-indigo-600">Seller Portal</h1>
+                </div>
+                <div class="flex flex-col flex-grow overflow-y-auto">
+                    <nav class="flex-1 px-2 py-4 space-y-1">
+                        <a href="dashboard-seller.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-th-large mr-3"></i>
+                            Dashboard
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-box mr-3"></i>
+                            Products
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-shopping-cart mr-3"></i>
+                            Orders
+                        </a>
+                        <a href="upload-file.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-upload mr-3"></i>
+                            Upload Files
+                        </a>
+                        <a href="wallet-seller.html" class="flex items-center px-4 py-3 text-sm font-medium text-white bg-indigo-600 rounded-md">
+                            <i class="fas fa-wallet mr-3"></i>
+                            Wallet
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-cog mr-3"></i>
+                            Settings
+                        </a>
+                    </nav>
+                    <div class="p-4 border-t">
+                        <div class="flex items-center">
+                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/76.jpg" alt="User avatar">
+                            <div class="ml-3">
+                                <p class="text-sm font-medium text-gray-900">John Seller</p>
+                                <p class="text-xs font-medium text-gray-500">View Profile</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex flex-col flex-1 overflow-hidden">
+            <!-- Top Navigation -->
+            <header class="bg-white shadow">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <div class="flex items-center md:hidden">
+                        <button type="button" class="text-gray-500 hover:text-gray-600 focus:outline-none">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                    </div>
+                    <div class="flex-1 flex justify-center md:justify-end">
+                        <div class="relative w-full max-w-md">
+                            <input type="text" placeholder="Search transactions..." class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <i class="fas fa-search text-gray-400"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ml-4 flex items-center md:ml-6">
+                        <button type="button" class="p-1 rounded-full text-gray-500 hover:text-gray-600 focus:outline-none relative">
+                            <i class="fas fa-bell"></i>
+                            <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500"></span>
+                        </button>
+                        <button type="button" class="p-1 ml-3 rounded-full text-gray-500 hover:text-gray-600 focus:outline-none">
+                            <i class="fas fa-question-circle"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Wallet Content -->
+            <main class="flex-1 overflow-y-auto p-6">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-semibold text-gray-900">Seller Wallet</h1>
+                    <p class="text-sm text-gray-600">Manage your earnings and payouts</p>
+                </div>
+
+                <!-- Wallet Balance -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                    <div class="lg:col-span-2">
+                        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow overflow-hidden">
+                            <div class="p-6 md:p-8">
+                                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                    <div>
+                                        <h2 class="text-lg font-semibold text-white mb-1">Available Balance</h2>
+                                        <p class="text-indigo-100 text-sm mb-4">Ready for withdrawal</p>
+                                        <div class="flex items-baseline">
+                                            <span class="text-3xl md:text-4xl font-bold text-white">$4,250.75</span>
+                                            <span class="ml-2 text-sm text-indigo-100">USD</span>
+                                        </div>
+                                    </div>
+                                    <div class="mt-6 md:mt-0">
+                                        <div class="flex space-x-3">
+                                            <button type="button" class="px-4 py-2 bg-white text-indigo-600 rounded-md font-medium text-sm hover:bg-indigo-50">Withdraw</button>
+                                            <button type="button" class="px-4 py-2 bg-indigo-400 bg-opacity-30 text-white rounded-md font-medium text-sm hover:bg-opacity-40">Transfer</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-indigo-600 px-6 md:px-8 py-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-info-circle text-indigo-200"></i>
+                                        <span class="ml-2 text-sm text-indigo-100">Next payout: May 25, 2023</span>
+                                    </div>
+                                    <a href="#" class="text-sm font-medium text-indigo-100 hover:text-white">View Statement</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="bg-white rounded-xl shadow p-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-4">Earnings Overview</h2>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm text-gray-500">Pending</p>
+                                        <p class="text-xl font-semibold text-gray-900">$1,250.00</p>
+                                    </div>
+                                    <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm text-gray-500">This Month</p>
+                                        <p class="text-xl font-semibold text-gray-900">$8,750.50</p>
+                                    </div>
+                                    <div class="p-3 rounded-full bg-green-100 text-green-600">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm text-gray-500">Last Month</p>
+                                        <p class="text-xl font-semibold text-gray-900">$7,320.25</p>
+                                    </div>
+                                    <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revenue Chart & Payout Settings -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                    <div class="lg:col-span-2 bg-white rounded-xl shadow overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h2 class="text-lg font-semibold text-gray-900">Revenue</h2>
+                                <select class="text-sm border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option>Last 7 Days</option>
+                                    <option>Last 30 Days</option>
+                                    <option>Last 90 Days</option>
+                                    <option>This Year</option>
+                                </select>
+                            </div>
+                            
+                            <div class="h-64 bg-gray-50 flex items-center justify-center">
+                                <!-- Simple chart representation -->
+                                <div class="w-full h-full flex items-end justify-around px-2 mb-2">
+                                    <div class="w-8 bg-indigo-500 rounded-t-md" style="height: 70%;"></div>
+                                    <div class="w-8 bg-indigo-500 rounded-t-md" style="height: 40%;"></div>
+                                    <div class="w-8 bg-indigo-500 rounded-t-md" style="height: 80%;"></div>
+                                    <div class="w-8 bg-indigo-500 rounded-t-md" style="height: 60%;"></div>
+                                    <div class="w-8 bg-indigo-500 rounded-t-md" style="height: 90%;"></div>
+                                    <div class="w-8 bg-indigo-500 rounded-t-md" style="height: 50%;"></div>
+                                    <div class="w-8 bg-indigo-500 rounded-t-md" style="height: 75%;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-around px-2 mt-2">
+                                <span class="text-xs text-gray-500">Mon</span>
+                                <span class="text-xs text-gray-500">Tue</span>
+                                <span class="text-xs text-gray-500">Wed</span>
+                                <span class="text-xs text-gray-500">Thu</span>
+                                <span class="text-xs text-gray-500">Fri</span>
+                                <span class="text-xs text-gray-500">Sat</span>
+                                <span class="text-xs text-gray-500">Sun</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow overflow-hidden">
+                        <div class="p-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-4">Payout Settings</h2>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                    <div class="p-2 rounded-md bg-indigo-100 text-indigo-600">
+                                        <i class="fas fa-university"></i>
+                                    </div>
+                                    <div class="ml-3 flex-1">
+                                        <h3 class="text-sm font-medium text-gray-900">Bank Account</h3>
+                                        <p class="text-xs text-gray-500">•••• 4567 • Default</p>
+                                    </div>
+                                    <button type="button" class="text-sm text-indigo-600 hover:text-indigo-500">
+                                        Edit
+                                    </button>
+                                </div>
+                                
+                                <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                    <div class="p-2 rounded-md bg-blue-100 text-blue-600">
+                                        <i class="fab fa-paypal"></i>
+                                    </div>
+                                    <div class="ml-3 flex-1">
+                                        <h3 class="text-sm font-medium text-gray-900">PayPal</h3>
+                                        <p class="text-xs text-gray-500">john.seller@example.com</p>
+                                    </div>
+                                    <button type="button" class="text-sm text-indigo-600 hover:text-indigo-500">
+                                        Edit
+                                    </button>
+                                </div>
+                                
+                                <div>
+                                    <button type="button" class="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                                        <i class="fas fa-plus mr-2"></i>
+                                        Add Payment Method
+                                    </button>
+                                </div>
+                                
+                                <div class="pt-4 border-t border-gray-200">
+                                    <h3 class="text-sm font-medium text-gray-900 mb-2">Payout Schedule</h3>
+                                    
+                                    <div class="flex items-center mb-2">
+                                        <div class="flex items-center h-5">
+                                            <input id="auto-payout" name="payout-schedule" type="radio" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300" checked>
+                                        </div>
+                                        <div class="ml-3 text-sm">
+                                            <label for="auto-payout" class="font-medium text-gray-700">Automatic (Monthly)</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center">
+                                        <div class="flex items-center h-5">
+                                            <input id="manual-payout" name="payout-schedule" type="radio" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300">
+                                        </div>
+                                        <div class="ml-3 text-sm">
+                                            <label for="manual-payout" class="font-medium text-gray-700">Manual</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transaction History -->
+                <div class="bg-white rounded-xl shadow overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-semibold text-gray-900">Transaction History</h2>
+                            <div class="flex items-center">
+                                <select class="text-sm border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option>All Transactions</option>
+                                    <option>Sales</option>
+                                    <option>Payouts</option>
+                                    <option>Refunds</option>
+                                </select>
+                                <button type="button" class="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                                    <i class="fas fa-download mr-1"></i>
+                                    Export
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">May 15, 2023</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Sale - Wireless Headphones</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#ORD-7845</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">+$125.00</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">May 14, 2023</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Sale - Smart Watch</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#ORD-7844</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">+$199.99</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">May 10, 2023</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Payout to Bank Account</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">-</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-red-600">-$1,500.00</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">May 8, 2023</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Refund - Bluetooth Speaker</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#ORD-7830</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-red-600">-$79.99</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">May 5, 2023</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Sale - Wireless Earbuds</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#ORD-7825</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">+$89.99</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="bg-gray-50 px-6 py-3 flex items-center justify-between">
+                            <div class="flex-1 flex justify-between sm:hidden">
+                                <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">Previous</a>
+                                <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">Next</a>
+                            </div>
+                            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-700">
+                                        Showing <span class="font-medium">1</span> to <span class="font-medium">5</span> of <span class="font-medium">20</span> results
+                                    </p>
+                                </div>
+                                <div>
+                                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                                        <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                            <span class="sr-only">Previous</span>
+                                            <i class="fas fa-chevron-left h-5 w-5"></i>
+                                        </a>
+                                        <a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">1</a>
+                                        <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">2</a>
+                                        <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">3</a>
+                                        <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">4</a>
+                                        <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">5</a>
+                                        <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                            <span class="sr-only">Next</span>
+                                            <i class="fas fa-chevron-right h-5 w-5"></i>
+                                        </a>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
