@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyer Dashboard</title>
+    <script src="/frontend//script/auth.js" defer></script>
+    <link href="/frontend/src/output.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="sidebar hidden md:flex md:flex-shrink-0">
+            <div class="flex flex-col w-64 bg-white border-r">
+                <div class="flex items-center justify-center h-16 border-b">
+                    <h1 class="text-xl font-bold text-indigo-600">Marketplace</h1>
+                </div>
+                <div class="flex flex-col flex-grow overflow-y-auto">
+                    <nav class="flex-1 px-2 py-4 space-y-1">
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-white bg-indigo-600 rounded-md">
+                            <i class="fas fa-th-large mr-3"></i>
+                            Dashboard
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-shopping-bag mr-3"></i>
+                            Marketplace
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-shopping-cart mr-3"></i>
+                            My Orders
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-heart mr-3"></i>
+                            Wishlist
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-star mr-3"></i>
+                            Reviews
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-cog mr-3"></i>
+                            Settings
+                        </a>
+                    </nav>
+                    <div class="p-4 border-t">
+                        <div class="flex items-center">
+                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/42.jpg" alt="User avatar">
+                            <div class="ml-3">
+                                <p class="text-sm font-medium text-gray-900">Sarah Buyer</p>
+                                <p class="text-xs font-medium text-gray-500">View Profile</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex flex-col flex-1 overflow-hidden">
+            <!-- Top Navigation -->
+            <header class="bg-white shadow">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <div class="flex items-center md:hidden">
+                        <button type="button" class="text-gray-500 hover:text-gray-600 focus:outline-none">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                    </div>
+                    <div class="flex-1 flex justify-center md:justify-end">
+                        <div class="relative w-full max-w-md">
+                            <input type="text" placeholder="Search products..." class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <i class="fas fa-search text-gray-400"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ml-4 flex items-center md:ml-6">
+                        <button type="button" class="p-1 rounded-full text-gray-500 hover:text-gray-600 focus:outline-none relative">
+                            <i class="fas fa-bell"></i>
+                            <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500"></span>
+                        </button>
+                        <button type="button" class="p-1 ml-3 rounded-full text-gray-500 hover:text-gray-600 focus:outline-none relative">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500"></span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <main class="flex-1 overflow-y-auto p-6">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-semibold text-gray-900">Welcome, Sarah!</h1>
+                    <p class="text-sm text-gray-600">Discover the latest products and manage your orders.</p>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-white rounded-xl shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-indigo-100 text-indigo-600">
+                                <i class="fas fa-shopping-bag"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-500">Recent Orders</p>
+                                <p class="text-2xl font-semibold text-gray-900">5</p>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View Orders →</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-green-100 text-green-600">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-500">Wishlist</p>
+                                <p class="text-2xl font-semibold text-gray-900">12</p>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View Wishlist →</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                                <i class="fas fa-gift"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-500">Reward Points</p>
+                                <p class="text-2xl font-semibold text-gray-900">250</p>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">Redeem Points →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Special Offers -->
+                <div class="mb-6">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Special Offers</h2>
+                    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow overflow-hidden">
+                        <div class="p-6 md:p-8 text-white">
+                            <h3 class="text-xl font-bold mb-2">Summer Sale!</h3>
+                            <p class="mb-4">Get up to 40% off on selected items. Limited time offer.</p>
+                            <button type="button" class="px-4 py-2 bg-white text-indigo-600 rounded-md font-medium text-sm">Shop Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommended Products -->
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Recommended For You</h2>
+                        <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View All</a>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Product Card 1 -->
+                        <div class="bg-white rounded-xl shadow overflow-hidden">
+                            <div class="relative">
+                                <img src="https://via.placeholder.com/300x200" alt="Product" class="w-full h-48 object-cover">
+                                <button type="button" class="absolute top-3 right-3 p-1.5 rounded-full bg-white text-gray-900 hover:text-indigo-600">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-sm font-medium text-gray-900 mb-1">Wireless Headphones</h3>
+                                <p class="text-sm text-gray-500 mb-2">Premium Sound Quality</p>
+                                <div class="flex items-center justify-between">
+                                    <p class="text-lg font-bold text-gray-900">$129.99</p>
+                                    <div class="flex items-center">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                        </div>
+                                        <span class="text-xs text-gray-500 ml-1">(42)</span>
+                                    </div>
+                                </div>
+                                <button type="button" class="mt-4 w-full bg-indigo-600 text-white rounded-md py-2 text-sm font-medium hover:bg-indigo-700">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <!-- Product Card 2 -->
+                        <div class="bg-white rounded-xl shadow overflow-hidden">
+                            <div class="relative">
+                                <img src="https://via.placeholder.com/300x200" alt="Product" class="w-full h-48 object-cover">
+                                <button type="button" class="absolute top-3 right-3 p-1.5 rounded-full bg-white text-gray-900 hover:text-indigo-600">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                                <div class="absolute top-3 left-3 bg-red-500 text-white text-xs px-2 py-1 rounded-md">-20%</div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-sm font-medium text-gray-900 mb-1">Smart Watch</h3>
+                                <p class="text-sm text-gray-500 mb-2">Fitness Tracker</p>
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-lg font-bold text-gray-900">$159.99</p>
+                                        <p class="text-sm text-gray-500 line-through">$199.99</p>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                            <i class="fas fa-star text-gray-300 text-xs"></i>
+                                        </div>
+                                        <span class="text-xs text-gray-500 ml-1">(28)</span>
+                                    </div>
+                                </div>
+                                <button type="button" class="mt-4 w-full bg-indigo-600 text-white rounded-md py-2 text-sm font-medium hover:bg-indigo-700">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <!-- Product Card 3 -->
+                        <div class="bg-white rounded-xl shadow overflow-hidden">
+                            <div class="relative">
+                                <img src="https://via.placeholder.com/300x200" alt="Product" class="w-full h-48 object-cover">
+                                <button type="button" class="absolute top-3 right-3 p-1.5 rounded-full bg-white text-gray-900 hover:text-indigo-600">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-sm font-medium text-gray-900 mb-1">Wireless Charger</h3>
+                                <p class="text-sm text-gray-500 mb-2">Fast Charging</p>
+                                <div class="flex items-center justify-between">
+                                    <p class="text-lg font-bold text-gray-900">$49.99</p>
+                                    <div class="flex items-center">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                        </div>
+                                        <span class="text-xs text-gray-500 ml-1">(56)</span>
+                                    </div>
+                                </div>
+                                <button type="button" class="mt-4 w-full bg-indigo-600 text-white rounded-md py-2 text-sm font-medium hover:bg-indigo-700">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <!-- Product Card 4 -->
+                        <div class="bg-white rounded-xl shadow overflow-hidden">
+                            <div class="relative">
+                                <img src="https://via.placeholder.com/300x200" alt="Product" class="w-full h-48 object-cover">
+                                <button type="button" class="absolute top-3 right-3 p-1.5 rounded-full bg-white text-gray-900 hover:text-indigo-600">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                                <div class="absolute top-3 left-3 bg-green-500 text-white text-xs px-2 py-1 rounded-md">New</div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-sm font-medium text-gray-900 mb-1">Bluetooth Speaker</h3>
+                                <p class="text-sm text-gray-500 mb-2">Waterproof</p>
+                                <div class="flex items-center justify-between">
+                                    <p class="text-lg font-bold text-gray-900">$89.99</p>
+                                    <div class="flex items-center">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                            <i class="fas fa-star text-gray-300 text-xs"></i>
+                                        </div>
+                                        <span class="text-xs text-gray-500 ml-1">(19)</span>
+                                    </div>
+                                </div>
+                                <button type="button" class="mt-4 w-full bg-indigo-600 text-white rounded-md py-2 text-sm font-medium hover:bg-indigo-700">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Orders -->
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Recent Orders</h2>
+                        <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View All</a>
+                    </div>
+                    <div class="bg-white rounded-xl shadow overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Items</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#ORD-5243</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">May 15, 2023</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3 items</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$245.99</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Delivered</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-indigo-600">
+                                            <a href="#">View Details</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#ORD-5242</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">May 10, 2023</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1 item</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$49.99</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Shipped</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-indigo-600">
+                                            <a href="#">Track Order</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#ORD-5241</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">May 5, 2023</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2 items</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$159.98</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Delivered</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-indigo-600">
+                                            <a href="#">View Details</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

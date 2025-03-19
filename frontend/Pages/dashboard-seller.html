@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Dashboard</title>
+    <script src="/frontend//script/auth.js" defer></script>
+    <link href="/frontend/src/output.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 200px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="sidebar hidden md:flex md:flex-shrink-0">
+            <div class="flex flex-col w-64 bg-white border-r">
+                <div class="flex items-center justify-center h-16 border-b">
+                    <h1 class="text-xl font-bold text-indigo-600">Seller Portal</h1>
+                </div>
+                <div class="flex flex-col flex-grow overflow-y-auto">
+                    <nav class="flex-1 px-2 py-4 space-y-1">
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-white bg-indigo-600 rounded-md">
+                            <i class="fas fa-th-large mr-3"></i>
+                            Dashboard
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-box mr-3"></i>
+                            Products
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-shopping-cart mr-3"></i>
+                            Orders
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-chart-line mr-3"></i>
+                            Analytics
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-tag mr-3"></i>
+                            Promotions
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-cog mr-3"></i>
+                            Settings
+                        </a>
+                    </nav>
+                    <div class="p-4 border-t">
+                        <div class="flex items-center">
+                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/76.jpg" alt="User avatar">
+                            <div class="ml-3">
+                                <p class="text-sm font-medium text-gray-900">John Seller</p>
+                                <p class="text-xs font-medium text-gray-500">View Profile</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex flex-col flex-1 overflow-hidden">
+            <!-- Top Navigation -->
+            <header class="bg-white shadow">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <div class="flex items-center md:hidden">
+                        <button type="button" class="text-gray-500 hover:text-gray-600 focus:outline-none">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                    </div>
+                    <div class="flex-1 flex justify-center md:justify-end">
+                        <div class="relative w-full max-w-md">
+                            <input type="text" placeholder="Search..." class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <i class="fas fa-search text-gray-400"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ml-4 flex items-center md:ml-6">
+                        <button type="button" class="p-1 rounded-full text-gray-500 hover:text-gray-600 focus:outline-none">
+                            <i class="fas fa-bell"></i>
+                        </button>
+                        <button type="button" class="p-1 ml-3 rounded-full text-gray-500 hover:text-gray-600 focus:outline-none">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <main class="flex-1 overflow-y-auto p-6">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-semibold text-gray-900">Seller Dashboard</h1>
+                    <p class="text-sm text-gray-600">Welcome back, John! Here's what's happening with your store today.</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-white rounded-xl shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-indigo-100 text-indigo-600">
+                                <i class="fas fa-shopping-bag"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-500">Total Sales</p>
+                                <p class="text-2xl font-semibold text-gray-900">$24,560</p>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <span class="text-sm font-medium text-green-600">↑ 12%</span>
+                            <span class="text-sm text-gray-500 ml-2">from last month</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-green-100 text-green-600">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-500">Products</p>
+                                <p class="text-2xl font-semibold text-gray-900">45</p>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <span class="text-sm font-medium text-green-600">↑ 5%</span>
+                            <span class="text-sm text-gray-500 ml-2">new products</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-500">Orders</p>
+                                <p class="text-2xl font-semibold text-gray-900">128</p>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <span class="text-sm font-medium text-green-600">↑ 8%</span>
+                            <span class="text-sm text-gray-500 ml-2">from last week</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-500">Customers</p>
+                                <p class="text-2xl font-semibold text-gray-900">840</p>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <span class="text-sm font-medium text-green-600">↑ 15%</span>
+                            <span class="text-sm text-gray-500 ml-2">new customers</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales Chart -->
+                <div class="bg-white rounded-xl shadow p-6 mb-6">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Sales Analytics</h2>
+                    <div class="chart-container">
+                        <div class="bg-gray-50 w-full h-full flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="h-40 flex items-end justify-around px-2 mb-2">
+                                    <div class="w-8 bg-indigo-500 rounded-t-md" style="height: 70%;"></div>
+                                    <div class="w-8 bg-indigo-500 rounded-t-md" style="height: 40%;"></div>
+                                    <div class="w-8 bg-indigo-500 rounded-t-md" style="height: 80%;"></div>
+                                    <div class="w-8 bg-indigo-500 rounded-t-md" style="height: 60%;"></div>
+                                    <div class="w-8 bg-indigo-500 rounded-t-md" style="height: 90%;"></div>
+                                    <div class="w-8 bg-indigo-500 rounded-t-md" style="height: 50%;"></div>
+                                    <div class="w-8 bg-indigo-500 rounded-t-md" style="height: 75%;"></div>
+                                </div>
+                                <div class="flex justify-around px-2">
+                                    <span class="text-xs text-gray-500">Mon</span>
+                                    <span class="text-xs text-gray-500">Tue</span>
+                                    <span class="text-xs text-gray-500">Wed</span>
+                                    <span class="text-xs text-gray-500">Thu</span>
+                                    <span class="text-xs text-gray-500">Fri</span>
+                                    <span class="text-xs text-gray-500">Sat</span>
+                                    <span class="text-xs text-gray-500">Sun</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Recent Orders -->
+                    <div class="bg-white rounded-xl shadow overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h2 class="text-lg font-semibold text-gray-900">Recent Orders</h2>
+                                <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View All</a>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#ORD-7845</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Alex Johnson</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$125.00</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#ORD-7844</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Sarah Smith</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$75.50</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Processing</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#ORD-7843</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Mike Brown</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$250.00</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Shipped</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#ORD-7842</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Lisa Wang</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$45.25</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Products -->
+                    <div class="bg-white rounded-xl shadow">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h2 class="text-lg font-semibold text-gray-900">Top Products</h2>
+                                <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View All</a>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-16 w-16 bg-gray-100 rounded-md overflow-hidden">
+                                        <img src="https://via.placeholder.com/150" alt="Product" class="h-full w-full object-cover">
+                                    </div>
+                                    <div class="ml-4 flex-1">
+                                        <h3 class="text-sm font-medium text-gray-900">Wireless Earbuds</h3>
+                                        <p class="text-sm text-gray-500">Electronics</p>
+                                        <div class="flex items-center justify-between mt-1">
+                                            <p class="text-sm font-medium text-gray-900">$89.99</p>
+                                            <p class="text-sm text-gray-500">127 sold</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-16 w-16 bg-gray-100 rounded-md overflow-hidden">
+                                        <img src="https://via.placeholder.com/150" alt="Product" class="h-full w-full object-cover">
+                                    </div>
+                                    <div class="ml-4 flex-1">
+                                        <h3 class="text-sm font-medium text-gray-900">Smart Watch</h3>
+                                        <p class="text-sm text-gray-500">Electronics</p>
+                                        <div class="flex items-center justify-between mt-1">
+                                            <p class="text-sm font-medium text-gray-900">$199.99</p>
+                                            <p class="text-sm text-gray-500">95 sold</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-16 w-16 bg-gray-100 rounded-md overflow-hidden">
+                                        <img src="https://via.placeholder.com/150" alt="Product" class="h-full w-full object-cover">
+                                    </div>
+                                    <div class="ml-4 flex-1">
+                                        <h3 class="text-sm font-medium text-gray-900">Bluetooth Speaker</h3>
+                                        <p class="text-sm text-gray-500">Electronics</p>
+                                        <div class="flex items-center justify-between mt-1">
+                                            <p class="text-sm font-medium text-gray-900">$79.99</p>
+                                            <p class="text-sm text-gray-500">86 sold</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-16 w-16 bg-gray-100 rounded-md overflow-hidden">
+                                        <img src="https://via.placeholder.com/150" alt="Product" class="h-full w-full object-cover">
+                                    </div>
+                                    <div class="ml-4 flex-1">
+                                        <h3 class="text-sm font-medium text-gray-900">Laptop Stand</h3>
+                                        <p class="text-sm text-gray-500">Accessories</p>
+                                        <div class="flex items-center justify-between mt-1">
+                                            <p class="text-sm font-medium text-gray-900">$35.99</p>
+                                            <p class="text-sm text-gray-500">62 sold</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
