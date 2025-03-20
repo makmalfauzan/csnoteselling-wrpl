@@ -15,6 +15,7 @@ def register():
         data = request.json
         username = data.get("username")
         password = data.get("password")
+        email = data.get("email")
         role = data.get("role", "buyer")  # Default ke buyer jika tidak diisi
 
         if not username or not password:
@@ -31,8 +32,8 @@ def register():
 
         # Simpan user baru
         cursor.execute(
-            "INSERT INTO users (username, password, role, is_verified) VALUES (%s, %s, %s, %s)",
-            (username, password, role, False)  # is_verified default FALSE
+        "INSERT INTO users (username, email, password, role, is_verified) VALUES (%s, %s, %s, %s, %s)",
+        (username, email, password, role, 'TRUE')
         )
         conn.commit()
 
@@ -40,7 +41,9 @@ def register():
 
     except Exception as e:
         print("Error saat registrasi:", str(e))  # Debugging error di terminal Flask
+        print(traceback.format_exc())  # Tambahkan ini
         return jsonify({"error": "Terjadi kesalahan di server"}), 500
+    
 
 
 # API Login
@@ -49,6 +52,8 @@ def login():
     data = request.json
     username = data.get("username")
     password = data.get("password")
+    
+
 
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
