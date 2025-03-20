@@ -1,8 +1,10 @@
 from flask import Blueprint, jsonify
 from db_connection import get_db_connection
+from flask_cors import CORS
 
 # Membuat Blueprint untuk materials
 materials_bp = Blueprint('materials', __name__)
+CORS(materials_bp)
 
 @materials_bp.route('/', methods=['GET'])
 def get_materials():
