@@ -12,11 +12,30 @@ def get_materials():
     cursor = conn.cursor(dictionary=True)
     
     try:
-        cursor.execute("SELECT material_id, title, category, description, price, status, uploaded_at FROM materials")
+        # Menggunakan JOIN untuk mengambil nama seller dari tabel users
+        query = """
+        SELECT 
+    m.material_id, 
+    m.title, 
+    m.category, 
+    m.description, 
+    m.price, 
+    m.status, 
+    m.uploaded_at, 
+    u.username AS seller  -- Ambil username seller berdasarkan seller_id
+FROM materials m
+LEFT JOIN users u ON m.seller_id = u.user_id  -- Hubungkan seller_id dengan user_id
+WHERE u.role = 'SELLER';  -- Pastikan hanya user dengan role SELLER
+
+        """
+
+        cursor.execute(query)
         materials = cursor.fetchall()
         return jsonify(materials)
+    
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
     finally:
         cursor.close()
         conn.close()
