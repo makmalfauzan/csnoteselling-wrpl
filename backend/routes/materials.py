@@ -18,6 +18,7 @@ def get_materials():
         min_price = request.args.get("minPrice")
         max_price = request.args.get("maxPrice")
 
+
         # Query dasar
         query = """
         SELECT 
