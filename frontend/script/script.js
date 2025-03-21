@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 card.innerHTML = `
                     <div class="flex justify-between items-center">
                         <a href="#" class="text-blue-600 font-semibold">${name}</a>
-                        <button class="text-green-500 text-2xl font-bold">+</button>
+                        <button class="text-2xl text-green-500">🛒</button>
                     </div>
                     <p class="text-gray-500 text-sm">${category}</p>
                     <p class="text-gray-400 text-xs">Penjual: ${seller}</p>
