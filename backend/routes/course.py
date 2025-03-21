@@ -12,7 +12,7 @@ def get_courses():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute("SELECT course_id, course_name FROM course")
+    cursor.execute("SELECT course_id, course_name FROM courses")
     courses = cursor.fetchall()
 
     cursor.close()
