@@ -23,9 +23,9 @@ def get_materials():
     m.status, 
     m.uploaded_at, 
     u.username AS seller  -- Ambil username seller berdasarkan seller_id
-FROM materials m
-LEFT JOIN users u ON m.seller_id = u.user_id  -- Hubungkan seller_id dengan user_id
-WHERE u.role = 'SELLER';  -- Pastikan hanya user dengan role SELLER
+    FROM materials m
+    LEFT JOIN users u ON m.seller_id = u.user_id  -- Hubungkan seller_id dengan user_id
+    WHERE u.role = 'SELLER';  -- Pastikan hanya user dengan role SELLER
 
         """
 

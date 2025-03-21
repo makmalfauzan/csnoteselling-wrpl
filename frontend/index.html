@@ -116,17 +116,18 @@
             <div class="my-7 p-6 flex w-full shadow-md  justify-center bg-white rounded-sm">
     
                     <div class="flex w-full bg-white rounded-sm overflow-hidden border border-blue3 p-2">
-                        <!-- Dropdown -->
+                        <!-- Dropdown Mata Kuliah -->
                         <div class="relative">
-                            <button class="flex items-center px-10 py-2 border-r text-blue-600 font-medium">
-                                Mata Kuliah
-                                <svg class="ml-20 w-4 h-4  text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
+                            <select id="filter-matkul" class="px-20 py-2  border-r text-blue-600 font-medium appearance-none">
+                                <option value="">Mata Kuliah</option>
+                            </select>
+                            <svg class="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
                         </div>
+                        
                         <!-- Input Search -->
-                        <input type="text" placeholder="Search..." class="flex-1 px-4 py-2 focus:outline-none">
+                        <input id="search-input" type="text" placeholder="Search..." class="flex-1 px-4 py-2 focus:outline-none">
                     </div>
                 
             </div>

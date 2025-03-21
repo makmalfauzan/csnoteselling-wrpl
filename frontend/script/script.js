@@ -46,3 +46,39 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     fetchMaterials();
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("search-input");
+    const searchButton = document.getElementById("search-btn");
+    const filterMatkul = document.getElementById("filter-matkul");
+
+    // Ambil daftar course dari database
+    async function fetchCourses() {
+        try {
+            const response = await fetch("http://127.0.0.1:5000/api/courses"); // Endpoint Flask
+            const courses = await response.json();
+
+            // Tambahkan opsi ke dropdown
+            courses.forEach(course => {
+                const option = document.createElement("option");
+                option.value = course.course_id; // Simpan course_id
+                option.textContent = course.course_name;
+                filterMatkul.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Gagal mengambil data mata kuliah:", error);
+        }
+    }
+
+    fetchCourses(); // Panggil fungsi untuk mengambil daftar course
+
+    // Event listener untuk search button
+    searchButton.addEventListener("click", function () {
+        const query = searchInput.value;
+        const selectedCourse = filterMatkul.value; // Ambil course_id yang dipilih
+
+        // Redirect ke dashboard-product.html dengan query parameter
+        window.location.href = `dashboard-product.html?q=${encodeURIComponent(query)}&course=${encodeURIComponent(selectedCourse)}`;
+    });
+});
+
