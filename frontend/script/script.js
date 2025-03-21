@@ -56,13 +56,18 @@ document.addEventListener("DOMContentLoaded", function () {
     async function fetchCourses() {
         try {
             const response = await fetch("http://127.0.0.1:5000/api/courses"); // Endpoint Flask
+            if (!response.ok) {
+                throw new Error("Gagal mengambil data course");
+            }
             const courses = await response.json();
+            console.log("Data Course:", courses); // Debugging
 
             // Tambahkan opsi ke dropdown
+            filterMatkul.innerHTML = `<option value="">Mata Kuliah</option>`; // Reset sebelum menambahkan
             courses.forEach(course => {
                 const option = document.createElement("option");
-                option.value = course.course_id; // Simpan course_id
-                option.textContent = course.course_name;
+                option.value = course.course_id || course.id; // Pastikan field sesuai database
+                option.textContent = course.course_name || course.name;
                 filterMatkul.appendChild(option);
             });
         } catch (error) {
@@ -74,11 +79,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Event listener untuk search button
     searchButton.addEventListener("click", function () {
-        const query = searchInput.value;
+        const query = searchInput.value.trim();
         const selectedCourse = filterMatkul.value; // Ambil course_id yang dipilih
 
+        if (!query) {
+            alert("Silakan masukkan kata kunci pencarian.");
+            return;
+        }
+
         // Redirect ke dashboard-product.html dengan query parameter
-        window.location.href = `dashboard-product.html?q=${encodeURIComponent(query)}&course=${encodeURIComponent(selectedCourse)}`;
+        window.location.href = `/Pages/dashboard-product.html?q=${encodeURIComponent(query)}&course=${encodeURIComponent(selectedCourse)}`;
     });
 });
+
+
 
