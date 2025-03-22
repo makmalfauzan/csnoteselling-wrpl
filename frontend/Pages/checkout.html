@@ -88,6 +88,7 @@
                 total += parseInt(item.getAttribute('data-price'));  // Ambil harga dari atribut data-price
             });
             document.getElementById('total-price').innerText = `Rp ${total.toLocaleString()}`;
+            return total;
         }
     
         // Fungsi untuk menghapus item dari cart & payment
@@ -107,22 +108,68 @@
             });
         });
     
+        let walletBalance = 100000;
+
         // Fetch wallet balance dari wallet-buyer.html
-        fetch('wallet-buyer.html')
-            .then(response => response.text())
-            .then(html => {
-                let parser = new DOMParser();
-                let doc = parser.parseFromString(html, 'text/html');
-                let walletText = doc.querySelector('#wallet-balance')?.innerText || 'Rp 0';
-                document.getElementById('wallet-balance').innerText = walletText;
-            })
-            .catch(() => {
-                document.getElementById('wallet-balance').innerText = 'Rp 0';
-            });
+        function getWalletBalance() {
+            fetch('wallet-buyer.html')
+                .then(response => response.text())
+                .then(html => {
+                    let parser = new DOMParser();
+                    let doc = parser.parseFromString(html, 'text/html');
+                    let walletText = doc.querySelector('#wallet-balance')?.innerText || 'Rp 100000';
+                    walletBalance = parseInt(walletText.replace(/[^\d]/g, '')) || 100000;
+                    document.getElementById('wallet-balance').innerText = `Rp ${walletBalance.toLocaleString()}`;
+                })
+                .catch(() => {
+                    document.getElementById('wallet-balance').innerText = 'Rp 100000';
+                });
+        }
     
-        // Inisialisasi total harga saat halaman dimuat
-        updateTotalPrice();
-    </script>       
+        getWalletBalance(); // Panggil saat halaman dimuat
+    
+        document.querySelector('button.bg-blue-500').addEventListener('click', function () {
+            let totalPrice = updateTotalPrice();
+    
+            if (walletBalance < totalPrice) {
+                showPopup("Uangmu tidak cukup!", "red");
+            } else {
+                walletBalance -= totalPrice;  // Kurangi saldo
+                document.getElementById('wallet-balance').innerText = `Rp ${walletBalance.toLocaleString()}`;
+    
+                showPopup("Berhasil!", "green");
+    
+                // Simulasi penyimpanan ke database dengan localStorage (bisa diganti API call ke backend)
+                localStorage.setItem("walletBalance", walletBalance);
+    
+                setTimeout(() => {
+                    window.location.href = "dashboard-buyer.html";  // Redirect setelah 2 detik
+                }, 2000);
+            }
+        });
+    
+        function showPopup(message, color) {
+            let popup = document.createElement('div');
+            popup.innerText = message;
+            popup.style.position = 'fixed';
+            popup.style.top = '50%';
+            popup.style.left = '50%';
+            popup.style.transform = 'translate(-50%, -50%)';
+            popup.style.backgroundColor = color === 'red' ? '#ff4d4d' : '#4CAF50';
+            popup.style.color = 'white';
+            popup.style.padding = '20px';
+            popup.style.borderRadius = '10px';
+            popup.style.fontSize = '18px';
+            popup.style.boxShadow = '0px 4px 6px rgba(0, 0, 0, 0.1)';
+            popup.style.zIndex = '1000';
+    
+            document.body.appendChild(popup);
+    
+            setTimeout(() => {
+                popup.remove();
+            }, 2000);
+        }
+    </script>        
 
 </body>
 </html>
