@@ -108,7 +108,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
     
-    
 
     function setupPagination(totalPages, currentPage) {
         paginationContainer.innerHTML = "";
@@ -153,19 +152,22 @@ document.addEventListener("DOMContentLoaded", async function () {
         selectedFilterContainer.innerHTML = ""; // Kosongkan filter sebelum diperbarui
     
         const filters = [
-            { key: "q", label: "Searching", value: searchQuery },
-            { key: "course", label: "Kategori Matkul", value: selectedCourse ? filterMatkul.options[filterMatkul.selectedIndex].text : "" },
-            { key: "minPrice", label: "Min Price", value: minPrice ? `Rp ${parseInt(minPrice).toLocaleString()}` : "" },
-            { key: "maxPrice", label: "Max Price", value: maxPrice ? `Rp ${parseInt(maxPrice).toLocaleString()}` : "" }
+            { key: "q", label: "🔍 Pencarian", value: searchQuery },
+            { key: "course", label: "📚 Mata Kuliah", value: selectedCourse ? filterMatkul.options[filterMatkul.selectedIndex].text : "" },
+            { key: "minPrice", label: "💰 Min Harga", value: minPrice ? `Rp ${parseInt(minPrice).toLocaleString()}` : "" },
+            { key: "maxPrice", label: "💰 Max Harga", value: maxPrice ? `Rp ${parseInt(maxPrice).toLocaleString()}` : "" }
         ];
     
         filters.forEach(filter => {
             if (filter.value) {
                 const filterItem = document.createElement("div");
-                filterItem.className = "flex justify-between bg-gray-200 p-2 rounded-lg";
+                filterItem.className = "flex items-center gap-2 bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium shadow-sm";
+    
                 filterItem.innerHTML = `
-                    <span>${filter.label}: ${filter.value}</span>
-                    <button class="text-red-500">✖</button>
+                    <span>${filter.label}: <strong>${filter.value}</strong></span>
+                    <button class="text-red-500 hover:text-red-700 transition duration-200 focus:outline-none">
+                        ✖
+                    </button>
                 `;
     
                 // Event listener untuk menghapus filter
@@ -178,6 +180,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                 selectedFilterContainer.appendChild(filterItem);
             }
         });
+    
+        // Jika tidak ada filter, tampilkan pesan kosong
+        if (selectedFilterContainer.innerHTML === "") {
+            selectedFilterContainer.innerHTML = `<p class="text-gray-500 text-sm">Tidak ada filter aktif.</p>`;
+        }
     }
     
 
