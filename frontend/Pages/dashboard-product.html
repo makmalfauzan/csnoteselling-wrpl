@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Produk</title>
     <link href="/frontend/src/output.css" rel="stylesheet">
+    <style>
+        /* Pastikan pagination tetap di tengah */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+    </style>
 </head>
 <body class="bg-[#C8EAE3]">
     <!-- Navbar -->
@@ -63,26 +71,14 @@
                 </div>
                 <button class="text-2xl">🛒</button>
             </div>
-            <div class="bg-white p-4 rounded-lg shadow-md flex justify-between">
-                <div>
-                    <h3 class="text-blue-700 font-bold">Nama Produk</h3>
-                    <p class="text-gray-600 text-sm">Kategori Produk</p>
-                    <p class="text-gray-500 text-sm">Deskripsi</p>
-                    <p class="font-bold">Rp XXXX,XX</p>
-                </div>
-                <button class="text-2xl">🛒</button>
-            </div>
-            
-            <!-- Pagination -->
-            <div class="flex justify-center space-x-2">
-                <button class="px-3 py-1 bg-white rounded-lg shadow">⬅</button>
-                <button class="px-3 py-1 bg-blue-500 text-white rounded-lg">1</button>
-                <button class="px-3 py-1 bg-white rounded-lg shadow">2</button>
-                <button class="px-3 py-1 bg-white rounded-lg shadow">3</button>
-                <button class="px-3 py-1 bg-white rounded-lg shadow">➡</button>
-            </div>
         </div>
     </div>
+
+    <!-- Pagination: Pastikan berada di luar grid -->
+    <div class="container mx-auto w-full flex justify-center mt-6">
+        <div class="pagination-container flex space-x-2"></div>
+    </div> 
+
 </body>
 <script src="/frontend/script/dashboard-product.js"></script>
 </html>

@@ -3,10 +3,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     const filterMatkul = document.querySelector('select');
     const minPriceInput = document.querySelector('input[placeholder="Min Price"]');
     const maxPriceInput = document.querySelector('input[placeholder="Max Price"]');
-    const productContainer = document.querySelector(".col-span-3"); // Tempat menampilkan produk
-    const paginationContainer = document.createElement("div"); // Kontainer pagination
-    paginationContainer.className = "flex justify-center mt-4"; // Styling agar berada di tengah
-    productContainer.after(paginationContainer); // Meletakkan pagination di bawah produk
+    const productContainer = document.querySelector(".col-span-3");
+
+    // Memastikan pagination berada di tengah
+    let paginationContainer = document.querySelector(".pagination-container");
+    if (!paginationContainer) {
+        paginationContainer = document.createElement("div");
+        paginationContainer.className = "w-full flex justify-center items-center mt-6 mb-10 space-x-2";
+        productContainer.after(paginationContainer);
+    }
 
     // Ambil parameter dari URL
     const params = new URLSearchParams(window.location.search);
@@ -14,8 +19,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     const selectedCourse = params.get("course") || "";
     const minPrice = params.get("minPrice") || "";
     const maxPrice = params.get("maxPrice") || "";
-    let currentPage = parseInt(params.get("page")) || 1; // Default ke halaman 1
-    const productsPerPage = 9; // Jumlah produk per halaman
+    let currentPage = parseInt(params.get("page")) || 1;
+    const productsPerPage = 9;
 
     searchInput.value = searchQuery;
     filterMatkul.value = selectedCourse;
@@ -26,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         try {
             const response = await fetch("http://127.0.0.1:5000/api/courses");
             const courses = await response.json();
-    
+
             filterMatkul.innerHTML = `<option value="">Mata Kuliah</option>`;
             courses.forEach(course => {
                 const option = document.createElement("option");
@@ -34,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 option.textContent = course.course_name;
                 filterMatkul.appendChild(option);
             });
-    
+
             if (selectedCourse) {
                 filterMatkul.value = selectedCourse;
             }
@@ -42,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             console.error("Gagal mengambil data mata kuliah:", error);
         }
     }
-    
+
     async function fetchProducts() {
         try {
             let apiUrl = `http://127.0.0.1:5000/api/materials?course=${selectedCourse}&q=${searchQuery}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
@@ -50,17 +55,14 @@ document.addEventListener("DOMContentLoaded", async function () {
             const products = await response.json();
 
             productContainer.innerHTML = "";
-            paginationContainer.innerHTML = ""; // Bersihkan pagination sebelum menampilkan yang baru
+            paginationContainer.innerHTML = ""; // Kosongkan pagination sebelum update
 
             if (products.length === 0) {
                 productContainer.innerHTML = `<p class="text-gray-500 text-center col-span-3">Produk tidak ditemukan</p>`;
                 return;
             }
 
-            // Hitung jumlah halaman
             const totalPages = Math.ceil(products.length / productsPerPage);
-            
-            // Ambil data yang sesuai dengan halaman saat ini
             const start = (currentPage - 1) * productsPerPage;
             const paginatedProducts = products.slice(start, start + productsPerPage);
 
@@ -81,19 +83,48 @@ document.addEventListener("DOMContentLoaded", async function () {
                 productContainer.appendChild(productCard);
             });
 
-            // Buat navigasi pagination
-            for (let i = 1; i <= totalPages; i++) {
-                const pageButton = document.createElement("button");
-                pageButton.textContent = i;
-                pageButton.className = `px-3 py-1 mx-1 border rounded ${i === currentPage ? 'bg-blue-500 text-white' : 'bg-gray-200'}`;
-                pageButton.addEventListener("click", () => {
-                    window.location.href = `dashboard-product.html?q=${encodeURIComponent(searchQuery)}&course=${encodeURIComponent(selectedCourse)}&minPrice=${encodeURIComponent(minPrice)}&maxPrice=${encodeURIComponent(maxPrice)}&page=${i}`;
-                });
-                paginationContainer.appendChild(pageButton);
-            }
-
+            setupPagination(totalPages, currentPage);
         } catch (error) {
             console.error("Gagal mengambil produk:", error);
+        }
+    }
+
+    function setupPagination(totalPages, currentPage) {
+        paginationContainer.innerHTML = "";
+
+        // Tombol "Previous"
+        if (currentPage > 1) {
+            const prevButton = document.createElement("button");
+            prevButton.textContent = "«";
+            prevButton.className = "px-4 py-2 rounded bg-white border border-gray-300 hover:bg-blue-400 hover:text-white transition";
+            prevButton.addEventListener("click", () => {
+                window.location.href = `dashboard-product.html?q=${encodeURIComponent(searchQuery)}&course=${encodeURIComponent(selectedCourse)}&minPrice=${encodeURIComponent(minPrice)}&maxPrice=${encodeURIComponent(maxPrice)}&page=${currentPage - 1}`;
+            });
+            paginationContainer.appendChild(prevButton);
+        }
+
+        // Tombol halaman (1, 2, 3, ...)
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement("button");
+            pageButton.textContent = i;
+            pageButton.className = `px-4 py-2 rounded border border-gray-300 ${
+                i === currentPage ? 'bg-blue-600 text-white font-bold' : 'bg-white hover:bg-blue-500 hover:text-white'
+            }`;
+            pageButton.addEventListener("click", () => {
+                window.location.href = `dashboard-product.html?q=${encodeURIComponent(searchQuery)}&course=${encodeURIComponent(selectedCourse)}&minPrice=${encodeURIComponent(minPrice)}&maxPrice=${encodeURIComponent(maxPrice)}&page=${i}`;
+            });
+            paginationContainer.appendChild(pageButton);
+        }
+
+        // Tombol "Next"
+        if (currentPage < totalPages) {
+            const nextButton = document.createElement("button");
+            nextButton.textContent = "»";
+            nextButton.className = "px-4 py-2 rounded bg-white border border-gray-300 hover:bg-blue-400 hover:text-white transition";
+            nextButton.addEventListener("click", () => {
+                window.location.href = `dashboard-product.html?q=${encodeURIComponent(searchQuery)}&course=${encodeURIComponent(selectedCourse)}&minPrice=${encodeURIComponent(minPrice)}&maxPrice=${encodeURIComponent(maxPrice)}&page=${currentPage + 1}`;
+            });
+            paginationContainer.appendChild(nextButton);
         }
     }
 
