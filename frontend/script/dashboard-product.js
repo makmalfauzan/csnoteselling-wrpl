@@ -83,6 +83,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                     <h3 class="text-lg font-bold text-gray-800">${product.title}</h3>
                     <p class="text-sm text-gray-500 font-medium mt-1">${product.category || "Kategori tidak tersedia"}</p>
             
+                    <p class="text-xs text-gray-700 font-medium mt-1 italic">Dijual oleh: <span class="text-blue-600 font-semibold">${product.seller || "Unknown Seller"}</span></p>
+            
                     <p class="text-sm text-gray-600 mt-2 px-4 text-justify line-clamp-3">
                         ${product.description || "Deskripsi tidak tersedia"}
                     </p>
@@ -97,6 +99,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             
                 productContainer.appendChild(productCard);
             });
+            
             
     
             setupPagination(totalPages, currentPage);
