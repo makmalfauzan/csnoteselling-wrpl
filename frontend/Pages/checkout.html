@@ -34,14 +34,14 @@
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <h2 class="text-xl font-semibold mb-4">Shopping Chart</h2>
 
-                <div class="flex justify-between items-center border-b pb-4 mb-4">
+                <div class="cart-item flex items-center justify-between border-b py-2">
                     <div class="flex items-center">
                         <img src="/frontend/assets/icons/icon_1.svg" class="w-12 h-12">
                         <div class="ml-4">
                             <p class="text-gray-700">Nama Produk/Kategori/Course</p>
                         </div>
                     </div>
-                    <a href="#" class="text-red-500 hover:underline">Remove</a>
+                    <button class="text-red-500 hover:text-red-700 remove-btn">Remove</button>
                 </div>
 
                 <div class="flex justify-between items-center border-b pb-4 mb-4">
@@ -71,6 +71,14 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.querySelectorAll('.remove-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                this.closest('.cart-item').remove();
+            });
+        });
+    </script>    
 
 </body>
 </html>
