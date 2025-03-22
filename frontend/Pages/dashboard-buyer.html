@@ -33,7 +33,7 @@
       <!-- Logo / Judul -->
       <div class="h-16 flex items-center justify-center border-b">
         <img 
-          src="C:\Users\HP\Documents\UGM\SEMESTER\SEMESTER 4\WRPL-\csnoteselling-wrpl\frontend\assets\images\logo1.svg" 
+          src="/frontend/assets/images/logo1.svg" 
           alt="Logo CS NOTESelling" 
           class="h-8 w-auto"
         />
@@ -124,24 +124,33 @@
         </div>
 
         <!-- Pencarian -->
-        <div class="mb-6">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
-            Cari Produk / Catatan
-          </label>
-          <div class="relative">
-            <input
-              type="text"
-              placeholder="Masukkan kata kunci..."
-              class="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-            <button
-              type="button"
-              class="absolute right-2 top-2 text-gray-400 hover:text-gray-600"
-            >
-              <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
-          </div>
-        </div>
+        <section class="py-12 bg-gray-50 px-12">
+            <div class="w-full mx-auto px-24 py-14 text-center border-b-1 border-blue2 ">
+                <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase text-center">Searching</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl text-center">
+                    Search for materials by course
+                </p>
+                <div class="my-7 p-6 flex w-full shadow-md justify-center bg-white rounded-sm">
+                    <div class="flex w-full bg-white rounded-sm overflow-hidden border border-blue3 p-2">
+                        <!-- Dropdown Mata Kuliah -->
+                        <div class="relative">
+                            <select id="filter-matkul" class="px-10 py-2 border-r text-blue-600 font-medium appearance-none">
+                                <option value="">Mata Kuliah</option>
+                            </select>
+                            <svg class="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+        
+                        <!-- Input Search -->
+                        <input id="search-input" type="text" placeholder="Search..." class="flex-1 px-4 py-2 focus:outline-none">
+                        <button id="search-btn" class="bg-blue-500 text-white px-4 py-2 ml-4 rounded-lg">Cari</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
         
         <!-- Rekomendasi Produk / Catatan -->
         <section class="mb-6">
