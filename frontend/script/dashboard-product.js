@@ -198,7 +198,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     fetchCourses();
     function updateNavbar() {
         const navbarMenu = document.getElementById("navbar-menu");
-        const userRole = localStorage.getItem("userRole"); // Ambil role dari localStorage
+        const userRole = localStorage.getItem("role"); // Ambil role dari localStorage
         const isLoggedIn = !!userRole; // Jika ada role, berarti user login
     
         let navbarHTML = `
