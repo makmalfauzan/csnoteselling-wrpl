@@ -3,111 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        header {
-            width: 100%;
-            background: #222;
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-right: 15px;
-        }
-
-        #userBtn {
-            background: #555;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .profile-container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .profile-card img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin-bottom: 15px;
-        }
-
-        .profile-card h2 {
-            margin: 10px 0;
-            font-size: 1.5rem;
-            color: #333;
-        }
-
-        .profile-card p {
-            color: #666;
-            font-size: 1rem;
-            margin: 5px 0;
-        }
-
-        #logoutBtn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-top: 15px;
-            transition: 0.3s;
-        }
-
-        #logoutBtn:hover {
-            background: #c0392b;
-        }
-    </style>
+    <title>Profil Pengguna</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <header>
-        <h1>CS NOTESELLING</h1>
-        <nav>
-            <a href="#">Produk</a>
-            <a href="#">Keranjang</a>
-            <button id="userBtn">Nama</button>
-        </nav>
-    </header>
-    <section class="profile-container">
-        <div class="profile-card">
-            <img src="../assets/user.png" alt="Profile Picture">
-            <h2 id="fullName">Nama Lengkap</h2>
-            <p id="email">Email</p>
-            <p id="bio">BIO</p>
-            <span id="role">Role</span>
+<body class="bg-gray-100">
+
+    <!-- Container Utama -->
+    <div class="container mx-auto py-10 px-4 md:px-6">
+        <div class="grid gap-8 md:grid-cols-3">
+
+            <!-- Sidebar Profil -->
+            <div class="md:col-span-1">
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <div class="flex flex-col items-center">
+                        <!-- Avatar -->
+                        <img src="https://via.placeholder.com/96" alt="User Profile"
+                            class="h-24 w-24 rounded-full border-2 border-gray-300 mb-3">
+                        <h2 class="text-lg font-bold">John Doe</h2>
+                        <p class="text-gray-500 text-sm">Member sejak Jan 2023</p>
+                    </div>
+
+                    <!-- Menu Navigasi -->
+                    <div class="mt-6">
+                        <button class="w-full flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" 
+                                viewBox="0 0 24 24">
+                                <path d="M3 3h18v2H3zM3 9h18v2H3zM3 15h18v2H3z"></path>
+                            </svg>
+                            <span>Pesanan Saya</span>
+                        </button>
+                        <button class="w-full flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" stroke-width="2" 
+                                viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7"></path>
+                            </svg>
+                            <span>Wishlist</span>
+                        </button>
+                        <button class="w-full flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-100 rounded-lg">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" 
+                                viewBox="0 0 24 24">
+                                <path d="M15 12H9m3-3v6m3 6a9 9 0 110-18 9 9 0 010 18z"></path>
+                            </svg>
+                            <span>Keluar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Konten Profil -->
+            <div class="md:col-span-2">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="text-xl font-bold">Informasi Profil</h2>
+                            <p class="text-gray-500 text-sm">Kelola informasi pribadi Anda</p>
+                        </div>
+                        <button class="p-2 border rounded-lg hover:bg-gray-100">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" stroke-width="2" 
+                                viewBox="0 0 24 24">
+                                <path d="M11 5h2M4 8a6 6 0 0112 0M4 16a6 6 0 0112 0"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="mt-6 space-y-4">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-600">Username</h3>
+                            <p class="font-semibold">johndoe123</p>
+                        </div>
+                        <hr>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-600">Email</h3>
+                            <p class="font-semibold">john.doe@example.com</p>
+                        </div>
+                        <hr>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-600">Bio</h3>
+                            <p class="text-sm text-gray-700">
+                                Hi there! Saya John, seorang penggemar belanja online yang suka teknologi dan fashion. Saya suka berburu promo dan membagikan pengalaman belanja saya.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg">
+                            Perbarui Profil
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Aktivitas Terbaru -->
+                <div class="mt-6 bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-bold">Aktivitas Terbaru</h2>
+                    <p class="text-gray-500 text-sm">Pembelian dan ulasan terbaru Anda</p>
+
+                    <div class="mt-4 space-y-4">
+                        <div class="flex items-center gap-4">
+                            <div class="rounded-md bg-blue-100 p-2">
+                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" 
+                                    viewBox="0 0 24 24">
+                                    <path d="M3 3h18v2H3zM3 9h18v2H3zM3 15h18v2H3z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Membeli Headphone Wireless</p>
+                                <p class="text-xs text-gray-500">2 hari lalu</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="rounded-md bg-red-100 p-2">
+                                <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" stroke-width="2" 
+                                    viewBox="0 0 24 24">
+                                    <path d="M5 12h14M12 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Menambahkan Smartwatch ke Wishlist</p>
+                                <p class="text-xs text-gray-500">1 minggu lalu</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <button id="logoutBtn">Logout</button>
-    </section>
-    <script src="../scripts/profile.js"></script>
+    </div>
+
 </body>
 </html>
