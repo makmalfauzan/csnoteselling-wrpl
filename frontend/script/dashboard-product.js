@@ -149,44 +149,44 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     function updateSelectedFilter() {
-        selectedFilterContainer.innerHTML = ""; // Kosongkan filter sebelum diperbarui
-    
-        const filters = [
-            { key: "q", label: "🔍 Pencarian", value: searchQuery },
-            { key: "course", label: "📚 Mata Kuliah", value: selectedCourse ? filterMatkul.options[filterMatkul.selectedIndex].text : "" },
-            { key: "minPrice", label: "💰 Min Harga", value: minPrice ? `Rp ${parseInt(minPrice).toLocaleString()}` : "" },
-            { key: "maxPrice", label: "💰 Max Harga", value: maxPrice ? `Rp ${parseInt(maxPrice).toLocaleString()}` : "" }
-        ];
-    
-        filters.forEach(filter => {
-            if (filter.value) {
-                const filterItem = document.createElement("div");
-                filterItem.className = "flex items-center gap-2 bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium shadow-sm";
-    
-                filterItem.innerHTML = `
-                    <span>${filter.label}: <strong>${filter.value}</strong></span>
-                    <button class="text-red-500 hover:text-red-700 transition duration-200 focus:outline-none">
-                        ✖
-                    </button>
-                `;
-    
-                // Event listener untuk menghapus filter
-                filterItem.querySelector("button").addEventListener("click", () => {
-                    params.delete(filter.key);  // Hapus filter dari URL
-                    params.set("page", 1);  // Reset ke halaman pertama setelah filter dihapus
-                    window.location.search = params.toString();  // Perbarui halaman
-                });
-    
-                selectedFilterContainer.appendChild(filterItem);
-            }
-        });
-    
-        // Jika tidak ada filter, tampilkan pesan kosong
-        if (selectedFilterContainer.innerHTML === "") {
-            selectedFilterContainer.innerHTML = `<p class="text-gray-500 text-sm">Tidak ada filter aktif.</p>`;
+    selectedFilterContainer.innerHTML = ""; // Kosongkan filter sebelum diperbarui
+
+    const filters = [
+        { key: "q", label: "🔍 Pencarian", value: searchQuery },
+        { key: "course", label: "📚 Mata Kuliah", value: selectedCourse ? filterMatkul.options[filterMatkul.selectedIndex].text : "" },
+        { key: "minPrice", label: "💰 Min Harga", value: minPrice ? `Rp ${parseInt(minPrice).toLocaleString()}` : "" },
+        { key: "maxPrice", label: "💰 Max Harga", value: maxPrice ? `Rp ${parseInt(maxPrice).toLocaleString()}` : "" }
+    ];
+
+    filters.forEach(filter => {
+        if (filter.value) {
+            const filterItem = document.createElement("div");
+            filterItem.className = "flex items-center gap-2 bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium shadow-sm";
+
+            filterItem.innerHTML = `
+                <span>${filter.label}: <strong>${filter.value}</strong></span>
+                <button class="text-red-500 hover:text-red-700 transition duration-200 focus:outline-none">
+                    ✖
+                </button>
+            `;
+
+            // Event listener untuk menghapus filter
+            filterItem.querySelector("button").addEventListener("click", () => {
+                params.delete(filter.key);  // Hapus filter dari URL
+                params.set("page", 1);  // Reset ke halaman pertama setelah filter dihapus
+                window.location.search = params.toString();  // Perbarui halaman
+            });
+
+            selectedFilterContainer.appendChild(filterItem);
         }
+    });
+
+    // Jika tidak ada filter, tampilkan pesan kosong
+    if (selectedFilterContainer.innerHTML === "") {
+        selectedFilterContainer.innerHTML = `<p class="text-gray-500 text-sm">Tidak ada filter aktif.</p>`;
     }
-    
+}
+
 
     document.querySelectorAll("select, input").forEach(element => {
         element.addEventListener("change", function () {

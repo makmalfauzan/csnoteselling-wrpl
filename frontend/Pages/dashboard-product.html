@@ -76,7 +76,7 @@
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 ">
             <div class="flex justify-between items-center py-2">
                 <div class="flex items-center ">
-                    <a href="#">
+                    <a href="/frontend/index.html">
                         <img src="/frontend/assets/images/logo1.svg" alt="Logo" class="h-10 mx-auto">
                     </a>
                 </div>
@@ -107,17 +107,28 @@
     <!-- Container Utama -->
     <div class="container mx-auto mt-2 p-4 ">
         
-        <!-- Search & Filter Section -->
         <div class="bg-white p-4 rounded-lg shadow-md">
-            <div class="grid grid-cols-4 gap-4">
-                <select class="p-2 border rounded-lg">
-                    <option>Mata Kuliah</option>
-                </select>
-                <input type="text" placeholder="Search..." class="p-2 border rounded-lg w-full">
-                <input type="number" placeholder="Min Price" class="p-2 border rounded-lg">
-                <input type="number" placeholder="Max Price" class="p-2 border rounded-lg">
+            <div class="grid grid-cols-2 gap-4">
+                <!-- Search & Mata Kuliah -->
+                <div class="relative flex items-center border border-blue-300 rounded-lg w-full">
+                    <select class="bg-transparent pl-3 pr-2 py-2 text-blue-600 font-semibold outline-none cursor-pointer">
+                        <option>Mata Kuliah</option>
+                        <option>Algoritma</option>
+                        <option>Jaringan</option>
+                        <option>Database</option>
+                    </select>
+                    <span class="text-gray-400">|</span>
+                    <input type="text" placeholder="Search..." class="flex-1 px-3 py-2 outline-none">
+                </div>
+        
+                <!-- Min & Max Price -->
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="number" placeholder="Min Price" class="p-2 border border-blue-300 rounded-lg w-full">
+                    <input type="number" placeholder="Max Price" class="p-2 border border-blue-300 rounded-lg w-full">
+                </div>
             </div>
         </div>
+        
 
         <!-- Main Content -->
         <div class="grid grid-cols-4 gap-6 mt-6">
