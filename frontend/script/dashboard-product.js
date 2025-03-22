@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const minPriceInput = document.querySelector('input[placeholder="Min Price"]');
     const maxPriceInput = document.querySelector('input[placeholder="Max Price"]');
     const productContainer = document.querySelector(".col-span-3");
-    const selectedFilterContainer = document.querySelector(".selected-filters"); // Ambil container filter terpilih
+    const selectedFilterContainer = document.querySelector(".selected-filters");
 
     let paginationContainer = document.querySelector(".pagination-container");
     if (!paginationContainer) {
@@ -13,18 +13,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         productContainer.after(paginationContainer);
     }
 
-    const params = new URLSearchParams(window.location.search);
-    const searchQuery = params.get("q") || "";
-    const selectedCourse = params.get("course") || "";
-    const minPrice = params.get("minPrice") || "";
-    const maxPrice = params.get("maxPrice") || "";
-    let currentPage = parseInt(params.get("page")) || 1;
-    const productsPerPage = 9;
-
-    searchInput.value = searchQuery;
-    filterMatkul.value = selectedCourse;
-    minPriceInput.value = minPrice;
-    maxPriceInput.value = maxPrice;
+    function getParams() {
+        return new URLSearchParams(window.location.search);
+    }
 
     async function fetchCourses() {
         try {
@@ -39,8 +30,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                 filterMatkul.appendChild(option);
             });
 
-            if (selectedCourse) {
-                filterMatkul.value = selectedCourse;
+            const params = getParams();
+            if (params.get("course")) {
+                filterMatkul.value = params.get("course");
             }
         } catch (error) {
             console.error("Gagal mengambil data mata kuliah:", error);
@@ -49,32 +41,38 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     async function fetchProducts() {
         try {
-            let apiUrl = `http://127.0.0.1:5000/api/materials?course=${selectedCourse}&q=${searchQuery}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
+            const params = getParams();
+            const searchQuery = params.get("q") || "";
+            const selectedCourse = params.get("course") || "";
+            const minPrice = params.get("minPrice") || "";
+            const maxPrice = params.get("maxPrice") || "";
+            let currentPage = parseInt(params.get("page")) || 1;
+            const productsPerPage = 9;
+
+            let apiUrl = `http://127.0.0.1:5000/api/materials?page=${currentPage}&limit=${productsPerPage}&course=${selectedCourse}&q=${searchQuery}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
             const response = await fetch(apiUrl);
             const products = await response.json();
-    
+
             productContainer.innerHTML = "";
             paginationContainer.innerHTML = "";
-    
-            // **Pastikan Selected Filter tetap ada meskipun hasil kosong**
+
             updateSelectedFilter();
-    
+
             if (products.length === 0) {
-                productContainer.innerHTML = `<p class="text-gray-500 text-center col-span-3">Produk tidak ditemukan</p>`;
+                productContainer.innerHTML = `<p class="text-red-500 text-center col-span-3">Produk tidak ditemukan</p>`;
                 return;
             }
-    
+
             const totalPages = Math.ceil(products.length / productsPerPage);
             const start = (currentPage - 1) * productsPerPage;
             const paginatedProducts = products.slice(start, start + productsPerPage);
-    
+
             paginatedProducts.forEach(product => {
                 const productCard = document.createElement("div");
                 productCard.className = "bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1 flex flex-col text-center border border-gray-200 w-full max-w-xs";
-            
-                // Isi gambar sementara
+
                 const imageUrl = `https://i.pinimg.com/736x/81/21/dc/8121dc48ec937ecf919bc2c54aa961a4.jpg`;
-            
+
                 productCard.innerHTML = `
                     <img src="${imageUrl}" 
                          alt="${product.title}" 
@@ -82,35 +80,29 @@ document.addEventListener("DOMContentLoaded", async function () {
             
                     <h3 class="text-lg font-bold text-gray-800">${product.title}</h3>
                     <p class="text-sm text-gray-500 font-medium mt-1">${product.category || "Kategori tidak tersedia"}</p>
-            
                     <p class="text-xs text-gray-700 font-medium mt-1 italic">Dijual oleh: <span class="text-blue-600 font-semibold">${product.seller || "Unknown Seller"}</span></p>
-            
                     <p class="text-sm text-gray-600 mt-2 px-4 text-justify line-clamp-3">
                         ${product.description || "Deskripsi tidak tersedia"}
                     </p>
-            
                     <p class="text-xl font-semibold text-blue-600 mt-auto mb-4">Rp ${product.price.toLocaleString()}</p>
-            
                     <button class="w-full bg-green-500 hover:bg-green-600 text-white font-medium px-4 py-2 rounded-lg transition shadow-md flex items-center justify-center space-x-2">
                         <span>🛒</span>
                         <span>Beli Sekarang</span>
                     </button>
                 `;
-            
+
                 productContainer.appendChild(productCard);
             });
-            
-            
-    
+
             setupPagination(totalPages, currentPage);
         } catch (error) {
             console.error("Gagal mengambil produk:", error);
         }
     }
-    
 
     function setupPagination(totalPages, currentPage) {
         paginationContainer.innerHTML = "";
+        const params = getParams();
 
         if (currentPage > 1) {
             const prevButton = document.createElement("button");
@@ -118,7 +110,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             prevButton.className = "px-4 py-2 rounded bg-white border border-gray-300 hover:bg-blue-400 hover:text-white transition";
             prevButton.addEventListener("click", () => {
                 params.set("page", currentPage - 1);
-                window.location.search = params.toString();
+                history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
+                fetchProducts();
             });
             paginationContainer.appendChild(prevButton);
         }
@@ -127,78 +120,86 @@ document.addEventListener("DOMContentLoaded", async function () {
             const pageButton = document.createElement("button");
             pageButton.textContent = i;
             pageButton.className = `px-4 py-2 rounded border border-gray-300 ${
-                i === currentPage ? 'bg-blue-600 text-blue-600 font-bold' : 'bg-white hover:bg-blue-500 hover:text-white'
+                i === currentPage ? 'bg-blue-600 text-blue-400 font-bold' : 'bg-white hover:bg-blue-500 hover:text-white'
             }`;
             pageButton.addEventListener("click", () => {
                 params.set("page", i);
-                window.location.search = params.toString();
+                history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
+                fetchProducts();
             });
             paginationContainer.appendChild(pageButton);
-        }
-
-        if (currentPage < totalPages) {
-            const nextButton = document.createElement("button");
-            nextButton.textContent = "»";
-            nextButton.className = "px-4 py-2 rounded bg-white border border-gray-300 hover:bg-blue-400 hover:text-white transition";
-            nextButton.addEventListener("click", () => {
-                params.set("page", currentPage + 1);
-                window.location.search = params.toString();
-            });
-            paginationContainer.appendChild(nextButton);
         }
     }
 
     function updateSelectedFilter() {
-    selectedFilterContainer.innerHTML = ""; // Kosongkan filter sebelum diperbarui
-
-    const filters = [
-        { key: "q", label: "🔍 Pencarian", value: searchQuery },
-        { key: "course", label: "📚 Mata Kuliah", value: selectedCourse ? filterMatkul.options[filterMatkul.selectedIndex].text : "" },
-        { key: "minPrice", label: "💰 Min Harga", value: minPrice ? `Rp ${parseInt(minPrice).toLocaleString()}` : "" },
-        { key: "maxPrice", label: "💰 Max Harga", value: maxPrice ? `Rp ${parseInt(maxPrice).toLocaleString()}` : "" }
-    ];
-
-    filters.forEach(filter => {
-        if (filter.value) {
-            const filterItem = document.createElement("div");
-            filterItem.className = "flex items-center gap-2 bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium shadow-sm";
-
-            filterItem.innerHTML = `
-                <span>${filter.label}: <strong>${filter.value}</strong></span>
-                <button class="text-red-500 hover:text-red-700 transition duration-200 focus:outline-none">
-                    ✖
-                </button>
-            `;
-
-            // Event listener untuk menghapus filter
-            filterItem.querySelector("button").addEventListener("click", () => {
-                params.delete(filter.key);  // Hapus filter dari URL
-                params.set("page", 1);  // Reset ke halaman pertama setelah filter dihapus
-                window.location.search = params.toString();  // Perbarui halaman
-            });
-
-            selectedFilterContainer.appendChild(filterItem);
+        selectedFilterContainer.innerHTML = "";
+        const params = getParams();
+    
+        // **Pastikan input dan filter diperbarui**
+        searchInput.value = params.get("q") || "";
+        filterMatkul.value = params.get("course") || "";
+        minPriceInput.value = params.get("minPrice") || "";
+        maxPriceInput.value = params.get("maxPrice") || "";
+    
+        const filters = [
+            { key: "q", label: "🔍 Pencarian", value: params.get("q") || "" },
+            { key: "course", label: "📚 Mata Kuliah", value: params.get("course") ? filterMatkul.options[filterMatkul.selectedIndex].text : "" },
+            { key: "minPrice", label: "💰 Min Harga", value: params.get("minPrice") ? `Rp ${parseInt(params.get("minPrice")).toLocaleString()}` : "" },
+            { key: "maxPrice", label: "💰 Max Harga", value: params.get("maxPrice") ? `Rp ${parseInt(params.get("maxPrice")).toLocaleString()}` : "" }
+        ];
+    
+        filters.forEach(filter => {
+            if (filter.value) {
+                const filterItem = document.createElement("div");
+                filterItem.className = "flex items-center gap-2 bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium shadow-sm";
+                filterItem.innerHTML = `<span>${filter.label}: <strong>${filter.value}</strong></span>
+                    <button class="text-red-500 hover:text-red-700 transition duration-200">✖</button>`;
+    
+                filterItem.querySelector("button").addEventListener("click", () => {
+                    params.delete(filter.key);
+                    params.set("page", 1);
+                    history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
+                    
+                    // **Kosongkan input setelah filter dihapus**
+                    if (filter.key === "q") searchInput.value = "";
+                    if (filter.key === "course") filterMatkul.value = "";
+                    if (filter.key === "minPrice") minPriceInput.value = "";
+                    if (filter.key === "maxPrice") maxPriceInput.value = "";
+    
+                    fetchProducts();
+                    updateSelectedFilter();
+                });
+    
+                selectedFilterContainer.appendChild(filterItem);
+            }
+        });
+    
+        // Jika tidak ada filter, tampilkan pesan kosong
+        if (selectedFilterContainer.innerHTML === "") {
+            selectedFilterContainer.innerHTML = `<p class="text-gray-500 text-sm">Tidak ada filter aktif.</p>`;
         }
-    });
-
-    // Jika tidak ada filter, tampilkan pesan kosong
-    if (selectedFilterContainer.innerHTML === "") {
-        selectedFilterContainer.innerHTML = `<p class="text-gray-500 text-sm">Tidak ada filter aktif.</p>`;
     }
-}
-
+    
 
     document.querySelectorAll("select, input").forEach(element => {
         element.addEventListener("change", function () {
+            const params = getParams();
             params.set("q", searchInput.value);
             params.set("course", filterMatkul.value);
             params.set("minPrice", minPriceInput.value);
             params.set("maxPrice", maxPriceInput.value);
             params.set("page", 1);
-            window.location.search = params.toString();
+            history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
+            fetchProducts();
+            updateSelectedFilter();
         });
     });
 
     fetchCourses();
     fetchProducts();
+});
+
+window.addEventListener("popstate", function () {
+    fetchProducts();
+    updateSelectedFilter();
 });
