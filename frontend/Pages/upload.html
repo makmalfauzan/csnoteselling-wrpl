@@ -1,385 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Files</title>
-    <link href="/frontend/src/output.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        
-        @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Tambah Dokumen</title>
 </head>
-<body class="bg-gray-50">
-    <div class="flex h-screen overflow-hidden">
-        <!-- Sidebar -->
-        <div class="sidebar hidden md:flex md:flex-shrink-0">
-            <div class="flex flex-col w-64 bg-white border-r">
-                <div class="flex items-center justify-center h-16 border-b">
-                    <h1 class="text-xl font-bold text-indigo-600">Seller Portal</h1>
+<body class="bg-green-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-3xl">
+        <h2 class="text-xl font-bold mb-4">Tambah Dokumen</h2>
+        <form id="uploadForm" action="#" method="POST" enctype="multipart/form-data">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium">Judul</label>
+                    <input type="text" class="w-full p-2 border rounded-lg" placeholder="Nama produk">
                 </div>
-                <div class="flex flex-col flex-grow overflow-y-auto">
-                    <nav class="flex-1 px-2 py-4 space-y-1">
-                        <a href="dashboard-seller.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
-                            <i class="fas fa-th-large mr-3"></i>
-                            Dashboard
-                        </a>
-                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
-                            <i class="fas fa-box mr-3"></i>
-                            Products
-                        </a>
-                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
-                            <i class="fas fa-shopping-cart mr-3"></i>
-                            Orders
-                        </a>
-                        <a href="upload-file.html" class="flex items-center px-4 py-3 text-sm font-medium text-white bg-indigo-600 rounded-md">
-                            <i class="fas fa-upload mr-3"></i>
-                            Upload Files
-                        </a>
-                        <a href="wallet-seller.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
-                            <i class="fas fa-wallet mr-3"></i>
-                            Wallet
-                        </a>
-                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
-                            <i class="fas fa-cog mr-3"></i>
-                            Settings
-                        </a>
-                    </nav>
-                    <div class="p-4 border-t">
-                        <div class="flex items-center">
-                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/76.jpg" alt="User avatar">
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-900">John Seller</p>
-                                <p class="text-xs font-medium text-gray-500">View Profile</p>
-                            </div>
+                <div>
+                    <label class="block text-sm font-medium">Mata Kuliah</label>
+                    <select class="w-full p-2 border rounded-lg">
+                        <option selected>Pilih Mata Kuliah</option>
+                        <option>Algoritma dan Pemrograman</option>
+                        <option>Struktur Data</option>
+                        <option>Basis Data</option>
+                        <option>Jaringan Komputer</option>
+                        <option>Sistem Operasi</option>
+                        <option>Pemrograman Web</option>
+                        <option>Kecerdasan Buatan</option>
+                        <option>Machine Learning</option>
+                        <option>Pengembangan Aplikasi Mobile</option>
+                        <option>Keamanan Informasi</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium">Materi</label>
+                    <input type="text" class="w-full p-2 border rounded-lg" placeholder="Judul materi">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium">Jenis</label>
+                    <select class="w-full p-2 border rounded-lg">
+                        <option selected>Pilih Jenis Dokumen</option>
+                        <option>Lecture Notes</option>
+                        <option>Assignments</option>
+                        <option>Past Exams</option>
+                        <option>Others</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium">Harga</label>
+                    <input type="text" class="w-full p-2 border rounded-lg" placeholder="Rp xxx,xx">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium">Deskripsi</label>
+                    <textarea class="w-full p-2 border rounded-lg" rows="2" placeholder="Deskripsi"></textarea>
+                </div>
+                <div class="col-span-2 flex flex-col items-center border-dashed border-2 border-gray-300 p-6 rounded-lg" id="fileDropZone">
+                    <input type="file" accept=".docx,.pdf, .png" class="hidden" id="fileInput">
+                    <label for="fileInput" class="cursor-pointer" id="fileLabel">
+                        <div class="flex flex-col items-center" id="uploadPlaceholder">
+                            <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M16 12l-4-4m0 0l-4 4m4-4v12"></path>
+                            </svg>
+                            <p class="text-gray-600">Drag and Drop here!</p>
                         </div>
-                    </div>
+                    </label>
+                    <p id="fileInfo" class="mt-2 text-sm font-medium text-gray-700 hidden"></p>
+                </div>
+                <div class="col-span-2">
+                    <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-lg">Upload file!</button>
                 </div>
             </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="flex flex-col flex-1 overflow-hidden">
-            <!-- Top Navigation -->
-            <header class="bg-white shadow">
-                <div class="flex items-center justify-between px-6 py-4">
-                    <div class="flex items-center md:hidden">
-                        <button type="button" class="text-gray-500 hover:text-gray-600 focus:outline-none">
-                            <i class="fas fa-bars"></i>
-                        </button>
-                    </div>
-                    <div class="flex-1 flex justify-center md:justify-end">
-                        <div class="relative w-full max-w-md">
-                            <input type="text" placeholder="Search files..." class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                            <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                <i class="fas fa-search text-gray-400"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="ml-4 flex items-center md:ml-6">
-                        <button type="button" class="p-1 rounded-full text-gray-500 hover:text-gray-600 focus:outline-none">
-                            <i class="fas fa-bell"></i>
-                        </button>
-                        <button type="button" class="p-1 ml-3 rounded-full text-gray-500 hover:text-gray-600 focus:outline-none">
-                            <i class="fas fa-question-circle"></i>
-                        </button>
-                    </div>
-                </div>
-            </header>
-
-            <!-- Upload Content -->
-            <main class="flex-1 overflow-y-auto p-6">
-                <div class="mb-6">
-                    <h1 class="text-2xl font-semibold text-gray-900">Upload Files</h1>
-                    <p class="text-sm text-gray-600">Upload product images, documents, and other files</p>
-                </div>
-
-                <!-- Upload Area -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-2">
-                        <!-- Drag & Drop Upload -->
-                        <div class="bg-white rounded-xl shadow mb-6 overflow-hidden">
-                            <div class="p-6">
-                                <h2 class="text-lg font-semibold text-gray-900 mb-4">Upload Files</h2>
-                                
-                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-                                    <div class="mx-auto flex justify-center">
-                                        <i class="fas fa-cloud-upload-alt text-indigo-500 text-5xl mb-4"></i>
-                                    </div>
-                                    <h3 class="text-lg font-medium text-gray-900 mb-1">Drag & Drop Files Here</h3>
-                                    <p class="text-sm text-gray-500 mb-4">or</p>
-                                    <div>
-                                        <label for="file-upload" class="px-4 py-2 bg-indigo-600 text-white rounded-md font-medium text-sm hover:bg-indigo-700 cursor-pointer">
-                                            Browse Files
-                                            <input id="file-upload" name="file-upload" type="file" multiple class="sr-only">
-                                        </label>
-                                    </div>
-                                    <p class="mt-4 text-xs text-gray-500">
-                                        Supported file types: JPG, PNG, PDF, DOCX, XLSX (Max 10MB per file)
-                                    </p>
-                                </div>
-                                
-                                <!-- Upload Options -->
-                                <div class="mt-6">
-                                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                                        <div class="flex items-center mb-4 md:mb-0">
-                                            <div class="flex items-center h-5">
-                                                <input id="compress" name="compress" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                                            </div>
-                                            <div class="ml-3 text-sm">
-                                                <label for="compress" class="font-medium text-gray-700">Compress images</label>
-                                                <p class="text-gray-500">Reduce file size for faster loading</p>
-                                            </div>
-                                        </div>
-                                        
-                                        <div>
-                                            <select class="text-sm border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                                                <option>Product Images</option>
-                                                <option>Documents</option>
-                                                <option>Marketing Materials</option>
-                                                <option>Other</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Files in Queue -->
-                        <div class="bg-white rounded-xl shadow mb-6 overflow-hidden">
-                            <div class="p-6">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h2 class="text-lg font-semibold text-gray-900">Files in Queue</h2>
-                                    <button type="button" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                                        Upload All
-                                    </button>
-                                </div>
-                                
-                                <div class="space-y-4">
-                                    <!-- File 1 -->
-                                    <div class="bg-gray-50 rounded-lg p-4">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center">
-                                                <div class="p-2 rounded-md bg-indigo-100 text-indigo-600">
-                                                    <i class="fas fa-file-image"></i>
-                                                </div>
-                                                <div class="ml-3">
-                                                    <h3 class="text-sm font-medium text-gray-900">product-image-1.jpg</h3>
-                                                    <p class="text-xs text-gray-500">2.4 MB • Image</p>
-                                                </div>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <button type="button" class="text-gray-500 hover:text-gray-700">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="mt-2">
-                                            <div class="w-full bg-gray-200 rounded-full h-2">
-                                                <div class="bg-indigo-600 h-2 rounded-full" style="width: 75%"></div>
-                                            </div>
-                                            <div class="flex justify-between mt-1">
-                                                <span class="text-xs text-gray-500">75%</span>
-                                                <span class="text-xs text-gray-500">1.8 MB / 2.4 MB</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- File 2 -->
-                                    <div class="bg-gray-50 rounded-lg p-4">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center">
-                                                <div class="p-2 rounded-md bg-blue-100 text-blue-600">
-                                                    <i class="fas fa-file-pdf"></i>
-                                                </div>
-                                                <div class="ml-3">
-                                                    <h3 class="text-sm font-medium text-gray-900">product-specs.pdf</h3>
-                                                    <p class="text-xs text-gray-500">1.2 MB • PDF</p>
-                                                </div>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <button type="button" class="text-gray-500 hover:text-gray-700">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="mt-2">
-                                            <div class="w-full bg-gray-200 rounded-full h-2">
-                                                <div class="bg-indigo-600 h-2 rounded-full" style="width: 100%"></div>
-                                            </div>
-                                            <div class="flex justify-between mt-1">
-                                                <span class="text-xs text-gray-500">100%</span>
-                                                <span class="text-xs text-gray-500">1.2 MB / 1.2 MB</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- File 3 -->
-                                    <div class="bg-gray-50 rounded-lg p-4">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center">
-                                                <div class="p-2 rounded-md bg-green-100 text-green-600">
-                                                    <i class="fas fa-file-excel"></i>
-                                                </div>
-                                                <div class="ml-3">
-                                                    <h3 class="text-sm font-medium text-gray-900">inventory.xlsx</h3>
-                                                    <p class="text-xs text-gray-500">0.8 MB • Spreadsheet</p>
-                                                </div>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <button type="button" class="text-gray-500 hover:text-gray-700">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="mt-2">
-                                            <div class="w-full bg-gray-200 rounded-full h-2">
-                                                <div class="bg-indigo-600 h-2 rounded-full" style="width: 45%"></div>
-                                            </div>
-                                            <div class="flex justify-between mt-1">
-                                                <span class="text-xs text-gray-500">45%</span>
-                                                <span class="text-xs text-gray-500">0.36 MB / 0.8 MB</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Recent Files & Storage -->
-                    <div class="lg:col-span-1">
-                        <!-- Storage Info -->
-                        <div class="bg-white rounded-xl shadow mb-6 overflow-hidden">
-                            <div class="p-6">
-                                <h2 class="text-lg font-semibold text-gray-900 mb-4">Storage</h2>
-                                
-                                <div class="mb-4">
-                                    <div class="w-full bg-gray-200 rounded-full h-3">
-                                        <div class="bg-indigo-600 h-3 rounded-full" style="width: 65%"></div>
-                                    </div>
-                                    <div class="flex justify-between mt-2">
-                                        <span class="text-sm text-gray-500">6.5 GB used</span>
-                                        <span class="text-sm text-gray-500">10 GB total</span>
-                                    </div>
-                                </div>
-                                
-                                <div class="space-y-3">
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center">
-                                            <div class="p-1.5 rounded-md bg-indigo-100 text-indigo-600">
-                                                <i class="fas fa-image"></i>
-                                            </div>
-                                            <span class="ml-2 text-sm text-gray-700">Images</span>
-                                        </div>
-                                        <span class="text-sm text-gray-500">3.2 GB</span>
-                                    </div>
-                                    
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center">
-                                            <div class="p-1.5 rounded-md bg-blue-100 text-blue-600">
-                                                <i class="fas fa-file-pdf"></i>
-                                            </div>
-                                            <span class="ml-2 text-sm text-gray-700">Documents</span>
-                                        </div>
-                                        <span class="text-sm text-gray-500">2.1 GB</span>
-                                    </div>
-                                    
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center">
-                                            <div class="p-1.5 rounded-md bg-green-100 text-green-600">
-                                                <i class="fas fa-file-video"></i>
-                                            </div>
-                                            <span class="ml-2 text-sm text-gray-700">Videos</span>
-                                        </div>
-                                        <span class="text-sm text-gray-500">1.2 GB</span>
-                                    </div>
-                                </div>
-                                
-                                <div class="mt-4">
-                                    <button type="button" class="w-full px-4 py-2 bg-indigo-600 text-white rounded-md font-medium text-sm hover:bg-indigo-700">
-                                        Upgrade Storage
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Recent Files -->
-                        <div class="bg-white rounded-xl shadow overflow-hidden">
-                            <div class="p-6">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h2 class="text-lg font-semibold text-gray-900">Recent Files</h2>
-                                    <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View All</a>
-                                </div>
-                                
-                                <div class="space-y-4">
-                                    <div class="flex items-center">
-                                        <div class="p-2 rounded-md bg-indigo-100 text-indigo-600">
-                                            <i class="fas fa-file-image"></i>
-                                        </div>
-                                        <div class="ml-3 flex-1">
-                                            <h3 class="text-sm font-medium text-gray-900">product-main.jpg</h3>
-                                            <p class="text-xs text-gray-500">1.8 MB • Uploaded 2 days ago</p>
-                                        </div>
-                                        <button type="button" class="text-gray-500 hover:text-gray-700">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </button>
-                                    </div>
-                                    
-                                    <div class="flex items-center">
-                                        <div class="p-2 rounded-md bg-blue-100 text-blue-600">
-                                            <i class="fas fa-file-pdf"></i>
-                                        </div>
-                                        <div class="ml-3 flex-1">
-                                            <h3 class="text-sm font-medium text-gray-900">user-manual.pdf</h3>
-                                            <p class="text-xs text-gray-500">3.2 MB • Uploaded 3 days ago</p>
-                                        </div>
-                                        <button type="button" class="text-gray-500 hover:text-gray-700">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </button>
-                                    </div>
-                                    
-                                    <div class="flex items-center">
-                                        <div class="p-2 rounded-md bg-green-100 text-green-600">
-                                            <i class="fas fa-file-excel"></i>
-                                        </div>
-                                        <div class="ml-3 flex-1">
-                                            <h3 class="text-sm font-medium text-gray-900">sales-report.xlsx</h3>
-                                            <p class="text-xs text-gray-500">0.5 MB • Uploaded 5 days ago</p>
-                                        </div>
-                                        <button type="button" class="text-gray-500 hover:text-gray-700">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </button>
-                                    </div>
-                                    
-                                    <div class="flex items-center">
-                                        <div class="p-2 rounded-md bg-purple-100 text-purple-600">
-                                            <i class="fas fa-file-word"></i>
-                                        </div>
-                                        <div class="ml-3 flex-1">
-                                            <h3 class="text-sm font-medium text-gray-900">contract.docx</h3>
-                                            <p class="text-xs text-gray-500">0.3 MB • Uploaded 1 week ago</p>
-                                        </div>
-                                        <button type="button" class="text-gray-500 hover:text-gray-700">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
-        </div>
+        </form>
     </div>
+    
+    <script>
+        document.getElementById("fileInput").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById("uploadPlaceholder").classList.add("hidden");
+                document.getElementById("fileInfo").classList.remove("hidden");
+                document.getElementById("fileInfo").textContent = `File: ${file.name} (${file.type})`;
+            }
+        });
+
+        document.getElementById("uploadForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            alert("Upload Berhasil!");
+            window.location.href = "dashboard-seller.html";
+        });
+    </script>
 </body>
 </html>
