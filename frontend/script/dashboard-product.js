@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         try {
             const response = await fetch("http://127.0.0.1:5000/api/courses");
             const courses = await response.json();
-
+    
             filterMatkul.innerHTML = `<option value="">Mata Kuliah</option>`; // Reset dropdown
             courses.forEach(course => {
                 const option = document.createElement("option");
@@ -31,13 +31,16 @@ document.addEventListener("DOMContentLoaded", async function () {
                 option.textContent = course.course_name;
                 filterMatkul.appendChild(option);
             });
-
+    
             // Set filter ke nilai yang dipilih sebelumnya
-            filterMatkul.value = selectedCourse;
+            if (selectedCourse) {
+                filterMatkul.value = selectedCourse;
+            }
         } catch (error) {
             console.error("Gagal mengambil data mata kuliah:", error);
         }
     }
+    
 
     // Ambil daftar produk berdasarkan filter
     async function fetchProducts() {

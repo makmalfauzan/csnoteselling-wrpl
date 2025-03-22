@@ -39,9 +39,10 @@ def get_materials():
         params = []
 
         # Filter berdasarkan course_id jika dipilih
-        if course_id:
+        if course_id and course_id != "":
             query += " AND m.course_id = %s"
             params.append(course_id)
+
 
         # Filter berdasarkan search query (judul)
         if search_query:
