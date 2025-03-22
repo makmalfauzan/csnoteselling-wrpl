@@ -196,6 +196,48 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     fetchCourses();
+    function updateNavbar() {
+        const navbarMenu = document.getElementById("navbar-menu");
+        const userRole = localStorage.getItem("userRole"); // Ambil role dari localStorage
+        const isLoggedIn = !!userRole; // Jika ada role, berarti user login
+    
+        let navbarHTML = `
+            <a href="/frontend/Pages/about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                Tentang Kami
+            </a>
+        `;
+    
+        if (isLoggedIn) {
+            // Jika user SUDAH login
+            navbarHTML = `
+                <a href="/frontend/Pages/dashboard-${userRole}.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                    Home
+                </a>
+                <a href="/frontend/Pages/about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                    Tentang Kami
+                </a>
+                <a href="/frontend/Pages/profile.html" class="text-base font-medium text-blue2 hover:text-gray-900 flex items-center">
+                    <img src="/frontend/assets/images/user-icon.svg" class="h-8 w-8 rounded-full border border-gray-300" alt="Profile">
+                </a>
+            `;
+        } else {
+            // Jika user BELUM login
+            navbarHTML += `
+                <a href="/frontend/index.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                    Home
+                </a>
+                <a href="/frontend/Pages/login.html" class="px-4 py-2 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-blue2 hover:bg-indigo-700">
+                    Login
+                </a>
+            `;
+        }
+    
+        navbarMenu.innerHTML = navbarHTML;
+    }
+    
+    // Panggil fungsi untuk update navbar saat halaman dimuat
+    updateNavbar();
+    
     fetchProducts();
 });
 
@@ -203,3 +245,18 @@ window.addEventListener("popstate", function () {
     fetchProducts();
     updateSelectedFilter();
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const searchBar = document.querySelector(".search-bar-container"); // Sesuaikan dengan class di HTML
+    const navbarHeight = document.querySelector("header").offsetHeight; // Ambil tinggi navbar
+
+    window.addEventListener("scroll", function () {
+        if (window.scrollY > navbarHeight) {
+            searchBar.classList.add("fixed", "top-[60px]", "left-0", "w-full", "bg-white", "shadow-lg", "z-50", "p-3");
+        } else {
+            searchBar.classList.remove("fixed", "top-[60px]", "left-0", "w-full", "shadow-lg", "z-50", "p-3");
+            searchBar.classList.add("bg-white"); // Pastikan warna tetap putih
+        }
+    });
+});
+

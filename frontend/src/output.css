@@ -327,6 +327,9 @@
   .top-6 {
     top: calc(var(--spacing) * 6);
   }
+  .top-\[60px\] {
+    top: 60px;
+  }
   .right-0 {
     right: calc(var(--spacing) * 0);
   }
@@ -335,6 +338,9 @@
   }
   .right-3 {
     right: calc(var(--spacing) * 3);
+  }
+  .left-0 {
+    left: calc(var(--spacing) * 0);
   }
   .left-3 {
     left: calc(var(--spacing) * 3);
