@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             limitedMaterials.forEach(material => {
                 const card = document.createElement("div");
-                card.className = "border border-gray-300 rounded-lg p-4 shadow-md bg-white flex flex-col justify-between";
+                card.className = "border border-gray-300 rounded-lg p-4 shadow-md hover:shadow-lg bg-white flex flex-col justify-between";
 
                 const name = material.title || "Nama tidak tersedia";
                 const category = material.category || "Kategori tidak tersedia";

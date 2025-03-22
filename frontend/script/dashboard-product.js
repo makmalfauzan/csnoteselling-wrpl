@@ -70,20 +70,34 @@ document.addEventListener("DOMContentLoaded", async function () {
     
             paginatedProducts.forEach(product => {
                 const productCard = document.createElement("div");
-                productCard.className = "bg-white p-4 rounded-lg shadow-md flex justify-between";
-    
+                productCard.className = "bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1 flex flex-col text-center border border-gray-200 w-full max-w-xs";
+            
+                // Isi gambar sementara
+                const imageUrl = `https://i.pinimg.com/736x/81/21/dc/8121dc48ec937ecf919bc2c54aa961a4.jpg`;
+            
                 productCard.innerHTML = `
-                    <div>
-                        <h3 class="text-blue-700 font-bold">${product.title}</h3>
-                        <p class="text-gray-600 text-sm">${product.category || "Kategori tidak tersedia"}</p>
-                        <p class="text-gray-500 text-sm">${product.description}</p>
-                        <p class="font-bold">Rp ${product.price.toLocaleString()}</p>
-                    </div>
-                    <button class="text-2xl">🛒</button>
+                    <img src="${imageUrl}" 
+                         alt="${product.title}" 
+                         class="w-40 h-40 object-cover rounded-md mb-4 shadow-sm border border-gray-300 mx-auto">
+            
+                    <h3 class="text-lg font-bold text-gray-800">${product.title}</h3>
+                    <p class="text-sm text-gray-500 font-medium mt-1">${product.category || "Kategori tidak tersedia"}</p>
+            
+                    <p class="text-sm text-gray-600 mt-2 px-4 text-justify line-clamp-3">
+                        ${product.description || "Deskripsi tidak tersedia"}
+                    </p>
+            
+                    <p class="text-xl font-semibold text-blue-600 mt-auto mb-4">Rp ${product.price.toLocaleString()}</p>
+            
+                    <button class="w-full bg-green-500 hover:bg-green-600 text-white font-medium px-4 py-2 rounded-lg transition shadow-md flex items-center justify-center space-x-2">
+                        <span>🛒</span>
+                        <span>Beli Sekarang</span>
+                    </button>
                 `;
-    
+            
                 productContainer.appendChild(productCard);
             });
+            
     
             setupPagination(totalPages, currentPage);
         } catch (error) {
@@ -111,7 +125,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             const pageButton = document.createElement("button");
             pageButton.textContent = i;
             pageButton.className = `px-4 py-2 rounded border border-gray-300 ${
-                i === currentPage ? 'bg-blue-600 text-white font-bold' : 'bg-white hover:bg-blue-500 hover:text-white'
+                i === currentPage ? 'bg-blue-600 text-blue-600 font-bold' : 'bg-white hover:bg-blue-500 hover:text-white'
             }`;
             pageButton.addEventListener("click", () => {
                 params.set("page", i);
