@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        header {
+            width: 100%;
+            background: #222;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+
+        #userBtn {
+            background: #555;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .profile-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .profile-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+
+        .profile-card h2 {
+            margin: 10px 0;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .profile-card p {
+            color: #666;
+            font-size: 1rem;
+            margin: 5px 0;
+        }
+
+        #logoutBtn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        #logoutBtn:hover {
+            background: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>CS NOTESELLING</h1>
+        <nav>
+            <a href="#">Produk</a>
+            <a href="#">Keranjang</a>
+            <button id="userBtn">Nama</button>
+        </nav>
+    </header>
+    <section class="profile-container">
+        <div class="profile-card">
+            <img src="../assets/user.png" alt="Profile Picture">
+            <h2 id="fullName">Nama Lengkap</h2>
+            <p id="email">Email</p>
+            <p id="bio">BIO</p>
+            <span id="role">Role</span>
+        </div>
+        <button id="logoutBtn">Logout</button>
+    </section>
+    <script src="../scripts/profile.js"></script>
+</body>
+</html>
