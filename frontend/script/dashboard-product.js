@@ -226,7 +226,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <a href="/frontend/index.html" class="text-base font-medium text-blue2 hover:text-gray-900">
                     Home
                 </a>
-                <a href="/frontend/Pages/login.html" class="px-4 py-2 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-blue2 hover:bg-indigo-700">
+                <a href="/frontend/Pages/login.html" class="px-4 py-2 border border-transparent rounded-4xl shadow-sm text-base font-medium text-white bg-blue2 hover:bg-indigo-700">
                     Login
                 </a>
             `;
