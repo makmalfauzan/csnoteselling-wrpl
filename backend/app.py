@@ -7,6 +7,9 @@ from routes.user import user_bp
 from routes.payment import payment_bp
 from routes.dbuyerrecommend import dbuyerrecommend_bp
 from routes.wallet import wallets_bp
+from routes.dsellertop import dsellertop_bp_bp
+from routes.uploadfile import uploadfile_bp
+
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -20,6 +23,8 @@ app.register_blueprint(payment_bp, url_prefix='/api/payment')
 
 app.register_blueprint(wallets_bp, url_prefix='/api/wallets')
 app.register_blueprint(dbuyerrecommend_bp, url_prefix='/api/dbuyerrecommend')
+app.register_blueprint(dsellertop_bp, url_prefix='/api/dsellertop')
+app.register_blueprint(uploadfile_bp, url_prefix='/api/uploadfile')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
