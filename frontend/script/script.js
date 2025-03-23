@@ -22,12 +22,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                 const name = material.title || "Nama tidak tersedia";
                 const category = material.category || "Kategori tidak tersedia";
-                const seller = material.seller || "Penjual tidak diketahui"; // API sekarang mengembalikan 'seller'
+                const seller = material.seller || "Penjual tidak diketahui";
                 const price = material.price ? `Rp ${material.price.toLocaleString()}` : "Harga tidak tersedia";
 
                 card.innerHTML = `
                     <div class="flex justify-between items-center">
-                        <a href="./pages/product-detail.html" class="text-blue-600 font-semibold">${name}</a>
+                        <!-- Perbaiki Link ke Halaman Detail Produk -->
+                        <a href="./pages/product-detail.html?id=${material.material_id}" class="text-blue-600 font-semibold">${name}</a>
                         <button class="text-2xl text-green-500">🛒</button>
                     </div>
                     <p class="text-gray-500 text-sm">${category}</p>
@@ -46,6 +47,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     fetchMaterials();
 });
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.getElementById("search-input");

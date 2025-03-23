@@ -48,31 +48,31 @@ document.addEventListener("DOMContentLoaded", async function () {
             const maxPrice = params.get("maxPrice") || "";
             let currentPage = parseInt(params.get("page")) || 1;
             const productsPerPage = 9;
-
+    
             let apiUrl = `http://127.0.0.1:5000/api/materials?page=${currentPage}&limit=${productsPerPage}&course=${selectedCourse}&q=${searchQuery}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
             const response = await fetch(apiUrl);
             const products = await response.json();
-
+    
             productContainer.innerHTML = "";
             paginationContainer.innerHTML = "";
-
+    
             updateSelectedFilter();
-
+    
             if (products.length === 0) {
                 productContainer.innerHTML = `<p class="text-red-500 text-center col-span-3">Produk tidak ditemukan</p>`;
                 return;
             }
-
+    
             const totalPages = Math.ceil(products.length / productsPerPage);
             const start = (currentPage - 1) * productsPerPage;
             const paginatedProducts = products.slice(start, start + productsPerPage);
-
+    
             paginatedProducts.forEach(product => {
                 const productCard = document.createElement("div");
                 productCard.className = "bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1 flex flex-col text-center border border-gray-200 w-full max-w-xs";
-
+    
                 const imageUrl = `https://i.pinimg.com/736x/81/21/dc/8121dc48ec937ecf919bc2c54aa961a4.jpg`;
-
+    
                 productCard.innerHTML = `
                     <img src="${imageUrl}" 
                          alt="${product.title}" 
@@ -85,21 +85,25 @@ document.addEventListener("DOMContentLoaded", async function () {
                         ${product.description || "Deskripsi tidak tersedia"}
                     </p>
                     <p class="text-xl font-semibold text-blue-600 mt-auto mb-4">Rp ${product.price.toLocaleString()}</p>
-                    <a href="./product-detail.html">
-                    <button class="w-full bg-green-500 hover:bg-green-600 text-white font-medium px-4 py-2 rounded-lg transition shadow-md flex items-center justify-center space-x-2">
-                        <span>🛒</span>
-                        <span>Beli Sekarang</span>
-                    </button></a>
+                    
+                    <!-- Perbaiki Link ke Halaman Detail Produk -->
+                    <a href="./product-detail.html?id=${product.material_id}">
+                        <button class="w-full bg-green-500 hover:bg-green-600 text-white font-medium px-4 py-2 rounded-lg transition shadow-md flex items-center justify-center space-x-2">
+                            <span>🛒</span>
+                            <span>Beli Sekarang</span>
+                        </button>
+                    </a>
                 `;
-
+    
                 productContainer.appendChild(productCard);
             });
-
+    
             setupPagination(totalPages, currentPage);
         } catch (error) {
             console.error("Gagal mengambil produk:", error);
         }
     }
+    
 
     function setupPagination(totalPages, currentPage) {
         paginationContainer.innerHTML = "";
