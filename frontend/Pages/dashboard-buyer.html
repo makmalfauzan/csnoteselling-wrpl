@@ -394,3 +394,18 @@
 </script>
 </body>
 </html>
+
+<script>
+    async function loadRecommended() {
+      try {
+        const response = await fetch('http://localhost:5000/api/buyer/recommended');
+        const data = await response.json();
+        console.log(data); // Cek data di console
+        // Lanjutkan render card sesuai data
+      } catch (error) {
+        console.error('Error fetching recommended products:', error);
+      }
+    }
+  
+    window.onload = loadRecommended;
+  </script>  
