@@ -6,6 +6,7 @@ from routes.course import courses_bp
 from routes.user import user_bp
 from routes.payment import payment_bp
 from routes.dbuyerrecommend import dbuyerrecommend_bp
+from routes.wallet import wallets_bp
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
