@@ -371,9 +371,7 @@
             </main>
         </div>
     </div>
-</body>
-
-<!-- bagian HTML dashboard-buyer.html -->
+    <!-- Tempatkan input search jika memang ingin tampil di bagian tertentu -->
 <input type="text" id="search-input" placeholder="Search courses..." class="..." />
 
 <script>
@@ -381,8 +379,8 @@
     try {
       const response = await fetch(`http://localhost:5000/api/courses?q=${encodeURIComponent(query)}`);
       const courses = await response.json();
-      // Update tampilan atau console log
       console.log(courses);
+      // Lanjutkan render data courses ke DOM jika diperlukan
     } catch (error) {
       console.error('Error searching courses:', error);
     }
@@ -392,20 +390,46 @@
     searchCourses(e.target.value);
   });
 </script>
-</body>
-</html>
 
 <script>
-    async function loadRecommended() {
-      try {
-        const response = await fetch('http://localhost:5000/api/buyer/recommended');
-        const data = await response.json();
-        console.log(data); // Cek data di console
-        // Lanjutkan render card sesuai data
-      } catch (error) {
-        console.error('Error fetching recommended products:', error);
+  async function loadRecommended() {
+    try {
+      const response = await fetch('http://localhost:5000/api/dbuyerrecommend/recommended');
+      const data = await response.json();
+      console.log(data); // Cek data di console
+
+      // Contoh render sederhana:
+      const container = document.querySelector('.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4.gap-6');
+      if (container) {
+        container.innerHTML = ''; // Kosongkan container
+        data.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'bg-white rounded-xl shadow overflow-hidden';
+          card.innerHTML = `
+            <div class="relative">
+              <img src="${item.image || 'https://via.placeholder.com/300x200'}" alt="${item.course_name}" class="w-full h-48 object-cover">
+              <button type="button" class="absolute top-3 right-3 p-1.5 rounded-full bg-white text-gray-900 hover:text-indigo-600">
+                <i class="fas fa-heart"></i>
+              </button>
+            </div>
+            <div class="p-4">
+              <h3 class="text-sm font-medium text-gray-900 mb-1">${item.course_name}</h3>
+              <p class="text-sm text-gray-500 mb-2">${item.description}</p>
+              <button type="button" class="mt-4 w-full bg-indigo-600 text-white rounded-md py-2 text-sm font-medium hover:bg-indigo-700">Add to Cart</button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
       }
+    } catch (error) {
+      console.error('Error fetching recommended products:', error);
     }
-  
-    window.onload = loadRecommended;
-  </script>  
+  }
+
+  // Panggil loadRecommended setelah halaman selesai dimuat
+  window.onload = () => {
+    loadRecommended();
+  };
+</script>
+</body>
+</html>
