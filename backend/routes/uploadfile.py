@@ -17,11 +17,10 @@ def upload_file():
     # Debug: Print data form untuk memastikan parameter terkirim
     print("Request Form Data:", request.form.to_dict())
 
-    # Pastikan seller_id dan course_id ada (course_id diambil dari hidden field)
+    # Ambil seller_id (WAJIB ada)
     seller_id = request.form.get('seller_id')
-    course_id = request.form.get('course_id')
-    if not seller_id or not course_id:
-        return jsonify({"message": "seller_id and course_id are required"}), 400
+    if not seller_id:
+        return jsonify({"message": "seller_id is required"}), 400
 
     # Cek apakah file ada di request
     if 'file' not in request.files:
@@ -44,15 +43,14 @@ def upload_file():
 
     # Ambil data tambahan dari form
     title = request.form.get('title', '')
-    # Jika perlu menyimpan nama mata kuliah dari dropdown, gunakan nama variabel baru
-    course_name = request.form.get('course_name', '')  # gunakan name baru
+    course = request.form.get('course', '')      # di DB namanya 'course'
     materi = request.form.get('materi', '')
     category = request.form.get('category', 'Others')
     description = request.form.get('description', '')
     price_str = request.form.get('price', '0').replace(',', '.')
     status = request.form.get('status', 'ACTIVE')
 
-    # Parsing price menjadi Decimal untuk konsistensi dengan tipe DECIMAL(10,2)
+    # Parsing price menjadi Decimal
     try:
         price_decimal = Decimal(price_str)
     except Exception as e:
@@ -61,20 +59,21 @@ def upload_file():
     # Hitung ukuran file (dalam byte)
     file_size = os.path.getsize(file_path)
 
+    # Simpan ke DB
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-        # Pastikan kolom-kolom yang di-insert sesuai dengan struktur tabel di DB
+        # Pastikan kolom sesuai dengan tabel: seller_id, title, course, materi, category, description,
+        # file_path, file_size, price, status
         sql = """
-            INSERT INTO materials 
-            (seller_id, course_id, title, course_name, materi, category, description, file_path, file_size, price_str, status)
+            INSERT INTO materials
+            (seller_id, title, course, materi, category, description, file_path, file_size, price, status)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         cursor.execute(sql, (
             seller_id,
-            course_id,
-            course_name,
             title,
+            course,
             materi,
             category,
             description,

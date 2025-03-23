@@ -1,166 +1,246 @@
 <!DOCTYPE html>
 <html lang="id">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Upload File</title>
-        <script src="/frontend/script/auth.js" defer></script>
-        <link href="/frontend/src/output.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <style>
-            body {
-                font-family: 'Inter', sans-serif;
-            }
-            @media (max-width: 768px) {
-                .sidebar {
-                    display: none;
-                }
-            }
-            .chart-container {
-                position: relative;
-                height: 200px;
-                width: 100%;
-            }
-        </style>
-    </head>
-    <body class="bg-green-100 flex items-center justify-center min-h-screen">
-        <div class="flex h-screen overflow-hidden">
-            <!-- Sidebar -->
-            <div class="sidebar hidden md:flex md:flex-shrink-0">
-                <div class="flex flex-col w-64 bg-white border-r">
-                    <div class="flex items-center justify-center h-16 border-b">
-                        <a href="dashboard-product.html">
-                            <img src="/frontend/assets/images/logo1.svg" alt="Logo CS NOTESelling" class="h-8 w-auto" />
-                        </a>
-                    </div>
-                    <nav class="flex-1 px-2 py-4 space-y-1">
-                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-white bg-indigo-600 rounded-md">
-                            <i class="fas fa-th-large mr-3"></i> Dashboard
-                        </a>
-                        <a href="wallet-seller.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
-                            <i class="fas fa-wallet mr-3"></i> Wallet
-                        </a>
-                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
-                            <i class="fas fa-cog mr-3"></i> Settings
-                        </a>
-                    </nav>
-                </div>
-            </div>
-            
-            <!-- Form Upload -->
-            <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-3xl">
-                <form id="uploadForm" action="http://127.0.0.1:5000/api/uploadfile/upload" method="POST" enctype="multipart/form-data">
-                    <!-- Input tersembunyi harus berada di dalam form -->
-                    <input type="hidden" name="seller_id" value="123">
-                    <input type="hidden" name="course_id" value="7">
-                    
-                    <h2 class="text-xl font-bold mb-4">Tambah Dokumen</h2>
-                    <div class="grid grid-cols-2 gap-4">
-                        <!-- Judul Dokumen -->
-                        <div>
-                            <label class="block text-sm font-medium">Title</label>
-                            <input type="text" name="title" class="w-full p-2 border rounded-lg" placeholder="Nama produk" required>
-                        </div>
-                        <!-- Mata Kuliah -->
-                        <div>
-                            <label class="block text-sm font-medium">Mata Kuliah</label>
-                            <select name="course_name" class="w-full p-2 border rounded-lg">
-                                <option selected>Pilih Mata Kuliah</option>
-                                <option>Algoritma dan Pemrograman</option>
-                                <option>Struktur Data</option>
-                                <option>Basis Data</option>
-                                <option>Jaringan Komputer</option>
-                                <option>Sistem Operasi</option>
-                                <option>Pemrograman Web</option>
-                                <option>Kecerdasan Buatan</option>
-                                <option>Machine Learning</option>
-                                <option>Pengembangan Aplikasi Mobile</option>
-                                <option>Keamanan Informasi</option>
-                            </select>
-                        </div>
-                        <!-- Materi -->
-                        <div>
-                            <label class="block text-sm font-medium">Materi</label>
-                            <input type="text" name="materi" class="w-full p-2 border rounded-lg" placeholder="Judul materi">
-                        </div>
-                        <!-- Jenis Dokumen -->
-                        <div>
-                            <label class="block text-sm font-medium">Kategori</label>
-                            <select name="category" class="w-full p-2 border rounded-lg">
-                                <option selected>Pilih Jenis Dokumen</option>
-                                <option>Lecture Notes</option>
-                                <option>Assignments</option>
-                                <option>Past Exams</option>
-                                <option>Others</option>
-                            </select>
-                        </div>
-                        <!-- Harga -->
-                        <div>
-                            <label class="block text-sm font-medium">Harga</label>
-                            <input type="number" name="price" class="w-full p-2 border rounded-lg" placeholder="0.00" step="0.01" min="0" required>
-                        </div>
-                        <!-- Deskripsi -->
-                        <div>
-                            <label class="block text-sm font-medium">Deskripsi</label>
-                            <textarea name="description" class="w-full p-2 border rounded-lg" rows="2" placeholder="Deskripsi" required></textarea>
-                        </div>
-                        <!-- Input File -->
-                        <div class="col-span-2 flex flex-col items-center border-dashed border-2 border-gray-300 p-6 rounded-lg" id="fileDropZone">
-                            <input type="file" name="file" accept=".docx,.pdf,.png, .jpg" class="hidden" id="fileInput">
-                            <label for="fileInput" class="cursor-pointer" id="fileLabel">
-                                <div class="flex flex-col items-center" id="uploadPlaceholder">
-                                    <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M16 12l-4-4m0 0l-4 4m4-4v12"></path>
-                                    </svg>
-                                    <p class="text-gray-600">Drag and Drop here!</p>
-                                </div>
-                            </label>
-                            <p id="fileInfo" class="mt-2 text-sm font-medium text-gray-700 hidden"></p>
-                        </div>
-                        <!-- Tombol Submit -->
-                        <div class="col-span-2">
-                            <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-lg">Upload file!</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Upload File</title>
+    <script src="/frontend/script/auth.js" defer></script>
+    <link href="/frontend/src/output.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+      }
+      .chart-container {
+        position: relative;
+        height: 200px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body class="bg-green-100 flex items-center justify-center min-h-screen">
+    <div class="flex h-screen overflow-hidden">
+      <!-- Sidebar (opsional) -->
+      <div class="sidebar hidden md:flex md:flex-shrink-0">
+        <div class="flex flex-col w-64 bg-white border-r">
+          <div class="flex items-center justify-center h-16 border-b">
+            <a href="dashboard-product.html">
+              <img
+                src="/frontend/assets/images/logo1.svg"
+                alt="Logo CS NOTESelling"
+                class="h-8 w-auto"
+              />
+            </a>
+          </div>
+          <nav class="flex-1 px-2 py-4 space-y-1">
+            <a
+              href="#"
+              class="flex items-center px-4 py-3 text-sm font-medium text-white bg-indigo-600 rounded-md"
+            >
+              <i class="fas fa-th-large mr-3"></i> Dashboard
+            </a>
+            <a
+              href="wallet-seller.html"
+              class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md"
+            >
+              <i class="fas fa-wallet mr-3"></i> Wallet
+            </a>
+            <a
+              href="#"
+              class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md"
+            >
+              <i class="fas fa-cog mr-3"></i> Settings
+            </a>
+          </nav>
         </div>
-        
-        <script>
-            // Tampilkan informasi file saat dipilih
-            document.getElementById("fileInput").addEventListener("change", function(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    document.getElementById("uploadPlaceholder").classList.add("hidden");
-                    document.getElementById("fileInfo").classList.remove("hidden");
-                    document.getElementById("fileInfo").textContent = `File: ${file.name} (${file.type})`;
-                }
-            });
+      </div>
 
-            // Tangani submit form dengan fetch API agar halaman tidak refresh
-            document.getElementById("uploadForm").addEventListener("submit", async function(event) {
-                event.preventDefault(); // Cegah form submit default
-                const form = event.target;
-                const formData = new FormData(form);
-                try {
-                    const response = await fetch(form.action, {
-                        method: form.method,
-                        body: formData
-                    });
-                    const result = await response.json();
-                    if (response.ok) {
-                        alert("Upload Berhasil: " + result.message);
-                        // Optional: Redirect jika perlu, misalnya:
-                        // window.location.href = "dashboard-seller.html";
-                    } else {
-                        alert("Upload Gagal: " + result.message);
-                    }
-                } catch (error) {
-                    console.error(error);
-                    alert("Terjadi kesalahan saat upload file.");
-                }
-            });
-        </script>
-    </body>
+      <!-- Form Upload -->
+      <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-3xl">
+        <form
+          id="uploadForm"
+          action="http://127.0.0.1:5000/api/uploadfile/upload"
+          method="POST"
+          enctype="multipart/form-data"
+        >
+          <!-- HIDDEN INPUT: seller_id (Wajib, karena di DB ada kolom seller_id) -->
+          <input type="hidden" name="seller_id" value="380" />
+
+          <h2 class="text-xl font-bold mb-4">Tambah Dokumen</h2>
+          <div class="grid grid-cols-2 gap-4">
+            <!-- Judul Dokumen (kolom title di DB) -->
+            <div>
+              <label class="block text-sm font-medium">Title</label>
+              <input
+                type="text"
+                name="title"
+                class="w-full p-2 border rounded-lg"
+                placeholder="Nama produk"
+                required
+              />
+            </div>
+
+            <!-- Nama Mata Kuliah (kolom course di DB) -->
+            <div>
+              <label class="block text-sm font-medium">Mata Kuliah</label>
+              <select name="course" class="w-full p-2 border rounded-lg">
+                <option selected>Pilih Mata Kuliah</option>
+                <option>Algoritma dan Pemrograman</option>
+                <option>Struktur Data</option>
+                <option>Basis Data</option>
+                <option>Jaringan Komputer</option>
+                <option>Sistem Operasi</option>
+                <option>Pemrograman Web</option>
+                <option>Kecerdasan Buatan</option>
+                <option>Machine Learning</option>
+                <option>Pengembangan Aplikasi Mobile</option>
+                <option>Keamanan Informasi</option>
+              </select>
+            </div>
+
+            <!-- Materi (kolom materi di DB) -->
+            <div>
+              <label class="block text-sm font-medium">Materi</label>
+              <input
+                type="text"
+                name="materi"
+                class="w-full p-2 border rounded-lg"
+                placeholder="Judul materi"
+              />
+            </div>
+
+            <!-- Kategori (kolom category di DB) -->
+            <div>
+              <label class="block text-sm font-medium">Kategori</label>
+              <select name="category" class="w-full p-2 border rounded-lg">
+                <option selected>Pilih Jenis Dokumen</option>
+                <option>Lecture Notes</option>
+                <option>Assignments</option>
+                <option>Past Exams</option>
+                <option>Others</option>
+              </select>
+            </div>
+
+            <!-- Harga (kolom price di DB) -->
+            <div>
+              <label class="block text-sm font-medium">Harga</label>
+              <input
+                type="number"
+                name="price"
+                class="w-full p-2 border rounded-lg"
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+                required
+              />
+            </div>
+
+            <!-- Deskripsi (kolom description di DB) -->
+            <div>
+              <label class="block text-sm font-medium">Deskripsi</label>
+              <textarea
+                name="description"
+                class="w-full p-2 border rounded-lg"
+                rows="2"
+                placeholder="Deskripsi"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Input File -->
+            <div
+              class="col-span-2 flex flex-col items-center border-dashed border-2 border-gray-300 p-6 rounded-lg"
+              id="fileDropZone"
+            >
+              <input
+                type="file"
+                name="file"
+                accept=".docx,.pdf,.png,.jpg"
+                class="hidden"
+                id="fileInput"
+              />
+              <label for="fileInput" class="cursor-pointer" id="fileLabel">
+                <div class="flex flex-col items-center" id="uploadPlaceholder">
+                  <svg
+                    class="w-12 h-12 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M16 12l-4-4m0 0l-4 4m4-4v12"
+                    ></path>
+                  </svg>
+                  <p class="text-gray-600">Drag and Drop here!</p>
+                </div>
+              </label>
+              <p id="fileInfo" class="mt-2 text-sm font-medium text-gray-700 hidden"></p>
+            </div>
+
+            <!-- Tombol Submit -->
+            <div class="col-span-2">
+              <button
+                type="submit"
+                class="w-full bg-blue-500 text-white p-2 rounded-lg"
+              >
+                Upload file!
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Tampilkan informasi file saat dipilih
+      document.getElementById("fileInput").addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        if (file) {
+          document.getElementById("uploadPlaceholder").classList.add("hidden");
+          document.getElementById("fileInfo").classList.remove("hidden");
+          document.getElementById("fileInfo").textContent = `File: ${file.name} (${file.type})`;
+        }
+      });
+
+      // Tangani submit form dengan fetch API agar halaman tidak refresh
+      document.getElementById("uploadForm").addEventListener("submit", async function (event) {
+        event.preventDefault(); // Cegah form submit default
+        const form = event.target;
+        const formData = new FormData(form);
+        try {
+          const response = await fetch(form.action, {
+            method: form.method,
+            body: formData
+          });
+          // Baca response JSON
+          const result = await response.json();
+          if (response.ok) {
+            alert("Upload Berhasil: " + result.message);
+            // Misalnya redirect
+            // window.location.href = "dashboard-seller.html";
+          } else {
+            alert("Upload Gagal: " + result.message);
+          }
+        } catch (error) {
+          console.error(error);
+          alert("Terjadi kesalahan saat upload file.");
+        }
+      });
+    </script>
+  </body>
 </html>
