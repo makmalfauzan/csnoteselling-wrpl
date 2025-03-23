@@ -110,36 +110,3 @@ def checkout():
         cursor.close()
         conn.close()
 
-@payment_bp.route('/wallet/topup', methods=['POST'])
-def topup_wallet():
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-
-    try:
-        data = request.json
-        user_id = data.get("user_id")
-        topup_amount = Decimal(str(data.get("amount")))
-
-        if not user_id or topup_amount <= 0:
-            return jsonify({"error": "User ID dan jumlah top-up harus valid"}), 400
-
-        # Ambil saldo user saat ini
-        cursor.execute("SELECT balance FROM wallets WHERE user_id = %s", (user_id,))
-        wallet = cursor.fetchone()
-
-        if not wallet:
-            return jsonify({"error": "Wallet tidak ditemukan"}), 404
-
-        new_balance = wallet["balance"] + topup_amount
-        cursor.execute("UPDATE wallets SET balance = %s WHERE user_id = %s", (new_balance, user_id))
-        conn.commit()
-
-        return jsonify({"success": True, "message": "Saldo berhasil ditambahkan!", "new_balance": str(new_balance)})
-
-    except Exception as e:
-        conn.rollback()
-        return jsonify({"error": str(e)}), 500
-
-    finally:
-        cursor.close()
-        conn.close()

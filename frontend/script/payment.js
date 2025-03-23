@@ -84,38 +84,25 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     async function handlePayment() {
-        let userId = localStorage.getItem("user_id"); // Ambil user ID dari localStorage
-        if (!userId) {
-            alert("User tidak terautentikasi. Silakan login kembali.");
-            window.location.href = "login.html";
-            return;
-        }
-    
         let totalAmount = parseFloat(totalElement.textContent.replace("Rp", "").replace(/\./g, "").replace(",", "."));
         let userBalance = parseFloat(balanceElement.textContent.replace("Rp", "").replace(/\./g, "").replace(",", "."));
-    
+
         if (userBalance < totalAmount) {
             alert("Saldo tidak cukup! Silakan tambah saldo.");
             return;
         }
-    
+
         let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
         if (cartItems.length === 0) {
             alert("Keranjang belanja kosong!");
             return;
         }
-    
-        // Pastikan format item sesuai dengan yang diharapkan backend
+
         let formattedCart = cartItems.map(item => ({
-            id: item.id, // Pastikan ini cocok dengan yang dibutuhkan backend
+            id: item.id,
             quantity: item.quantity
         }));
-    
-        console.log("Mengirim data ke server:", JSON.stringify({
-            user_id: userId,
-            items: formattedCart
-        })); // Debugging sebelum request
-    
+
         try {
             let response = await fetch("http://127.0.0.1:5000/api/checkout", {
                 method: "POST",
@@ -125,18 +112,18 @@ document.addEventListener("DOMContentLoaded", async function () {
                     items: formattedCart
                 })
             });
-    
+
             if (!response.ok) {
                 let errorText = await response.text();
                 throw new Error(`Request gagal dengan status ${response.status}: ${errorText}`);
             }
-    
+
             let result = await response.json();
             if (result.success) {
                 alert("Pembayaran berhasil! Saldo baru: " + formatCurrency(result.new_balance));
-    
-                localStorage.removeItem("cart"); // Kosongkan keranjang setelah checkout
-                window.location.href = "./payment.html"; // Redirect ke halaman sukses
+
+                localStorage.removeItem("cart");
+                window.location.href = "./payment.html";
             } else {
                 alert("Pembayaran gagal: " + result.error);
             }
@@ -146,13 +133,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
-
     payButton.addEventListener("click", handlePayment);
     fetchUserBalance();
     fetchCartMaterials();
-});
 
-document.addEventListener("DOMContentLoaded", async function () {
+    /*** ========== PERBAIKAN FITUR ISI SALDO (TOP-UP) ========== ***/
     const topupButton = document.getElementById("topup-button");
     const topupModal = document.getElementById("topup-modal");
     const closeModalButton = document.getElementById("close-modal");
@@ -169,8 +154,16 @@ document.addEventListener("DOMContentLoaded", async function () {
         topupModal.classList.add("hidden");
     });
 
-    // Fungsi untuk mengisi saldo
+    // Fungsi untuk mengisi saldo (HANYA YANG DIPERBAIKI)
     async function handleTopup() {
+        let userId = localStorage.getItem("user_id"); // Ambil user ID dari localStorage di dalam fungsi
+
+        if (!userId) {
+            alert("User tidak terautentikasi. Silakan login kembali.");
+            window.location.href = "login.html";
+            return;
+        }
+
         let topupAmount = parseFloat(topupAmountInput.value);
 
         if (isNaN(topupAmount) || topupAmount <= 0) {
@@ -182,27 +175,26 @@ document.addEventListener("DOMContentLoaded", async function () {
             let response = await fetch("http://127.0.0.1:5000/api/wallets/topup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    user_id: userId,
-                    amount: topupAmount
-                })
+                body: JSON.stringify({ user_id: userId, amount: topupAmount })
             });
 
             let result = await response.json();
             if (response.ok && result.success) {
-                alert("Saldo berhasil ditambahkan! Saldo baru: " + formatCurrency(result.new_balance));
+                alert("Saldo berhasil ditambahkan!");
 
-                balanceElement.textContent = formatCurrency(result.new_balance);
-                topupModal.classList.add("hidden"); // Tutup modal
+                // **Pastikan saldo diperbarui setelah top-up**
+                fetchUserBalance();
+
+                topupModal.classList.add("hidden"); // Tutup modal setelah sukses
+                topupAmountInput.value = ""; // Kosongkan input setelah top-up
             } else {
-                alert("Top-up gagal: " + result.error);
+                alert("Top-up gagal: " + (result.error || "Terjadi kesalahan."));
             }
         } catch (error) {
             console.error("Error during top-up:", error);
-            alert("Terjadi kesalahan saat mengisi saldo.");
+            alert("Terjadi kesalahan saat mengisi saldo. Silakan coba lagi.");
         }
     }
 
-    // Event listener untuk tombol konfirmasi isi saldo
     confirmTopupButton.addEventListener("click", handleTopup);
 });
