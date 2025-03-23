@@ -35,10 +35,10 @@ def upload_file():
         conn = get_db_connection()
         cursor = conn.cursor()
         sql = """
-            INSERT INTO materials (title, filename, description, price)
-            VALUES (%s, %s, %s, %s)
+            INSERT INTO materials (title, materi, description, file_path, price)
+            VALUES (%s, %s, %s, %s, %s)
         """
-        cursor.execute(sql, (title, file.filename, description, price))
+        cursor.execute(sql, (title, file.materi, description,file_path, price))
         conn.commit()
         cursor.close()
         conn.close()
