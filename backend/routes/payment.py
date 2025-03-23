@@ -60,8 +60,8 @@ def checkout():
 
         # **Ambil harga tiap produk dan hitung total biaya**
         for item in items:
-            material_id = item["material_id"]
-            quantity = item["quantity"]
+            material_id = item.get("id")  # Pastikan cocok dengan frontend
+            quantity = item.get("quantity", 1)  # Default 1 jika tidak dikirim
 
             cursor.execute("SELECT price, seller_id FROM materials WHERE material_id = %s", (material_id,))
             material = cursor.fetchone()
@@ -84,8 +84,8 @@ def checkout():
         transaction_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         for item in items:
-            material_id = item["material_id"]
-            quantity = item["quantity"]
+            material_id = item.get("id")
+            quantity = item.get("quantity", 1)
 
             cursor.execute("SELECT price, seller_id FROM materials WHERE material_id = %s", (material_id,))
             material = cursor.fetchone()
@@ -100,7 +100,7 @@ def checkout():
                 """, (material_id, user_id, seller_id, amount, transaction_date, "COMPLETED"))
 
         conn.commit()
-        return jsonify({"success": True, "message": "Transaksi berhasil!"})
+        return jsonify({"success": True, "message": "Transaksi berhasil!", "new_balance": str(new_balance)})
 
     except Exception as e:
         conn.rollback()

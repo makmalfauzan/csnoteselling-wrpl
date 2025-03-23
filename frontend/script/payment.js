@@ -99,14 +99,21 @@ document.addEventListener("DOMContentLoaded", async function () {
             return;
         }
     
+        // Pastikan format item sesuai dengan yang diharapkan backend
+        let formattedCart = cartItems.map(item => ({
+            id: item.id, // Sesuai dengan yang digunakan di backend
+            quantity: item.quantity
+        }));
+    
+        console.log("Mengirim data ke server:", formattedCart); // Debugging
+    
         try {
-            // **Kirim request checkout ke API**
-            let response = await fetch(`http://127.0.0.1:5000/checkout`, {
+            let response = await fetch(`http://127.0.0.1:5000/api/checkout`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     user_id: userId,
-                    items: cartItems
+                    items: formattedCart
                 })
             });
     
@@ -124,6 +131,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             alert("Terjadi kesalahan saat pembayaran.");
         }
     }
+    
     
 
     payButton.addEventListener("click", handlePayment);
