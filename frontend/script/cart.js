@@ -150,7 +150,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             alert("Your cart is empty!");
         } else {
             alert("Proceeding to checkout...");
-            window.location.href = "/frontend/pages/checkout.html";
+            window.location.href = "/frontend/pages/payment.html";
         }
     });
 
@@ -164,6 +164,6 @@ document.getElementById("checkout").addEventListener("click", function () {
         alert("Your cart is empty!");
     } else {
         alert("Proceeding to checkout...");
-        window.location.href = "/frontend/pages/checkout.html";
+        window.location.href = "/frontend/pages/payment.html";
     }
 });
