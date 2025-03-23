@@ -2,9 +2,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     const cartContainer = document.getElementById("cart-container");
     const subtotalElement = document.getElementById("subtotal");
     const taxElement = document.getElementById("tax");
-    const totalElement = document.getElementById("total");
     const shippingElement = document.getElementById("shipping");
-    const shippingCost = 5000; // Ongkos kirim tetap
+    const totalElement = document.getElementById("total");
+    const clearCartButton = document.getElementById("clear-cart"); // Tombol clear cart
+    const shippingCost = 5000; // Ongkos kirim tetap Rp 5.000
+
+    function formatCurrency(value) {
+        return "Rp" + value.toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
 
     let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -13,12 +18,12 @@ document.addEventListener("DOMContentLoaded", async function () {
             updateCartUI([]);
             return;
         }
-    
+
         try {
             const materialIds = cartItems.map(item => item.id).join(",");
             const response = await fetch(`http://127.0.0.1:5000/api/materials/batch?ids=${materialIds}`);
             const materials = await response.json();
-    
+
             let updatedCart = cartItems.map(item => {
                 let material = materials.find(mat => mat.material_id == item.id);
                 return material ? { ...material, quantity: item.quantity } : null;
@@ -39,11 +44,20 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <div class="text-center py-16">
                     <p class="text-2xl font-semibold mb-4">Your cart is empty</p>
                     <p class="text-gray-500 mb-8">Looks like you haven't added anything to your cart yet.</p>
-                    <a href="/frontend/pages/dashboard-product.html" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                    <button id="continue-shopping" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
                         Continue Shopping
-                    </a>
+                    </button>
                 </div>
             `;
+
+            setTimeout(() => {
+                const continueShoppingBtn = document.getElementById("continue-shopping");
+                if (continueShoppingBtn) {
+                    continueShoppingBtn.addEventListener("click", function () {
+                        window.location.href = "/frontend/pages/dashboard-product.html";
+                    });
+                }
+            }, 0);
             updateTotals([]);
             return;
         }
@@ -71,84 +85,62 @@ document.addEventListener("DOMContentLoaded", async function () {
                             </button>
                         </div>
                     </div>
-                    <div class="md:col-span-2 text-center">Rp${item.price.toLocaleString()}</div>
+                    <div class="md:col-span-2 text-center">${formatCurrency(item.price)}</div>
                     <div class="md:col-span-2 flex justify-center">
-                        <button class="px-2 py-1 bg-gray-200 rounded quantity-btn" data-index="${index}" data-change="-1">-</button>
+                        <button class="px-2 py-1 bg-gray-200 rounded" onclick="updateQuantity(${index}, -1)">-</button>
                         <span class="px-4 py-1">${item.quantity}</span>
-                        <button class="px-2 py-1 bg-gray-200 rounded quantity-btn" data-index="${index}" data-change="1">+</button>
+                        <button class="px-2 py-1 bg-gray-200 rounded" onclick="updateQuantity(${index}, 1)">+</button>
                     </div>
-                    <div class="md:col-span-2 text-center font-medium">Rp${(item.price * item.quantity).toLocaleString()}</div>
+                    <div class="md:col-span-2 text-center font-medium">${formatCurrency(item.price * item.quantity)}</div>
                 </div>
             `;
         });
 
         cartHTML += `</div>`;
         cartContainer.innerHTML = cartHTML;
-        updateTotals(items);
 
-        // Tambahkan event listener untuk tombol remove
-        document.querySelectorAll(".remove-btn").forEach(button => {
-            button.addEventListener("click", function () {
-                const index = parseInt(this.getAttribute("data-index"));
+        // Tambahkan event listener untuk remove button
+        document.querySelectorAll(".remove-btn").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const index = this.dataset.index;
                 removeItem(index);
             });
         });
 
-        // Tambahkan event listener untuk tombol quantity
-        document.querySelectorAll(".quantity-btn").forEach(button => {
-            button.addEventListener("click", function () {
-                const index = parseInt(this.getAttribute("data-index"));
-                const change = parseInt(this.getAttribute("data-change"));
-                updateQuantity(index, change);
-            });
-        });
+        updateTotals(items);
     }
 
     function updateTotals(items) {
         let subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-        let tax = subtotal * 0.08; // Pajak 8%
+        let tax = subtotal * 0.08;
         let total = subtotal + tax + shippingCost;
 
-        subtotalElement.textContent = `Rp${subtotal.toLocaleString()}`;
-        taxElement.textContent = `Rp${tax.toLocaleString()}`;
-        totalElement.textContent = `Rp${total.toLocaleString()}`;
-        shippingElement.textContent = `Rp${shippingCost.toLocaleString()}`;
+        subtotalElement.textContent = formatCurrency(subtotal);
+        taxElement.textContent = formatCurrency(tax);
+        shippingElement.textContent = formatCurrency(shippingCost);
+        totalElement.textContent = formatCurrency(total);
     }
 
-    function updateQuantity(index, change) {
-        let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-        if (cartItems[index].quantity + change < 1) return;
-        cartItems[index].quantity += change;
+    // Fungsi untuk menghapus item dari cart
+    function removeItem(index) {
+        cartItems.splice(index, 1);
         localStorage.setItem("cart", JSON.stringify(cartItems));
         fetchCartDetails();
     }
 
-    function removeItem(index) {
-        let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-
-        if (index < 0 || index >= cartItems.length) {
-            console.error("Invalid index:", index);
-            return;
-        }
-
-        cartItems.splice(index, 1);
-        localStorage.setItem("cart", JSON.stringify(cartItems));
-
-        if (cartItems.length === 0) {
-            location.reload();
-        } else {
-            location.reload();
-        }
+    // Fungsi untuk mengosongkan seluruh cart
+    function clearCart() {
+        localStorage.removeItem("cart");
+        cartItems = [];
+        fetchCartDetails();
     }
 
-    document.getElementById("clear-cart").addEventListener("click", function () {
-        localStorage.removeItem("cart");
-        location.reload();
-    });
+    // Tambahkan event listener untuk tombol clear cart
+    if (clearCartButton) {
+        clearCartButton.addEventListener("click", clearCart);
+    }
 
     document.getElementById("checkout").addEventListener("click", function () {
-        let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-
         if (cartItems.length === 0) {
             alert("Your cart is empty!");
         } else {

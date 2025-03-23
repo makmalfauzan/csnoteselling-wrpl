@@ -1,11 +1,15 @@
 document.addEventListener("DOMContentLoaded", async function () {
-    const cartContainer = document.getElementById("shopping-cart"); // Tempat menampilkan item cart
+    const cartContainer = document.getElementById("shopping-cart");
     const subtotalElement = document.getElementById("subtotal");
     const taxElement = document.getElementById("tax");
     const shippingElement = document.getElementById("shipping");
     const totalElement = document.getElementById("total");
     const balanceElement = document.getElementById("saldo");
     const payButton = document.getElementById("pay-button");
+
+    function formatCurrency(value) {
+        return "Rp" + value.toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
 
     let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
     let userId = localStorage.getItem("user_id");
@@ -16,24 +20,22 @@ document.addEventListener("DOMContentLoaded", async function () {
         return;
     }
 
-    // Ambil saldo pengguna dari backend
     async function fetchUserBalance() {
         try {
             const response = await fetch(`http://127.0.0.1:5000/api/wallets/${userId}`);
             if (!response.ok) throw new Error("Gagal mengambil saldo");
 
             const data = await response.json();
-            balanceElement.textContent = `Rp ${data.saldo.toLocaleString()}`;
+            balanceElement.textContent = formatCurrency(data.saldo);
         } catch (error) {
             console.error("Error fetching balance:", error);
-            balanceElement.textContent = "Rp 0";
+            balanceElement.textContent = formatCurrency(0);
         }
     }
 
-    // Ambil detail materi dari backend berdasarkan ID yang ada di cart
     async function fetchCartMaterials() {
         if (cartItems.length === 0) {
-            updatePaymentDetails([]); // Jika keranjang kosong, set semua Rp 0
+            updatePaymentDetails([]);
             return;
         }
 
@@ -52,78 +54,63 @@ document.addEventListener("DOMContentLoaded", async function () {
             updatePaymentDetails(updatedCart);
         } catch (error) {
             console.error("Error fetching cart details:", error);
-            updatePaymentDetails([]); // Jika error, set semua Rp 0
+            updatePaymentDetails([]);
         }
     }
 
-    // Menampilkan item cart di halaman pembayaran
     function displayCartItems(items) {
         cartContainer.innerHTML = "";
-
-        if (items.length === 0) {
-            cartContainer.innerHTML = `
-                <div class="text-center py-4">
-                    <p class="text-xl font-semibold">Keranjang kosong</p>
-                    <a href="/frontend/pages/dashboard-product.html" class="text-blue-500 hover:underline">
-                        Belanja sekarang
-                    </a>
-                </div>
-            `;
-            return;
-        }
-
         items.forEach(item => {
             let cartItem = document.createElement("div");
             cartItem.className = "cart-item flex justify-between border-b py-2";
             cartItem.innerHTML = `
                 <span>${item.title} (${item.quantity}x)</span>
-                <span>Rp ${item.price.toLocaleString()}</span>
+                <span>${formatCurrency(item.price * item.quantity)}</span>
             `;
             cartContainer.appendChild(cartItem);
         });
     }
 
-    // Menghitung subtotal, pajak, dan total pembayaran
     function updatePaymentDetails(items) {
         let subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        let tax = subtotal * 0.08; // Pajak 8%
-        let shipping = 5000; // Ongkos kirim tetap Rp 5.000
+        let tax = subtotal * 0.08;
+        let shipping = 5000;
         let total = subtotal + tax + shipping;
 
-        subtotalElement.textContent = `Rp ${subtotal.toLocaleString()}`;
-        taxElement.textContent = `Rp ${Math.round(tax).toLocaleString()}`;
-        shippingElement.textContent = `Rp ${shipping.toLocaleString()}`;
-        totalElement.textContent = `Rp ${Math.round(total).toLocaleString()}`;
+        subtotalElement.textContent = formatCurrency(subtotal);
+        taxElement.textContent = formatCurrency(tax);
+        shippingElement.textContent = formatCurrency(shipping);
+        totalElement.textContent = formatCurrency(total);
     }
 
-    // Fungsi untuk menangani pembayaran
     async function handlePayment() {
-        let totalAmount = parseFloat(totalElement.textContent.replace("Rp ", "").replace(/,/g, ""));
-        let saldo = parseFloat(balanceElement.textContent.replace("Rp ", "").replace(/,/g, ""));
+        let totalAmount = parseFloat(totalElement.textContent.replace("Rp", "").replace(/\./g, "").replace(",", "."));
+        let userBalance = parseFloat(balanceElement.textContent.replace("Rp", "").replace(/\./g, "").replace(",", "."));
 
-        if (saldo < totalAmount) {
+        if (userBalance < totalAmount) {
             alert("Saldo tidak cukup! Silakan tambah saldo.");
             return;
         }
 
         try {
-            let response = await fetch(`http://127.0.0.1:5000/api/transactions/checkout`, {
+            // **Kirim request pembayaran ke API**
+            let response = await fetch(`http://127.0.0.1:5000/api/wallets/pay`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     user_id: userId,
-                    total_amount: totalAmount,
-                    items: cartItems
+                    amount: totalAmount,
+                    transaction_id: localStorage.getItem("transaction_id"), // Pastikan transaction_id tersimpan
                 })
             });
 
             let result = await response.json();
-            if (result.success) {
-                alert("Pembayaran berhasil!");
+            if (response.ok) {
+                alert("Pembayaran berhasil! Saldo baru: " + formatCurrency(result.new_balance));
                 localStorage.removeItem("cart"); // Kosongkan keranjang setelah checkout
-                window.location.href = "success.html"; // Redirect ke halaman sukses
+                window.location.href = "./payment.html"; // Redirect ke halaman sukses
             } else {
-                alert("Pembayaran gagal: " + result.message);
+                alert("Pembayaran gagal: " + result.error);
             }
         } catch (error) {
             console.error("Error during payment:", error);
@@ -132,6 +119,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     payButton.addEventListener("click", handlePayment);
-    await fetchUserBalance();
-    await fetchCartMaterials();
+    fetchUserBalance();
+    fetchCartMaterials();
 });
