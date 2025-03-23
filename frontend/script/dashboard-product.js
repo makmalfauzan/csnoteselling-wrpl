@@ -265,3 +265,62 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+document.addEventListener("DOMContentLoaded", async function () {
+    const searchInput = document.getElementById("search-input");
+    const filterMatkul = document.getElementById("filter-course");
+    const minPriceInput = document.getElementById("min-price");
+    const maxPriceInput = document.getElementById("max-price");
+    const applyFilterBtn = document.getElementById("apply-filter");
+
+    async function fetchCourses() {
+        try {
+            const response = await fetch("http://127.0.0.1:5000/api/courses");
+            const courses = await response.json();
+
+            filterMatkul.innerHTML = `<option value="">Mata Kuliah</option>`;
+            courses.forEach(course => {
+                const option = document.createElement("option");
+                option.value = course.course_id;
+                option.textContent = course.course_name;
+                filterMatkul.appendChild(option);
+            });
+
+            const params = getParams();
+            if (params.get("course")) {
+                filterMatkul.value = params.get("course");
+            }
+        } catch (error) {
+            console.error("Gagal mengambil data mata kuliah:", error);
+        }
+    }
+
+    function getParams() {
+        return new URLSearchParams(window.location.search);
+    }
+
+    function applyFilters() {
+        const params = new URLSearchParams();
+        const searchQuery = searchInput.value.trim();
+        const selectedCourse = filterMatkul.value;
+        const minPrice = minPriceInput.value;
+        const maxPrice = maxPriceInput.value;
+
+        if (searchQuery) params.set("q", searchQuery);
+        if (selectedCourse) params.set("course", selectedCourse);
+        if (minPrice) params.set("minPrice", minPrice);
+        if (maxPrice) params.set("maxPrice", maxPrice);
+
+        params.set("page", 1); // Reset ke halaman pertama saat filter diterapkan
+        history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
+
+        fetchProducts();
+        updateSelectedFilter();
+    }
+
+    // Tambahkan event listener ke tombol "Terapkan Filter"
+    applyFilterBtn.addEventListener("click", applyFilters);
+
+    // Muat daftar mata kuliah saat halaman pertama kali dimuat
+    fetchCourses();
+    fetchProducts();
+});

@@ -18,24 +18,21 @@ document.addEventListener("DOMContentLoaded", async function () {
             const response = await fetch(`http://127.0.0.1:5000/api/materials/batch?ids=${materialIds}`);
             const materials = await response.json();
     
-            // Gabungkan data dari API dengan quantity di localStorage
             let updatedCart = cartItems.map(item => {
                 let material = materials.find(mat => mat.material_id == item.id);
                 return material ? { ...material, quantity: item.quantity } : null;
-            }).filter(item => item !== null); // Hapus produk yang tidak ditemukan
-    
+            }).filter(item => item !== null);
+
             updateCartUI(updatedCart);
         } catch (error) {
             console.error("Error fetching cart details:", error);
             updateCartUI([]);
         }
     }
-    
 
     function updateCartUI(items) {
-        const cartContainer = document.getElementById("cart-container");
         cartContainer.innerHTML = "";
-    
+
         if (items.length === 0) {
             cartContainer.innerHTML = `
                 <div class="text-center py-16">
@@ -46,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     </button>
                 </div>
             `;
-    
+
             setTimeout(() => {
                 const continueShoppingBtn = document.getElementById("continue-shopping");
                 if (continueShoppingBtn) {
@@ -58,7 +55,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             updateTotals([]);
             return;
         }
-    
+
         let cartHTML = `
             <div class="bg-white rounded-lg shadow-sm p-4">
                 <div class="grid grid-cols-1 md:grid-cols-12 p-4 text-sm font-medium text-gray-500 border-b">
@@ -68,7 +65,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     <div class="col-span-2 text-center">Total</div>
                 </div>
         `;
-    
+
         items.forEach((item, index) => {
             cartHTML += `
                 <div class="grid grid-cols-1 md:grid-cols-12 p-4 items-center border-b">
@@ -77,7 +74,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                         <div>
                             <h3 class="font-medium">${item.title}</h3>
                             <p class="text-gray-500 text-sm">${item.category}</p>
-                            <button class="text-red-500 text-sm hover:text-red-700" onclick="removeItem(${index})">
+                            <button class="text-red-500 text-sm hover:text-red-700 remove-btn" data-index="${index}">
                                 🗑 Remove
                             </button>
                         </div>
@@ -92,24 +89,32 @@ document.addEventListener("DOMContentLoaded", async function () {
                 </div>
             `;
         });
-    
+
         cartHTML += `</div>`;
         cartContainer.innerHTML = cartHTML;
         updateTotals(items);
+
+        // Tambahkan event listener untuk tombol remove
+        document.querySelectorAll(".remove-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                const index = parseInt(this.getAttribute("data-index"));
+                removeItem(index);
+            });
+        });
     }
-    
 
     function updateTotals(items) {
         let subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
         let tax = subtotal * 0.08; // Pajak 8%
         let total = subtotal + tax + shippingCost;
 
-        subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
-        taxElement.textContent = `$${tax.toFixed(2)}`;
-        totalElement.textContent = `$${total.toFixed(2)}`;
+        subtotalElement.textContent = `Rp${subtotal.toLocaleString()}`;
+        taxElement.textContent = `Rp${tax.toLocaleString()}`;
+        totalElement.textContent = `Rp${total.toLocaleString()}`;
     }
 
     function updateQuantity(index, change) {
+        let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
         if (cartItems[index].quantity + change < 1) return;
         cartItems[index].quantity += change;
         localStorage.setItem("cart", JSON.stringify(cartItems));
@@ -117,18 +122,31 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     function removeItem(index) {
+        let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+
+        if (index < 0 || index >= cartItems.length) {
+            console.error("Invalid index:", index);
+            return;
+        }
+
         cartItems.splice(index, 1);
         localStorage.setItem("cart", JSON.stringify(cartItems));
-        fetchCartDetails();
+
+        // Jika cart kosong setelah menghapus, reload halaman
+        if (cartItems.length === 0) {
+            location.reload();
+        } else {
+            location.reload(); // Jika masih ada item, tetap reload :)
+        }
     }
 
     document.getElementById("clear-cart").addEventListener("click", function () {
         localStorage.removeItem("cart");
-        fetchCartDetails();
+        location.reload(); // Reload untuk update tampilan
     });
 
     document.getElementById("checkout").addEventListener("click", function () {
-        if (cartItems.length === 0) {
+        if (JSON.parse(localStorage.getItem("cart")).length === 0) {
             alert("Your cart is empty!");
         } else {
             alert("Proceeding to checkout...");
@@ -136,25 +154,16 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     });
 
-
     fetchCartDetails();
 });
 
-function removeItem(index) {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    // Hapus item dari array berdasarkan index
-    cart.splice(index, 1);
-
-    // Simpan kembali ke localStorage
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-    // Bersihkan isi container cart sebelum update UI
-    const cartContainer = document.getElementById("cart-container");
-    if (cartContainer) {
-        cartContainer.innerHTML = "";
+document.getElementById("checkout").addEventListener("click", function () {
+    let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+    
+    if (cartItems.length === 0) {
+        alert("Your cart is empty!");
+    } else {
+        alert("Proceeding to checkout...");
+        window.location.href = "/frontend/pages/checkout.html";
     }
-
-    // Perbarui tampilan UI dengan data terbaru
-    updateCartUI(cart);
-}
+});
