@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - CS NOTESELLING</title>
+    <link href="/frontend/src/output.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+    <!-- Header -->
+    <header class="flex justify-between items-center px-8 py-4 bg-white shadow-md">
+        <a href="../index.html">
+            <img src="/frontend/assets/images/logo1.svg" alt="Logo" class="h-12">
+        </a>
+        <nav class="flex space-x-6 ml-auto">
+            <a href="dashboard-product.html" class="text-gray-700 hover:text-blue-500">Produk</a>
+            <a href="../index.html#testimonials" class="text-gray-700 hover:text-blue-500">Tentang Kami</a>
+        </nav>
+        <a href="profile.html" class="ml-10">
+            <img src="/frontend/assets/icons/icon_4.svg" alt="Icon" class="h-8 w-8 rounded-full">
+        </a>
+    </header>
+
+    <!-- Main Content -->
+    <div class="flex flex-col lg:flex-row justify-center gap-8 p-6">
+        <!-- Shopping Cart -->
+        <div class="bg-white p-6 rounded-lg shadow-md w-full lg:w-2/5">
+            <h2 class="text-xl font-bold mb-4">Ringkasan Pesanan</h2>
+            <div id="shopping-cart">
+                <div class="cart-item flex justify-between border-b py-2" data-id="item1" data-price="15983">
+                    <span>Basis Data / NoSQL</span>
+                    <span>Rp 15,983</span>
+                </div>
+                <div class="cart-item flex justify-between border-b py-2" data-id="item2" data-price="14530">
+                    <span>Machine Learning / Regression</span>
+                    <span>Rp 14,530</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Section -->
+        <div class="bg-white p-6 rounded-lg shadow-md w-full lg:w-2/5">
+            <h2 class="text-xl font-bold mb-4">Pembayaran</h2>
+
+            <!-- Wallet Balance -->
+            <p class="text-gray-600 mb-2">Saldo Anda</p>
+            <div class="flex items-center justify-between">
+                <p class="text-2xl font-semibold" id="wallet-balance">Rp 25,000</p>
+                <button id="topup-button" class="ml-4 bg-green-500 text-white px-3 py-1 rounded-md">
+                    + Tambah Saldo
+                </button>
+            </div>
+
+            <!-- Payment Summary -->
+            <div class="border-t pt-4 mt-4">
+                <p class="flex justify-between text-lg">
+                    <span>Subtotal</span>
+                    <span id="subtotal-price">Rp 0</span>
+                </p>
+                <tr>
+                    <td>Shipping</td>
+                    <td id="shipping">Rp 0</td>
+                </tr>
+                
+                <p class="flex justify-between text-lg">
+                    <span>Pajak (8%)</span>
+                    <span id="tax-amount">Rp 0</span>
+                </p>
+                <hr class="my-2">
+                <p class="flex justify-between text-lg font-bold">
+                    <span>Total</span>
+                    <span id="total-price">Rp 0</span>
+                </p>
+            </div>
+
+            <button id="pay-button" class="mt-6 bg-blue-500 text-white px-4 py-2 rounded-md w-full text-lg">
+                Bayar Sekarang
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL Tambah Saldo -->
+    <div id="topup-modal" class="fixed inset-0 bg-black bg-opacity-50  hidden flex justify-center items-center">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h2 class="text-xl font-bold mb-4">Tambah Saldo</h2>
+            <p class="text-gray-600 mb-2">Masukkan jumlah saldo yang ingin ditambahkan:</p>
+            <input type="number" id="topup-amount" class="w-full border p-2 rounded-md mb-4" placeholder="Misal: 50000">
+            <div class="flex justify-end">
+                <button id="close-modal" class="px-4 py-2 bg-gray-300 rounded-md mr-2">Batal</button>
+                <button id="confirm-topup" class="px-4 py-2 bg-green-500 text-white rounded-md">Tambah</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import JavaScript -->
+    <script src="/frontend/script/payment.js"></script>
+
+</body>
+</html>

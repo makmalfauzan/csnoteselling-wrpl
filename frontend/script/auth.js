@@ -15,16 +15,18 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             const result = await response.json();
-            console.log("Hasil Login:", result); // Debugging
+            console.log("Hasil Login:", result);
 
             if (response.ok) {
                 alert("Login Berhasil!");
 
-                // Simpan role ke localStorage
+                // ✅ Simpan user_id, username, dan role di localStorage
+                localStorage.setItem("user_id", result.user_id);  // Simpan user_id
+                localStorage.setItem("username", result.username);
                 localStorage.setItem("role", result.role);
 
                 // Redirect ke dashboard sesuai role
-                if (result.role.toLowerCase() === "seller") {  // Pastikan perbandingan tidak case-sensitive
+                if (result.role.toLowerCase() === "seller") {  
                     window.location.href = "dashboard-seller.html";
                 } else {
                     window.location.href = "dashboard-buyer.html";
@@ -59,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (response.ok) {
                 alert("Registrasi Berhasil! Silakan Login.");
-                window.location.href = "login.html"; // Redirect ke halaman login
+                window.location.href = "login.html";
             } else {
                 alert(result.error || "Registrasi gagal");
             }

@@ -48,31 +48,31 @@ document.addEventListener("DOMContentLoaded", async function () {
             const maxPrice = params.get("maxPrice") || "";
             let currentPage = parseInt(params.get("page")) || 1;
             const productsPerPage = 9;
-
+    
             let apiUrl = `http://127.0.0.1:5000/api/materials?page=${currentPage}&limit=${productsPerPage}&course=${selectedCourse}&q=${searchQuery}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
             const response = await fetch(apiUrl);
             const products = await response.json();
-
+    
             productContainer.innerHTML = "";
             paginationContainer.innerHTML = "";
-
+    
             updateSelectedFilter();
-
+    
             if (products.length === 0) {
                 productContainer.innerHTML = `<p class="text-red-500 text-center col-span-3">Produk tidak ditemukan</p>`;
                 return;
             }
-
+    
             const totalPages = Math.ceil(products.length / productsPerPage);
             const start = (currentPage - 1) * productsPerPage;
             const paginatedProducts = products.slice(start, start + productsPerPage);
-
+    
             paginatedProducts.forEach(product => {
                 const productCard = document.createElement("div");
                 productCard.className = "bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1 flex flex-col text-center border border-gray-200 w-full max-w-xs";
-
+    
                 const imageUrl = `https://i.pinimg.com/736x/81/21/dc/8121dc48ec937ecf919bc2c54aa961a4.jpg`;
-
+    
                 productCard.innerHTML = `
                     <img src="${imageUrl}" 
                          alt="${product.title}" 
@@ -85,20 +85,25 @@ document.addEventListener("DOMContentLoaded", async function () {
                         ${product.description || "Deskripsi tidak tersedia"}
                     </p>
                     <p class="text-xl font-semibold text-blue-600 mt-auto mb-4">Rp ${product.price.toLocaleString()}</p>
-                    <button class="w-full bg-green-500 hover:bg-green-600 text-white font-medium px-4 py-2 rounded-lg transition shadow-md flex items-center justify-center space-x-2">
-                        <span>🛒</span>
-                        <span>Beli Sekarang</span>
-                    </button>
+                    
+                    <!-- Perbaiki Link ke Halaman Detail Produk -->
+                    <a href="./product-detail.html?id=${product.material_id}">
+                        <button class="w-full bg-green-500 hover:bg-green-600 text-white font-medium px-4 py-2 rounded-lg transition shadow-md flex items-center justify-center space-x-2">
+                            <span>🛒</span>
+                            <span>Beli Sekarang</span>
+                        </button>
+                    </a>
                 `;
-
+    
                 productContainer.appendChild(productCard);
             });
-
+    
             setupPagination(totalPages, currentPage);
         } catch (error) {
             console.error("Gagal mengambil produk:", error);
         }
     }
+    
 
     function setupPagination(totalPages, currentPage) {
         paginationContainer.innerHTML = "";
@@ -260,3 +265,78 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+document.addEventListener("DOMContentLoaded", async function () {
+    const searchInput = document.getElementById("search-input");
+    const filterMatkul = document.getElementById("filter-course");
+    const minPriceInput = document.getElementById("min-price");
+    const maxPriceInput = document.getElementById("max-price");
+    const applyFilterBtn = document.getElementById("apply-filter");
+
+    async function fetchCourses() {
+        try {
+            const response = await fetch("http://127.0.0.1:5000/api/courses");
+            const courses = await response.json();
+
+            filterMatkul.innerHTML = `<option value="">Mata Kuliah</option>`;
+            courses.forEach(course => {
+                const option = document.createElement("option");
+                option.value = course.course_id;
+                option.textContent = course.course_name;
+                filterMatkul.appendChild(option);
+            });
+
+            const params = getParams();
+            if (params.get("course")) {
+                filterMatkul.value = params.get("course");
+            }
+        } catch (error) {
+            console.error("Gagal mengambil data mata kuliah:", error);
+        }
+    }
+
+    function getParams() {
+        return new URLSearchParams(window.location.search);
+    }
+
+    function applyFilters() {
+        const params = new URLSearchParams();
+        const searchQuery = searchInput.value.trim();
+        const selectedCourse = filterMatkul.value;
+        const minPrice = minPriceInput.value;
+        const maxPrice = maxPriceInput.value;
+
+        if (searchQuery) params.set("q", searchQuery);
+        if (selectedCourse) params.set("course", selectedCourse);
+        if (minPrice) params.set("minPrice", minPrice);
+        if (maxPrice) params.set("maxPrice", maxPrice);
+
+        params.set("page", 1); // Reset ke halaman pertama saat filter diterapkan
+        history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
+
+        fetchProducts();
+        updateSelectedFilter();
+    }
+
+    // Tambahkan event listener ke tombol "Terapkan Filter"
+    applyFilterBtn.addEventListener("click", applyFilters);
+
+    // Muat daftar mata kuliah saat halaman pertama kali dimuat
+    fetchCourses();
+    fetchProducts();
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const backButton = document.getElementById("back-to-dashboard");
+
+    if (backButton) {
+        backButton.addEventListener("click", function () {
+            const userRole = localStorage.getItem("role"); // Ambil role user dari localStorage
+
+            if (userRole) {
+                window.location.href = `/frontend/Pages/dashboard-${userRole}.html`; // Arahkan ke dashboard sesuai role
+            } else {
+                window.location.href = "/frontend/index.html"; // Jika tidak ada role, arahkan ke halaman utama
+            }
+        });
+    }
+});

@@ -1,7 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_cors import CORS
 from db_connection import get_db_connection
-import hashlib
 import traceback  # Untuk debug error di terminal
 
 # Membuat Blueprint untuk auth
@@ -30,10 +29,10 @@ def register():
         if existing_user:
             return jsonify({"error": "Username sudah digunakan"}), 400
 
-        # Simpan user baru
+        # Simpan user baru tanpa hash password
         cursor.execute(
-        "INSERT INTO users (username, email, password, role, is_verified) VALUES (%s, %s, %s, %s, %s)",
-        (username, email, password, role, 'TRUE')
+            "INSERT INTO users (username, email, password, role, is_verified) VALUES (%s, %s, %s, %s, %s)",
+            (username, email, password, role, 'TRUE')
         )
         conn.commit()
 
@@ -43,39 +42,41 @@ def register():
         print("Error saat registrasi:", str(e))  # Debugging error di terminal Flask
         print(traceback.format_exc())  # Tambahkan ini
         return jsonify({"error": "Terjadi kesalahan di server"}), 500
-    
 
 
 # API Login
 @auth_bp.route('/login', methods=['POST'])
 def login():
-    data = request.json
-    username = data.get("username")
-    password = data.get("password")
-    
+    try:
+        data = request.json
+        username = data.get("username")
+        password = data.get("password")
 
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
 
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT user_id, username, password, role FROM users WHERE username = %s", (username,))
+        user = cursor.fetchone()
 
-    cursor.execute("SELECT username, password, role FROM users WHERE username = %s", (username,))
-    user = cursor.fetchone()
+        if not user:
+            print(f"Login gagal: User {username} tidak ditemukan")  # Debugging
+            return jsonify({"error": "User tidak ditemukan"}), 401  
 
-    if not user:
-        print(f"Login gagal: User {username} tidak ditemukan")  # Debugging
-        return jsonify({"error": "User tidak ditemukan"}), 401  
+        if user["password"] != password:
+            print(f"Login gagal: Password salah untuk user {username}")  # Debugging
+            return jsonify({"error": "Password salah"}), 401  
 
-    if user["password"] != password:
-        print(f"Login gagal: Password salah untuk user {username}")  # Debugging
-        return jsonify({"error": "Password salah"}), 401  
+        # Debug: Cetak role user di terminal Flask
+        print(f"User {username} login dengan role: {user['role']}")  
 
-    # Debug: Cetak role user di terminal Flask
-    print(f"User {username} login dengan role: {user['role']}")  
+        return jsonify({
+            "message": "Login sukses",
+            "user_id": user["user_id"],  # Tambahkan user_id dalam respons
+            "username": user["username"],
+            "role": user["role"]
+        })
 
-    return jsonify({
-    "message": "Login sukses",
-    "username": user["username"],
-    "role": user["role"]  # Pastikan role dikirim ke frontend
-    })
-
-
+    except Exception as e:
+        print("Error saat login:", str(e))  # Debugging error di terminal Flask
+        print(traceback.format_exc())  # Tambahkan ini
+        return jsonify({"error": "Terjadi kesalahan di server"}), 500

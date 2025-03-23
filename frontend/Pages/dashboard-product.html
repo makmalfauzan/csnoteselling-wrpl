@@ -90,30 +90,39 @@
     
 
     <!-- Container Utama -->
-    <div class="container mx-auto mt-2 p-4 ">
+    <div class="container mx-auto mt-0 p-4 ">
+        <button id="back-to-dashboard" class="mb-2 px-4 py-2 flex items-center text-blue-600 hover:text-blue-800   transition">
+            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            <span>Kembali</span>
+        </button>
         
         <div class="search-bar-container bg-white p-4 rounded-lg shadow-md">
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-4 gap-4 items-center">
                 <!-- Search & Mata Kuliah -->
-                <div class="relative flex items-center border border-blue-300 rounded-lg w-full">
-                    <select class="bg-transparent pl-3 pr-2 py-2 text-blue-600 font-semibold outline-none cursor-pointer">
-                        <option>Mata Kuliah</option>
-                        <option>Algoritma</option>
-                        <option>Jaringan</option>
-                        <option>Database</option>
+                <div class="relative flex items-center border border-blue-300 rounded-lg w-full col-span-2">
+                    <select id="filter-course" class="bg-transparent pl-3 pr-2 py-2 text-blue-600 font-semibold outline-none cursor-pointer">
+                        <option value="">Mata Kuliah</option>
                     </select>
                     <span class="text-gray-400">|</span>
-                    <input type="text" placeholder="Search..." class="flex-1 px-3 py-2 outline-none">
+                    <input id="search-input" type="text" placeholder="Search..." class="flex-1 px-3 py-2 outline-none">
                 </div>
         
                 <!-- Min & Max Price -->
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="number" placeholder="Min Price" class="p-2 border border-blue-300 rounded-lg w-full">
-                    <input type="number" placeholder="Max Price" class="p-2 border border-blue-300 rounded-lg w-full">
+                <div class="grid grid-cols-2 gap-2 col-span-1">
+                    <input id="min-price" type="number" placeholder="Min Price" class="p-2 border border-blue-300 rounded-lg w-full text-sm">
+                    <input id="max-price" type="number" placeholder="Max Price" class="p-2 border border-blue-300 rounded-lg w-full text-sm">
+                </div>
+        
+                <!-- Tombol Terapkan Filter -->
+                <div class="col-span-1">
+                    <button id="apply-filter" class="w-full px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition">
+                        Terapkan Filter
+                    </button>
                 </div>
             </div>
         </div>
-        
 
         <!-- Main Content -->
         <div class="grid grid-cols-4 gap-6 mt-6">

@@ -17,26 +17,28 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
 
             limitedMaterials.forEach(material => {
-                const card = document.createElement("div");
-                card.className = "border border-gray-300 rounded-lg p-4 shadow-md hover:shadow-lg bg-white flex flex-col justify-between";
-
+                const card = document.createElement("a"); // Gunakan <a> sebagai wrapper utama
+                card.href = `./pages/product-detail.html?id=${material.material_id}`;
+                card.className = "border border-gray-300 rounded-lg p-4 shadow-md transition transform hover:-translate-y-1 hover:shadow-lg bg-white flex flex-col justify-between cursor-pointer no-underline text-black";
+            
                 const name = material.title || "Nama tidak tersedia";
                 const category = material.category || "Kategori tidak tersedia";
-                const seller = material.seller || "Penjual tidak diketahui"; // API sekarang mengembalikan 'seller'
+                const seller = material.seller || "Penjual tidak diketahui";
                 const price = material.price ? `Rp ${material.price.toLocaleString()}` : "Harga tidak tersedia";
-
+            
                 card.innerHTML = `
                     <div class="flex justify-between items-center">
-                        <a href="#" class="text-blue-600 font-semibold">${name}</a>
+                        <span class="text-blue-600 font-semibold">${name}</span>
                         <button class="text-2xl text-green-500">🛒</button>
                     </div>
                     <p class="text-gray-500 text-sm">${category}</p>
                     <p class="text-gray-400 text-xs">Penjual: ${seller}</p>
                     <p class="text-gray-900 font-semibold mt-2">${price}</p>
                 `;
-
+            
                 container.appendChild(card);
             });
+            
 
         } catch (error) {
             console.error("Error fetching materials:", error);
@@ -46,6 +48,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     fetchMaterials();
 });
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.getElementById("search-input");
