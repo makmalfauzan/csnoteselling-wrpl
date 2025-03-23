@@ -85,10 +85,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                         ${product.description || "Deskripsi tidak tersedia"}
                     </p>
                     <p class="text-xl font-semibold text-blue-600 mt-auto mb-4">Rp ${product.price.toLocaleString()}</p>
+                    <a href="./product-detail.html">
                     <button class="w-full bg-green-500 hover:bg-green-600 text-white font-medium px-4 py-2 rounded-lg transition shadow-md flex items-center justify-center space-x-2">
                         <span>🛒</span>
                         <span>Beli Sekarang</span>
-                    </button>
+                    </button></a>
                 `;
 
                 productContainer.appendChild(productCard);

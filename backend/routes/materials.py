@@ -6,6 +6,7 @@ from flask_cors import CORS
 materials_bp = Blueprint('materials', __name__)
 CORS(materials_bp)
 
+# **Endpoint untuk mendapatkan daftar produk dengan filter**
 @materials_bp.route('/', methods=['GET'])
 def get_materials():
     conn = get_db_connection()
@@ -18,7 +19,6 @@ def get_materials():
         min_price = request.args.get("minPrice")
         max_price = request.args.get("maxPrice")
 
-
         # Query dasar
         query = """
         SELECT 
@@ -29,11 +29,11 @@ def get_materials():
             m.price, 
             m.status, 
             m.uploaded_at, 
-            m.course_id,  -- Tambahkan course_id agar bisa difilter
-            u.username AS seller  -- Ambil username seller berdasarkan seller_id
+            m.course_id,  
+            u.username AS seller  
         FROM materials m
-        LEFT JOIN users u ON m.seller_id = u.user_id  -- Hubungkan seller_id dengan user_id
-        WHERE u.role = 'SELLER'  -- Pastikan hanya user dengan role SELLER
+        LEFT JOIN users u ON m.seller_id = u.user_id  
+        WHERE u.role = 'SELLER'  
         """
         
         params = []
@@ -42,7 +42,6 @@ def get_materials():
         if course_id and course_id != "":
             query += " AND m.course_id = %s"
             params.append(course_id)
-
 
         # Filter berdasarkan search query (judul)
         if search_query:
@@ -66,6 +65,45 @@ def get_materials():
         materials = cursor.fetchall()
 
         return jsonify(materials)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        cursor.close()
+        conn.close()
+
+
+# **Endpoint untuk mendapatkan detail produk berdasarkan material_id**
+@materials_bp.route('/<int:material_id>', methods=['GET'])
+def get_material_detail(material_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        # Query untuk mengambil detail produk berdasarkan material_id
+        query = """
+        SELECT 
+            m.material_id, 
+            m.title, 
+            m.category, 
+            m.description, 
+            m.price, 
+            m.status, 
+            m.uploaded_at, 
+            u.username AS seller  
+        FROM materials m
+        LEFT JOIN users u ON m.seller_id = u.user_id  
+        WHERE m.material_id = %s
+        """
+
+        cursor.execute(query, (material_id,))
+        material = cursor.fetchone()
+
+        if not material:
+            return jsonify({"error": "Produk tidak ditemukan"}), 404
+
+        return jsonify(material)
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
