@@ -29,12 +29,12 @@
             <h2 class="text-xl font-bold mb-4">Ringkasan Pesanan</h2>
             <div id="shopping-cart">
                 <div class="cart-item flex justify-between border-b py-2" data-id="item1" data-price="15983">
-                    <span>Basis Data / NoSQL</span>
-                    <span>Rp 15,983</span>
+                    <span>Book title</span>
+                    <span>Rp xxx,xxx</span>
                 </div>
                 <div class="cart-item flex justify-between border-b py-2" data-id="item2" data-price="14530">
-                    <span>Machine Learning / Regression</span>
-                    <span>Rp 14,530</span>
+                    <span>Book title</span>
+                    <span>Rp xx,xxx</span>
                 </div>
             </div>
         </div>
@@ -46,7 +46,7 @@
             <!-- Wallet Balance -->
             <p class="text-gray-600 mb-2">Saldo Anda</p>
             <div class="flex items-center justify-between">
-                <p class="text-2xl font-semibold" id="wallet-balance">Rp 25,000</p>
+                <p class="text-2xl font-semibold" id="saldo"">Rp xxxx.xx</p>
                 <button id="topup-button" class="ml-4 bg-green-500 text-white px-3 py-1 rounded-md">
                     + Tambah Saldo
                 </button>
@@ -56,21 +56,19 @@
             <div class="border-t pt-4 mt-4">
                 <p class="flex justify-between text-lg">
                     <span>Subtotal</span>
-                    <span id="subtotal-price">Rp 0</span>
+                    <span id="subtotal">Rp 0</span>
                 </p>
-                <tr>
-                    <td>Shipping</td>
-                    <td id="shipping">Rp 0</td>
-                </tr>
-                
+                <p class="flex justify-between text-lg">
+                    <span>Shipping:</span> <span id="shipping">Rp 0</span>
+                </p>
+  
                 <p class="flex justify-between text-lg">
                     <span>Pajak (8%)</span>
-                    <span id="tax-amount">Rp 0</span>
+                    <span id="tax">Rp 0</span>
                 </p>
                 <hr class="my-2">
                 <p class="flex justify-between text-lg font-bold">
-                    <span>Total</span>
-                    <span id="total-price">Rp 0</span>
+                    <strong>Total:</strong> <span id="total">Rp 0</span>
                 </p>
             </div>
 

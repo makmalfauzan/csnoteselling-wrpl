@@ -1,14 +1,13 @@
 document.addEventListener("DOMContentLoaded", async function () {
+    const cartContainer = document.getElementById("shopping-cart"); // Tempat menampilkan item cart
     const subtotalElement = document.getElementById("subtotal");
     const taxElement = document.getElementById("tax");
     const shippingElement = document.getElementById("shipping");
     const totalElement = document.getElementById("total");
-    const balanceElement = document.getElementById("balance");
+    const balanceElement = document.getElementById("saldo");
     const payButton = document.getElementById("pay-button");
 
-    const shippingCost = 4.99; // Ongkos kirim tetap
     let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-    let userRole = localStorage.getItem("role") || "BUYER";
     let userId = localStorage.getItem("user_id");
 
     if (!userId) {
@@ -17,67 +16,95 @@ document.addEventListener("DOMContentLoaded", async function () {
         return;
     }
 
+    // Ambil saldo pengguna dari backend
     async function fetchUserBalance() {
         try {
-            const response = await fetch(`http://127.0.0.1:5000/api/users/${userId}/balance`);
+            const response = await fetch(`http://127.0.0.1:5000/api/wallets/${userId}`);
+            if (!response.ok) throw new Error("Gagal mengambil saldo");
+
             const data = await response.json();
-            return data.balance;
+            balanceElement.textContent = `Rp ${data.saldo.toLocaleString()}`;
         } catch (error) {
             console.error("Error fetching balance:", error);
-            return 0;
+            balanceElement.textContent = "Rp 0";
         }
     }
 
+    // Ambil detail materi dari backend berdasarkan ID yang ada di cart
     async function fetchCartMaterials() {
         if (cartItems.length === 0) {
-            updatePaymentDetails([], 0);
+            updatePaymentDetails([]); // Jika keranjang kosong, set semua Rp 0
             return;
         }
 
         try {
             const materialIds = cartItems.map(item => item.id).join(",");
             const response = await fetch(`http://127.0.0.1:5000/api/materials/batch?ids=${materialIds}`);
-            const materials = await response.json();
+            if (!response.ok) throw new Error("Gagal mengambil produk");
 
+            const materials = await response.json();
             let updatedCart = cartItems.map(item => {
                 let material = materials.find(mat => mat.material_id == item.id);
                 return material ? { ...material, quantity: item.quantity } : null;
             }).filter(item => item !== null);
 
-            let userBalance = await fetchUserBalance();
-            updatePaymentDetails(updatedCart, userBalance);
+            displayCartItems(updatedCart);
+            updatePaymentDetails(updatedCart);
         } catch (error) {
             console.error("Error fetching cart details:", error);
+            updatePaymentDetails([]); // Jika error, set semua Rp 0
         }
     }
 
-    function updatePaymentDetails(items, balance) {
-        let subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    // Menampilkan item cart di halaman pembayaran
+    function displayCartItems(items) {
+        cartContainer.innerHTML = "";
+
+        if (items.length === 0) {
+            cartContainer.innerHTML = `
+                <div class="text-center py-4">
+                    <p class="text-xl font-semibold">Keranjang kosong</p>
+                    <a href="/frontend/pages/dashboard-product.html" class="text-blue-500 hover:underline">
+                        Belanja sekarang
+                    </a>
+                </div>
+            `;
+            return;
+        }
+
+        items.forEach(item => {
+            let cartItem = document.createElement("div");
+            cartItem.className = "cart-item flex justify-between border-b py-2";
+            cartItem.innerHTML = `
+                <span>${item.title} (${item.quantity}x)</span>
+                <span>Rp ${item.price.toLocaleString()}</span>
+            `;
+            cartContainer.appendChild(cartItem);
+        });
+    }
+
+    // Menghitung subtotal, pajak, dan total pembayaran
+    function updatePaymentDetails(items) {
+        let subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         let tax = subtotal * 0.08; // Pajak 8%
-        let total = subtotal + tax + shippingCost;
+        let shipping = 5000; // Ongkos kirim tetap Rp 5.000
+        let total = subtotal + tax + shipping;
 
         subtotalElement.textContent = `Rp ${subtotal.toLocaleString()}`;
-        taxElement.textContent = `Rp ${tax.toLocaleString()}`;
-        shippingElement.textContent = `Rp ${shippingCost.toLocaleString()}`;
-        totalElement.textContent = `Rp ${total.toLocaleString()}`;
-        balanceElement.textContent = `Rp ${balance.toLocaleString()}`;
-
-        // Cek apakah saldo cukup untuk membayar
-        if (balance < total) {
-            payButton.disabled = true;
-            payButton.textContent = "Saldo Tidak Cukup";
-            payButton.classList.add("cursor-not-allowed", "bg-gray-400");
-        } else {
-            payButton.disabled = false;
-            payButton.textContent = "Bayar Sekarang";
-            payButton.classList.remove("cursor-not-allowed", "bg-gray-400");
-        }
+        taxElement.textContent = `Rp ${Math.round(tax).toLocaleString()}`;
+        shippingElement.textContent = `Rp ${shipping.toLocaleString()}`;
+        totalElement.textContent = `Rp ${Math.round(total).toLocaleString()}`;
     }
 
+    // Fungsi untuk menangani pembayaran
     async function handlePayment() {
-        let subtotal = parseFloat(subtotalElement.textContent.replace("Rp ", "").replace(/,/g, ""));
-        let tax = parseFloat(taxElement.textContent.replace("Rp ", "").replace(/,/g, ""));
-        let total = parseFloat(totalElement.textContent.replace("Rp ", "").replace(/,/g, ""));
+        let totalAmount = parseFloat(totalElement.textContent.replace("Rp ", "").replace(/,/g, ""));
+        let saldo = parseFloat(balanceElement.textContent.replace("Rp ", "").replace(/,/g, ""));
+
+        if (saldo < totalAmount) {
+            alert("Saldo tidak cukup! Silakan tambah saldo.");
+            return;
+        }
 
         try {
             let response = await fetch(`http://127.0.0.1:5000/api/transactions/checkout`, {
@@ -85,7 +112,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     user_id: userId,
-                    total_amount: total,
+                    total_amount: totalAmount,
                     items: cartItems
                 })
             });
@@ -105,5 +132,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     payButton.addEventListener("click", handlePayment);
+    await fetchUserBalance();
     await fetchCartMaterials();
 });

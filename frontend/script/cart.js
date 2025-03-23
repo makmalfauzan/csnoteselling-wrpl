@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     const subtotalElement = document.getElementById("subtotal");
     const taxElement = document.getElementById("tax");
     const totalElement = document.getElementById("total");
-    const shippingCost = 4.99; // Ongkos kirim tetap
+    const shippingElement = document.getElementById("shipping");
+    const shippingCost = 5000; // Ongkos kirim tetap
 
     let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -38,20 +39,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <div class="text-center py-16">
                     <p class="text-2xl font-semibold mb-4">Your cart is empty</p>
                     <p class="text-gray-500 mb-8">Looks like you haven't added anything to your cart yet.</p>
-                    <button id="continue-shopping" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                    <a href="/frontend/pages/dashboard-product.html" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
                         Continue Shopping
-                    </button>
+                    </a>
                 </div>
             `;
-
-            setTimeout(() => {
-                const continueShoppingBtn = document.getElementById("continue-shopping");
-                if (continueShoppingBtn) {
-                    continueShoppingBtn.addEventListener("click", function () {
-                        window.location.href = "/frontend/pages/dashboard-product.html";
-                    });
-                }
-            }, 0);
             updateTotals([]);
             return;
         }
@@ -81,9 +73,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                     </div>
                     <div class="md:col-span-2 text-center">Rp${item.price.toLocaleString()}</div>
                     <div class="md:col-span-2 flex justify-center">
-                        <button class="px-2 py-1 bg-gray-200 rounded" onclick="updateQuantity(${index}, -1)">-</button>
+                        <button class="px-2 py-1 bg-gray-200 rounded quantity-btn" data-index="${index}" data-change="-1">-</button>
                         <span class="px-4 py-1">${item.quantity}</span>
-                        <button class="px-2 py-1 bg-gray-200 rounded" onclick="updateQuantity(${index}, 1)">+</button>
+                        <button class="px-2 py-1 bg-gray-200 rounded quantity-btn" data-index="${index}" data-change="1">+</button>
                     </div>
                     <div class="md:col-span-2 text-center font-medium">Rp${(item.price * item.quantity).toLocaleString()}</div>
                 </div>
@@ -101,6 +93,15 @@ document.addEventListener("DOMContentLoaded", async function () {
                 removeItem(index);
             });
         });
+
+        // Tambahkan event listener untuk tombol quantity
+        document.querySelectorAll(".quantity-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                const index = parseInt(this.getAttribute("data-index"));
+                const change = parseInt(this.getAttribute("data-change"));
+                updateQuantity(index, change);
+            });
+        });
     }
 
     function updateTotals(items) {
@@ -111,6 +112,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         subtotalElement.textContent = `Rp${subtotal.toLocaleString()}`;
         taxElement.textContent = `Rp${tax.toLocaleString()}`;
         totalElement.textContent = `Rp${total.toLocaleString()}`;
+        shippingElement.textContent = `Rp${shippingCost.toLocaleString()}`;
     }
 
     function updateQuantity(index, change) {
@@ -132,116 +134,27 @@ document.addEventListener("DOMContentLoaded", async function () {
         cartItems.splice(index, 1);
         localStorage.setItem("cart", JSON.stringify(cartItems));
 
-        // Jika cart kosong setelah menghapus, reload halaman
         if (cartItems.length === 0) {
             location.reload();
         } else {
-            location.reload(); // Jika masih ada item, tetap reload :)
+            fetchCartDetails();
         }
     }
 
     document.getElementById("clear-cart").addEventListener("click", function () {
         localStorage.removeItem("cart");
-        location.reload(); // Reload untuk update tampilan
+        location.reload();
     });
 
     document.getElementById("checkout").addEventListener("click", function () {
-        if (JSON.parse(localStorage.getItem("cart")).length === 0) {
+        let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+
+        if (cartItems.length === 0) {
             alert("Your cart is empty!");
         } else {
-            alert("Proceeding to checkout...");
             window.location.href = "/frontend/pages/payment.html";
         }
     });
 
     fetchCartDetails();
 });
-
-document.getElementById("checkout").addEventListener("click", function () {
-    let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-    
-    if (cartItems.length === 0) {
-        alert("Your cart is empty!");
-    } else {
-        alert("Proceeding to checkout...");
-        window.location.href = "/frontend/pages/payment.html";
-    }
-});
-
-// Mengambil data cart dari localStorage dan menampilkannya
-function loadCart() {
-    let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-    let cartContainer = document.getElementById('shopping-cart');
-    cartContainer.innerHTML = '';
-
-    let subtotal = 0;
-    cartItems.forEach(item => {
-        let itemPrice = parseInt(item.price);
-        subtotal += itemPrice;
-
-        let cartItem = document.createElement('div');
-        cartItem.className = "cart-item flex justify-between border-b py-2";
-        cartItem.innerHTML = `
-            <span>${item.name}</span>
-            <span>Rp ${itemPrice.toLocaleString()}</span>
-        `;
-        cartContainer.appendChild(cartItem);
-    });
-
-    let tax = subtotal * 0.08; // Pajak 8%
-    let total = subtotal + tax;
-
-    document.getElementById('subtotal-price').innerText = `Rp ${subtotal.toLocaleString()}`;
-    document.getElementById('tax-amount').innerText = `Rp ${Math.round(tax).toLocaleString()}`;
-    document.getElementById('total-price').innerText = `Rp ${Math.round(total).toLocaleString()}`;
-
-    return total;
-}
-
-// Mengambil saldo dari database
-function fetchWalletBalance(userId) {
-    fetch(`http://127.0.0.1:5000/get_wallet_balance?user_id=${userId}`)
-        .then(response => response.json())
-        .then(data => {
-            walletBalance = data.balance;
-            document.getElementById('wallet-balance').innerText = `Rp ${walletBalance.toLocaleString()}`;
-        })
-        .catch(error => {
-            console.error("Gagal mengambil saldo:", error);
-        });
-}
-
-// Simulasi user_id yang login (bisa diganti dengan sistem autentikasi)
-let userId = 101; 
-let walletBalance = 0;
-fetchWalletBalance(userId);
-
-// Event listener untuk tombol bayar
-document.getElementById('pay-button').addEventListener('click', function () {
-    let totalPrice = loadCart();
-
-    if (walletBalance < totalPrice) {
-        alert("Saldo tidak cukup! Silakan tambah saldo.");
-    } else {
-        let newBalance = walletBalance - totalPrice;
-
-        fetch("http://127.0.0.1:5000/update_wallet_balance", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user_id: userId, new_balance: newBalance })
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert("Pembayaran berhasil!");
-            walletBalance = newBalance;
-            document.getElementById('wallet-balance').innerText = `Rp ${walletBalance.toLocaleString()}`;
-            setTimeout(() => { window.location.href = "dashboard-buyer.html"; }, 2000);
-        })
-        .catch(error => {
-            console.error("Gagal memperbarui saldo:", error);
-        });
-    }
-});
-
-// Panggil fungsi loadCart saat halaman dimuat
-loadCart();
