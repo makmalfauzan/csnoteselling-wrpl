@@ -33,7 +33,6 @@ def get_wallet_balance():
         cursor.close()
         conn.close()
 
-
 # **Endpoint untuk checkout transaksi**
 @payment_bp.route('/checkout', methods=['POST'])
 def checkout():
@@ -48,8 +47,8 @@ def checkout():
         if not user_id or not items:
             return jsonify({"error": "User ID dan item diperlukan"}), 400
 
-        # Ambil saldo user
-        cursor.execute("SELECT balance FROM wallets WHERE user_id = %s", (user_id,))
+        # Ambil saldo buyer dengan LOCK untuk menghindari race condition
+        cursor.execute("SELECT balance FROM wallets WHERE user_id = %s FOR UPDATE", (user_id,))
         wallet = cursor.fetchone()
 
         if not wallet:
@@ -57,11 +56,12 @@ def checkout():
 
         balance = Decimal(str(wallet["balance"]))
         total_cost = Decimal("0")
+        seller_earnings = {}  # Menyimpan saldo tambahan untuk setiap seller
 
         # **Ambil harga tiap produk dan hitung total biaya**
         for item in items:
-            material_id = item.get("id")  # Pastikan cocok dengan frontend
-            quantity = item.get("quantity", 1)  # Default 1 jika tidak dikirim
+            material_id = item.get("id")
+            quantity = item.get("quantity", 1)
 
             cursor.execute("SELECT price, seller_id FROM materials WHERE material_id = %s", (material_id,))
             material = cursor.fetchone()
@@ -70,13 +70,24 @@ def checkout():
                 return jsonify({"error": f"Produk {material_id} tidak ditemukan"}), 404
 
             amount = Decimal(str(material["price"])) * quantity
+            seller_id = material["seller_id"]
             total_cost += amount
+
+            # Pastikan seller_id valid
+            if not seller_id:
+                return jsonify({"error": f"Produk {material_id} tidak memiliki seller"}), 400
+
+            # Hitung saldo yang akan ditambahkan ke seller
+            if seller_id in seller_earnings:
+                seller_earnings[seller_id] += amount
+            else:
+                seller_earnings[seller_id] = amount
 
         # **Cek apakah saldo mencukupi**
         if balance < total_cost:
             return jsonify({"error": "Saldo tidak mencukupi"}), 400
 
-        # **Kurangi saldo user**
+        # **Kurangi saldo buyer**
         new_balance = balance - total_cost
         cursor.execute("UPDATE wallets SET balance = %s WHERE user_id = %s", (new_balance, user_id))
 
@@ -99,8 +110,29 @@ def checkout():
                     VALUES (%s, %s, %s, %s, %s, %s)
                 """, (material_id, user_id, seller_id, amount, transaction_date, "COMPLETED"))
 
+        # **Tambahkan saldo kepada seller**
+        updated_seller_balances = {}  # Untuk mengembalikan saldo seller yang baru
+
+        for seller_id, earning in seller_earnings.items():
+            cursor.execute("SELECT balance FROM wallets WHERE user_id = %s FOR UPDATE", (seller_id,))
+            seller_wallet = cursor.fetchone()
+
+            if seller_wallet:
+                new_seller_balance = seller_wallet["balance"] + earning
+                cursor.execute("UPDATE wallets SET balance = %s WHERE user_id = %s", (new_seller_balance, seller_id))
+                updated_seller_balances[seller_id] = str(new_seller_balance)
+            else:
+                # Jika seller belum punya wallet, buatkan wallet baru
+                cursor.execute("INSERT INTO wallets (user_id, balance) VALUES (%s, %s)", (seller_id, earning))
+                updated_seller_balances[seller_id] = str(earning)
+
         conn.commit()
-        return jsonify({"success": True, "message": "Transaksi berhasil!", "new_balance": str(new_balance)})
+        return jsonify({
+            "success": True,
+            "message": "Transaksi berhasil!",
+            "new_balance": str(new_balance),
+            "seller_balances": updated_seller_balances
+        })
 
     except Exception as e:
         conn.rollback()
@@ -109,4 +141,53 @@ def checkout():
     finally:
         cursor.close()
         conn.close()
+
+# **API untuk mengambil transaksi seller**
+@payment_bp.route('/seller_transactions/<int:user_id>', methods=['GET'])
+def get_seller_transactions(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        cursor.execute("""
+            SELECT material_id, amount, transaction_date FROM transactions 
+            WHERE seller_id = %s AND payment_status = 'COMPLETED'
+        """, (user_id,))
+        
+        transactions = cursor.fetchall()
+        return jsonify(transactions)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        cursor.close()
+        conn.close()
+
+@payment_bp.route('/payment/seller_sales/<int:seller_id>', methods=['GET'])
+def get_seller_sales(seller_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        cursor.execute("""
+            SELECT t.transaction_id, t.buyer_id, u.username AS buyer_username, 
+                   m.title, t.amount, t.transaction_date, t.payment_status
+            FROM transactions t
+            JOIN materials m ON t.material_id = m.material_id
+            JOIN users u ON t.buyer_id = u.user_id
+            WHERE m.seller_id = %s
+            ORDER BY t.transaction_date DESC
+        """, (seller_id,))
+        
+        transactions = cursor.fetchall()
+        return jsonify(transactions)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        cursor.close()
+        conn.close()
+
 

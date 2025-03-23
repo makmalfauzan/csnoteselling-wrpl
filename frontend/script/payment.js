@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const totalElement = document.getElementById("total");
     const balanceElement = document.getElementById("saldo");
     const payButton = document.getElementById("pay-button");
+    const transactionList = document.getElementById("transaction-list"); // Untuk daftar transaksi seller
 
     function formatCurrency(value) {
         return "Rp" + value.toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -122,6 +123,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (result.success) {
                 alert("Pembayaran berhasil! Saldo baru: " + formatCurrency(result.new_balance));
 
+                // **Panggil fungsi untuk mengambil transaksi seller**
+                fetchSellerTransactions();
+
                 localStorage.removeItem("cart");
                 window.location.href = "./dashboard-product.html";
             } else {
@@ -133,9 +137,29 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
+    async function fetchSellerTransactions() {
+        try {
+            let response = await fetch(`http://127.0.0.1:5000/api/seller_transactions/${userId}`);
+            if (!response.ok) throw new Error("Gagal mengambil transaksi seller");
+
+            let transactions = await response.json();
+
+            transactionList.innerHTML = "<h3>Transaksi Seller:</h3>";
+            transactions.forEach(tx => {
+                let item = document.createElement("p");
+                item.textContent = `Produk: ${tx.material_id}, Pendapatan: ${formatCurrency(tx.amount)}`;
+                transactionList.appendChild(item);
+            });
+
+        } catch (error) {
+            console.error("Error fetching seller transactions:", error);
+        }
+    }
+
     payButton.addEventListener("click", handlePayment);
     fetchUserBalance();
     fetchCartMaterials();
+    fetchSellerTransactions(); // Panggil saat halaman dimuat
 
     /*** ========== PERBAIKAN FITUR ISI SALDO (TOP-UP) ========== ***/
     const topupButton = document.getElementById("topup-button");
@@ -144,26 +168,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     const confirmTopupButton = document.getElementById("confirm-topup");
     const topupAmountInput = document.getElementById("topup-amount");
 
-    // Buka modal isi saldo
     topupButton.addEventListener("click", function () {
         topupModal.classList.remove("hidden");
     });
 
-    // Tutup modal
     closeModalButton.addEventListener("click", function () {
         topupModal.classList.add("hidden");
     });
 
-    // Fungsi untuk mengisi saldo (HANYA YANG DIPERBAIKI)
     async function handleTopup() {
-        let userId = localStorage.getItem("user_id"); // Ambil user ID dari localStorage di dalam fungsi
-
-        if (!userId) {
-            alert("User tidak terautentikasi. Silakan login kembali.");
-            window.location.href = "login.html";
-            return;
-        }
-
         let topupAmount = parseFloat(topupAmountInput.value);
 
         if (isNaN(topupAmount) || topupAmount <= 0) {
@@ -182,17 +195,15 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (response.ok && result.success) {
                 alert("Saldo berhasil ditambahkan!");
 
-                // **Pastikan saldo diperbarui setelah top-up**
                 fetchUserBalance();
-
-                topupModal.classList.add("hidden"); // Tutup modal setelah sukses
-                topupAmountInput.value = ""; // Kosongkan input setelah top-up
+                topupModal.classList.add("hidden");
+                topupAmountInput.value = "";
             } else {
                 alert("Top-up gagal: " + (result.error || "Terjadi kesalahan."));
             }
         } catch (error) {
             console.error("Error during top-up:", error);
-            alert("Terjadi kesalahan saat mengisi saldo. Silakan coba lagi.");
+            alert("Terjadi kesalahan saat mengisi saldo.");
         }
     }
 

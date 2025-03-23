@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seller Dashboard</title>
-    <script src="/frontend//script/auth.js" defer></script>
+    
     <link href="/frontend/src/output.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -179,164 +179,53 @@
                     </div>
                 </div>
 
-                <!-- Sales Chart -->
-<div class="bg-white rounded-xl shadow p-6 mb-6">
-    <h2 class="text-lg font-semibold text-gray-900 mb-4">Sales Analytics</h2>
-    <div class="chart-container">
-      <!-- Hapus bg-gray-50, ganti dengan w-full h-full agar putih -->
-      <div class="w-full h-full flex items-center justify-center">
-        <div class="text-center">
-          <!-- Buat 12 bar untuk Jan s/d Dec, pakai gap-2 agar tidak menempel -->
-          <div class="h-40 flex items-end justify-between gap-2 px-2 mb-2">
-            <div class="w-6 bg-indigo-500 rounded-t-md" style="height: 70%;"></div>
-            <div class="w-6 bg-indigo-500 rounded-t-md" style="height: 40%;"></div>
-            <div class="w-6 bg-indigo-500 rounded-t-md" style="height: 80%;"></div>
-            <div class="w-6 bg-indigo-500 rounded-t-md" style="height: 60%;"></div>
-            <div class="w-6 bg-indigo-500 rounded-t-md" style="height: 90%;"></div>
-            <div class="w-6 bg-indigo-500 rounded-t-md" style="height: 50%;"></div>
-            <div class="w-6 bg-indigo-500 rounded-t-md" style="height: 75%;"></div>
-            <div class="w-6 bg-indigo-500 rounded-t-md" style="height: 65%;"></div>
-            <div class="w-6 bg-indigo-500 rounded-t-md" style="height: 85%;"></div>
-            <div class="w-6 bg-indigo-500 rounded-t-md" style="height: 55%;"></div>
-            <div class="w-6 bg-indigo-500 rounded-t-md" style="height: 45%;"></div>
-            <div class="w-6 bg-indigo-500 rounded-t-md" style="height: 95%;"></div>
-          </div>
-          <!-- Label bulan (Jan s/d Dec) -->
-          <div class="flex justify-between px-2">
-            <span class="text-xs text-gray-500">Jan</span>
-            <span class="text-xs text-gray-500">Feb</span>
-            <span class="text-xs text-gray-500">Mar</span>
-            <span class="text-xs text-gray-500">Apr</span>
-            <span class="text-xs text-gray-500">May</span>
-            <span class="text-xs text-gray-500">Jun</span>
-            <span class="text-xs text-gray-500">Jul</span>
-            <span class="text-xs text-gray-500">Aug</span>
-            <span class="text-xs text-gray-500">Sep</span>
-            <span class="text-xs text-gray-500">Oct</span>
-            <span class="text-xs text-gray-500">Nov</span>
-            <span class="text-xs text-gray-500">Dec</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Recent Orders -->
-                    <div class="bg-white rounded-xl shadow overflow-hidden">
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-4">
-                                <h2 class="text-lg font-semibold text-gray-900">Recent Orders</h2>
-                                <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View All</a>
-                            </div>
-                            <div class="overflow-x-auto">
-                                <table class="min-w-full divide-y divide-gray-200">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="bg-white divide-y divide-gray-200">
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#ORD-7845</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Alex Johnson</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp 12125.00</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#ORD-7844</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Sarah Smith</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp 12175.50</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Processing</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#ORD-7842</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Lisa Wang</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp 11145.25</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                <!-- Recent Orders -->
+                <div class="bg-white rounded-xl shadow overflow-hidden max-w-4xl mx-auto">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-semibold text-gray-900">Recent Orders</h2>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="seller-sales" class="bg-white divide-y divide-gray-200">
+                                    <!-- Data akan diisi oleh JavaScript -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-
-                    <!-- Top Products -->
-                    <div class="bg-white rounded-xl shadow">
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-4">
-                                <h2 class="text-lg font-semibold text-gray-900">Top Products</h2>
-                                <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View All</a>
-                            </div>
-                            <div class="space-y-4">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-16 w-16 bg-gray-100 rounded-md overflow-hidden">
-                                        <img src="https://media.springernature.com/full/springer-static/cover-hires/book/978-1-4842-5028-0" alt="Product" class="h-full w-full object-cover">
-                                    </div>
-                                    <div class="ml-4 flex-1">
-                                        <h3 class="text-sm font-medium text-gray-900">Artificial Intelligence</h3>
-                                        <p class="text-sm text-gray-500">Chat GPT</p>
-                                        <div class="flex items-center justify-between mt-1">
-                                            <p class="text-sm font-medium text-gray-900">Rp 11289.99</p>
-                                            <p class="text-sm text-gray-500">127 sold</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-16 w-16 bg-gray-100 rounded-md overflow-hidden">
-                                        <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1361147120i/13838796.jpg" alt="Product" class="h-full w-full object-cover">
-                                    </div>
-                                    <div class="ml-4 flex-1">
-                                        <h3 class="text-sm font-medium text-gray-900">Algoritma dan Pemrograman</h3>
-                                        <p class="text-sm text-gray-500">Greedy Algorithm</p>
-                                        <div class="flex items-center justify-between mt-1">
-                                            <p class="text-sm font-medium text-gray-900">Rp 12199.99</p>
-                                            <p class="text-sm text-gray-500">95 sold</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-16 w-16 bg-gray-100 rounded-md overflow-hidden">
-                                        <img src="https://m.media-amazon.com/images/I/81cNCOaB5UL._UF1000,1000_QL80_.jpg" alt="Product" class="h-full w-full object-cover">
-                                    </div>
-                                    <div class="ml-4 flex-1">
-                                        <h3 class="text-sm font-medium text-gray-900">Machine Learning</h3>
-                                        <p class="text-sm text-gray-500">Classification</p>
-                                        <div class="flex items-center justify-between mt-1">
-                                            <p class="text-sm font-medium text-gray-900">Rp 1729.99</p>
-                                            <p class="text-sm text-gray-500">86 sold</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-16 w-16 bg-gray-100 rounded-md overflow-hidden">
-                                        <img src="https://media.springernature.com/full/springer-static/cover-hires/book/978-3-030-72357-6" alt="Product" class="h-full w-full object-cover">
-                                    </div>
-                                    <div class="ml-4 flex-1">
-                                        <h3 class="text-sm font-medium text-gray-900">Artificial Intelligence</h3>
-                                        <p class="text-sm text-gray-500">Deep Seek</p>
-                                        <div class="flex items-center justify-between mt-1">
-                                            <p class="text-sm font-medium text-gray-900">Rp 3125.99</p>
-                                            <p class="text-sm text-gray-500">62 sold</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    
+                    <!-- Pagination -->
+                    <div class="flex justify-between items-center mt-4 px-6 pb-6">
+                        <button id="prev-btn" class="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-gray-400 transition duration-200   disabled:text-gray-200 disabled:hover:text-white">
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+                        
+                        <span id="current-page" class="text-gray-800 font-semibold text-sm bg-white px-4 py-2  ">
+                            Halaman 1
+                        </span>
+                        
+                        <button id="next-btn" class="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-gray-400 transition duration-200   disabled:text-gray-200 disabled:hover:text-white">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
                     </div>
                 </div>
+                
+  
+                
+                
             </main>
         </div>
     </div>
 </body>
+<script src="/frontend/script/dashboard-seller.js" defer></script>
 </html>
