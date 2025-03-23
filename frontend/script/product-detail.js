@@ -92,18 +92,36 @@ function updateNavbar() {
     `;
 
     if (isLoggedIn) {
-        // Jika user sudah login, tampilkan menu sesuai role
-        navbarHTML = `
-            <a href="/frontend/Pages/dashboard-${userRole}.html" class="text-base font-medium text-blue2 hover:text-gray-900">
-                Home
-            </a>
-            <a href="/frontend/Pages/about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
-                Tentang Kami
-            </a>
-            <a href="/frontend/Pages/profile.html" class="text-base font-medium text-blue2 hover:text-gray-900 flex items-center">
-                <img src="/frontend/assets/images/user-icon.svg" class="h-8 w-8 rounded-full border border-gray-300" alt="Profile">
-            </a>
-        `;
+        // Jika user adalah BUYER, tampilkan menu khusus buyer
+        if (userRole === "BUYER") {
+            navbarHTML = `
+                <a href="/frontend/Pages/dashboard-buyer.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                    Dashboard
+                </a>
+                <a href="/frontend/Pages/cart.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                    Keranjang
+                </a>
+                <a href="/frontend/Pages/transaction.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                    Transaksi
+                </a>
+                <a href="/frontend/Pages/profile.html" class="text-base font-medium text-blue2 hover:text-gray-900 flex items-center">
+                    <img src="/frontend/assets/images/user-icon.svg" class="h-8 w-8 rounded-full border border-gray-300" alt="Profile">
+                </a>
+            `;
+        } else {
+            // Jika role selain buyer, default ke home dan profil
+            navbarHTML = `
+                <a href="/frontend/Pages/dashboard-${userRole}.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                    Home
+                </a>
+                <a href="/frontend/Pages/about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                    Tentang Kami
+                </a>
+                <a href="/frontend/Pages/profile.html" class="text-base font-medium text-blue2 hover:text-gray-900 flex items-center">
+                    <img src="/frontend/assets/images/user-icon.svg" class="h-8 w-8 rounded-full border border-gray-300" alt="Profile">
+                </a>
+            `;
+        }
     } else {
         // Jika user belum login, tampilkan menu default
         navbarHTML += `
@@ -118,18 +136,18 @@ function updateNavbar() {
     navbarMenu.innerHTML = navbarHTML;
 }
 
-// Panggil fungsi saat halaman dimuat
+// Pastikan updateNavbar dijalankan saat halaman dimuat
 document.addEventListener("DOMContentLoaded", function () {
     updateNavbar();
 });
 
+// Cek apakah user adalah SELLER, jika iya redirect ke dashboard seller
 document.addEventListener("DOMContentLoaded", function () {
     const userRole = localStorage.getItem("role");
 
-    if (userRole === "seller") {
+    if (userRole === "SELLER") {
         alert("Seller tidak dapat mengakses halaman ini!");
         window.location.href = "/frontend/Pages/dashboard-seller.html"; // Redirect ke dashboard seller
     }
-
-    updateNavbar(); // Pastikan navbar diperbarui
 });
+
