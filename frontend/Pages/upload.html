@@ -12,13 +12,11 @@
             body {
                 font-family: 'Inter', sans-serif;
             }
-            
             @media (max-width: 768px) {
                 .sidebar {
                     display: none;
                 }
             }
-            
             .chart-container {
                 position: relative;
                 height: 200px;
@@ -32,50 +30,32 @@
             <div class="sidebar hidden md:flex md:flex-shrink-0">
                 <div class="flex flex-col w-64 bg-white border-r">
                     <div class="flex items-center justify-center h-16 border-b">
-                        <div class="h-16 flex items-center justify-center border-b">
-                          <a href="dashboard-product.html">
-                            <img 
-                              src="/frontend/assets/images/logo1.svg" 
-                              alt="Logo CS NOTESelling" 
-                              class="h-8 w-auto"
-                            />
-                          </a>
-                        </div>
+                        <a href="dashboard-product.html">
+                            <img src="/frontend/assets/images/logo1.svg" alt="Logo CS NOTESelling" class="h-8 w-auto" />
+                        </a>
                     </div>
-                    <div class="flex flex-col flex-grow overflow-y-auto">
-                        <nav class="flex-1 px-2 py-4 space-y-1">
-                            <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-white bg-indigo-600 rounded-md">
-                                <i class="fas fa-th-large mr-3"></i>
-                                Dashboard
-                            </a>
-                            <a href="wallet-seller.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
-                                <i class="fas fa-wallet mr-3"></i>
-                                Wallet
-                            </a>
-                            <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
-                                <i class="fas fa-cog mr-3"></i>
-                                Settings
-                            </a>
-                        </nav>
-                        <div class="p-4 border-t">
-                            <div class="flex items-center">
-                                <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/76.jpg" alt="User avatar">
-                                <div class="ml-3">
-                                    <p class="text-sm font-medium text-gray-900">John Seller</p>
-                                    <a href="profile.html" class="text-xs font-medium text-gray-500 hover:text-gray-700">
-                                        View Profile
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <nav class="flex-1 px-2 py-4 space-y-1">
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-white bg-indigo-600 rounded-md">
+                            <i class="fas fa-th-large mr-3"></i> Dashboard
+                        </a>
+                        <a href="wallet-seller.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-wallet mr-3"></i> Wallet
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-cog mr-3"></i> Settings
+                        </a>
+                    </nav>
                 </div>
             </div>
-
+            
             <!-- Form Upload -->
             <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-3xl">
-                <h2 class="text-xl font-bold mb-4">Tambah Dokumen</h2>
-                <form id="uploadForm" action="/api/uploadfile/upload" method="POST" enctype="multipart/form-data">
+                <form id="uploadForm" action="http://127.0.0.1:5000/api/uploadfile/upload" method="POST" enctype="multipart/form-data">
+                    <!-- Input tersembunyi harus berada di dalam form -->
+                    <input type="hidden" name="seller_id" value="123">
+                    <input type="hidden" name="course_id" value="456">
+                    
+                    <h2 class="text-xl font-bold mb-4">Tambah Dokumen</h2>
                     <div class="grid grid-cols-2 gap-4">
                         <!-- Judul Dokumen -->
                         <div>
@@ -118,7 +98,7 @@
                         <!-- Harga -->
                         <div>
                             <label class="block text-sm font-medium">Harga</label>
-                            <input type="text" name="price" class="w-full p-2 border rounded-lg" placeholder="Rp xxx,xx" required>
+                            <input type="text" name="price" class="w-full p-2 border rounded-lg" placeholder="xxx,xx" required>
                         </div>
                         <!-- Deskripsi -->
                         <div>
@@ -147,7 +127,6 @@
             </div>
         </div>
         
-        <!-- Script JavaScript -->
         <script>
             // Tampilkan informasi file saat dipilih
             document.getElementById("fileInput").addEventListener("change", function(event) {
@@ -159,9 +138,9 @@
                 }
             });
 
-            // Tangani submit form dengan fetch API
+            // Tangani submit form dengan fetch API agar halaman tidak refresh
             document.getElementById("uploadForm").addEventListener("submit", async function(event) {
-                event.preventDefault();
+                event.preventDefault(); // Cegah form submit default
                 const form = event.target;
                 const formData = new FormData(form);
                 try {
@@ -172,7 +151,8 @@
                     const result = await response.json();
                     if (response.ok) {
                         alert("Upload Berhasil: " + result.message);
-                        window.location.href = "dashboard-seller.html";
+                        // Optional: Redirect jika perlu, misalnya:
+                        // window.location.href = "dashboard-seller.html";
                     } else {
                         alert("Upload Gagal: " + result.message);
                     }
