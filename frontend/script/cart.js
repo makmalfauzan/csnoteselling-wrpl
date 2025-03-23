@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (cartItems.length === 0) {
             location.reload();
         } else {
-            fetchCartDetails();
+            location.reload();
         }
     }
 
