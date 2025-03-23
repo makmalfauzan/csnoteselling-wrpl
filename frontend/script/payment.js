@@ -86,27 +86,34 @@ document.addEventListener("DOMContentLoaded", async function () {
     async function handlePayment() {
         let totalAmount = parseFloat(totalElement.textContent.replace("Rp", "").replace(/\./g, "").replace(",", "."));
         let userBalance = parseFloat(balanceElement.textContent.replace("Rp", "").replace(/\./g, "").replace(",", "."));
-
+    
         if (userBalance < totalAmount) {
             alert("Saldo tidak cukup! Silakan tambah saldo.");
             return;
         }
-
+    
+        let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+    
+        if (cartItems.length === 0) {
+            alert("Keranjang belanja kosong!");
+            return;
+        }
+    
         try {
-            // **Kirim request pembayaran ke API**
-            let response = await fetch(`http://127.0.0.1:5000/api/wallets/pay`, {
+            // **Kirim request checkout ke API**
+            let response = await fetch(`http://127.0.0.1:5000/checkout`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     user_id: userId,
-                    amount: totalAmount,
-                    transaction_id: localStorage.getItem("transaction_id"), // Pastikan transaction_id tersimpan
+                    items: cartItems
                 })
             });
-
+    
             let result = await response.json();
-            if (response.ok) {
+            if (response.ok && result.success) {
                 alert("Pembayaran berhasil! Saldo baru: " + formatCurrency(result.new_balance));
+    
                 localStorage.removeItem("cart"); // Kosongkan keranjang setelah checkout
                 window.location.href = "./payment.html"; // Redirect ke halaman sukses
             } else {
@@ -117,6 +124,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             alert("Terjadi kesalahan saat pembayaran.");
         }
     }
+    
 
     payButton.addEventListener("click", handlePayment);
     fetchUserBalance();

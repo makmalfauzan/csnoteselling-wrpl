@@ -7,7 +7,7 @@ from routes.user import user_bp
 from routes.payment import payment_bp
 from routes.dbuyerrecommend import dbuyerrecommend_bp
 from routes.wallet import wallets_bp
-from routes.dsellertop import dsellertop_bp_bp
+from routes.dsellertop import dsellertop_bp
 from routes.uploadfile import uploadfile_bp
 
 
