@@ -324,3 +324,19 @@ document.addEventListener("DOMContentLoaded", async function () {
     fetchCourses();
     fetchProducts();
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const backButton = document.getElementById("back-to-dashboard");
+
+    if (backButton) {
+        backButton.addEventListener("click", function () {
+            const userRole = localStorage.getItem("role"); // Ambil role user dari localStorage
+
+            if (userRole) {
+                window.location.href = `/frontend/Pages/dashboard-${userRole}.html`; // Arahkan ke dashboard sesuai role
+            } else {
+                window.location.href = "/frontend/index.html"; // Jika tidak ada role, arahkan ke halaman utama
+            }
+        });
+    }
+});
