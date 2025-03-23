@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 alert("Pembayaran berhasil! Saldo baru: " + formatCurrency(result.new_balance));
 
                 localStorage.removeItem("cart");
-                window.location.href = "./payment.html";
+                window.location.href = "./dashboard-product.html";
             } else {
                 alert("Pembayaran gagal: " + result.error);
             }
