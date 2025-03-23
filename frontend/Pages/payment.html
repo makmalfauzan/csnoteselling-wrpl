@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout - CS NOTESELLING</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="/frontend/src/output.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
 
@@ -58,6 +58,11 @@
                     <span>Subtotal</span>
                     <span id="subtotal-price">Rp 0</span>
                 </p>
+                <tr>
+                    <td>Shipping</td>
+                    <td id="shipping">Rp 0</td>
+                </tr>
+                
                 <p class="flex justify-between text-lg">
                     <span>Pajak (8%)</span>
                     <span id="tax-amount">Rp 0</span>
@@ -76,7 +81,7 @@
     </div>
 
     <!-- MODAL Tambah Saldo -->
-    <div id="topup-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center">
+    <div id="topup-modal" class="fixed inset-0 bg-black bg-opacity-50  hidden flex justify-center items-center">
         <div class="bg-white p-6 rounded-lg shadow-lg w-96">
             <h2 class="text-xl font-bold mb-4">Tambah Saldo</h2>
             <p class="text-gray-600 mb-2">Masukkan jumlah saldo yang ingin ditambahkan:</p>

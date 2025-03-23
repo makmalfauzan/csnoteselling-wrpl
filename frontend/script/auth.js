@@ -3,39 +3,39 @@ document.addEventListener("DOMContentLoaded", function () {
     const registerForm = document.querySelector("#register-form");
 
     if (loginForm) {
-    loginForm.addEventListener("submit", async function (e) {
-        e.preventDefault();
-        const username = document.getElementById("name").value;
-        const password = document.getElementById("password").value;
+        loginForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const username = document.getElementById("name").value;
+            const password = document.getElementById("password").value;
 
-        const response = await fetch("http://127.0.0.1:5000/api/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password })
-        });
+            const response = await fetch("http://127.0.0.1:5000/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            });
 
-        const result = await response.json();
-        console.log("Hasil Login:", result);
+            const result = await response.json();
+            console.log("Hasil Login:", result);
 
-        if (response.ok) {
-            alert("Login Berhasil!");
+            if (response.ok) {
+                alert("Login Berhasil!");
 
-            // Simpan username dan role di localStorage
-            localStorage.setItem("username", result.username);
-            localStorage.setItem("role", result.role);
+                // ✅ Simpan user_id, username, dan role di localStorage
+                localStorage.setItem("user_id", result.user_id);  // Simpan user_id
+                localStorage.setItem("username", result.username);
+                localStorage.setItem("role", result.role);
 
-            // Redirect ke dashboard sesuai role
-            if (result.role.toLowerCase() === "seller") {  // Pastikan perbandingan tidak case-sensitive
-                window.location.href = "dashboard-seller.html";
+                // Redirect ke dashboard sesuai role
+                if (result.role.toLowerCase() === "seller") {  
+                    window.location.href = "dashboard-seller.html";
+                } else {
+                    window.location.href = "dashboard-buyer.html";
+                }
             } else {
-                window.location.href = "dashboard-buyer.html";
+                alert(result.error || "Login gagal");
             }
-        } else {
-            alert(result.error || "Login gagal");
-        }
-    });
-}
-
+        });
+    }
 
     if (registerForm) {
         registerForm.addEventListener("submit", async function (e) {
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (response.ok) {
                 alert("Registrasi Berhasil! Silakan Login.");
-                window.location.href = "login.html"; // Redirect ke halaman login
+                window.location.href = "login.html";
             } else {
                 alert(result.error || "Registrasi gagal");
             }

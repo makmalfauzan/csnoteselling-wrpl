@@ -167,3 +167,81 @@ document.getElementById("checkout").addEventListener("click", function () {
         window.location.href = "/frontend/pages/payment.html";
     }
 });
+
+// Mengambil data cart dari localStorage dan menampilkannya
+function loadCart() {
+    let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    let cartContainer = document.getElementById('shopping-cart');
+    cartContainer.innerHTML = '';
+
+    let subtotal = 0;
+    cartItems.forEach(item => {
+        let itemPrice = parseInt(item.price);
+        subtotal += itemPrice;
+
+        let cartItem = document.createElement('div');
+        cartItem.className = "cart-item flex justify-between border-b py-2";
+        cartItem.innerHTML = `
+            <span>${item.name}</span>
+            <span>Rp ${itemPrice.toLocaleString()}</span>
+        `;
+        cartContainer.appendChild(cartItem);
+    });
+
+    let tax = subtotal * 0.08; // Pajak 8%
+    let total = subtotal + tax;
+
+    document.getElementById('subtotal-price').innerText = `Rp ${subtotal.toLocaleString()}`;
+    document.getElementById('tax-amount').innerText = `Rp ${Math.round(tax).toLocaleString()}`;
+    document.getElementById('total-price').innerText = `Rp ${Math.round(total).toLocaleString()}`;
+
+    return total;
+}
+
+// Mengambil saldo dari database
+function fetchWalletBalance(userId) {
+    fetch(`http://127.0.0.1:5000/get_wallet_balance?user_id=${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            walletBalance = data.balance;
+            document.getElementById('wallet-balance').innerText = `Rp ${walletBalance.toLocaleString()}`;
+        })
+        .catch(error => {
+            console.error("Gagal mengambil saldo:", error);
+        });
+}
+
+// Simulasi user_id yang login (bisa diganti dengan sistem autentikasi)
+let userId = 101; 
+let walletBalance = 0;
+fetchWalletBalance(userId);
+
+// Event listener untuk tombol bayar
+document.getElementById('pay-button').addEventListener('click', function () {
+    let totalPrice = loadCart();
+
+    if (walletBalance < totalPrice) {
+        alert("Saldo tidak cukup! Silakan tambah saldo.");
+    } else {
+        let newBalance = walletBalance - totalPrice;
+
+        fetch("http://127.0.0.1:5000/update_wallet_balance", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: userId, new_balance: newBalance })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert("Pembayaran berhasil!");
+            walletBalance = newBalance;
+            document.getElementById('wallet-balance').innerText = `Rp ${walletBalance.toLocaleString()}`;
+            setTimeout(() => { window.location.href = "dashboard-buyer.html"; }, 2000);
+        })
+        .catch(error => {
+            console.error("Gagal memperbarui saldo:", error);
+        });
+    }
+});
+
+// Panggil fungsi loadCart saat halaman dimuat
+loadCart();
