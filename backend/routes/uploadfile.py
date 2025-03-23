@@ -2,6 +2,8 @@ from flask import Blueprint, request, jsonify
 import os
 import uuid
 from db_connection import get_db_connection
+from decimal import Decimal
+from flask_cors import CORS
 
 uploadfile_bp = Blueprint('uploadfile_bp', __name__)
 UPLOAD_FOLDER = os.path.abspath('uploads')
@@ -15,7 +17,7 @@ def upload_file():
     # Debug: Print data form untuk memastikan parameter terkirim
     print("Request Form Data:", request.form.to_dict())
 
-    # Pastikan seller_id dan course_id ada
+    # Pastikan seller_id dan course_id ada (course_id diambil dari hidden field)
     seller_id = request.form.get('seller_id')
     course_id = request.form.get('course_id')
     if not seller_id or not course_id:
@@ -42,13 +44,19 @@ def upload_file():
 
     # Ambil data tambahan dari form
     title = request.form.get('title', '')
-    subject = request.form.get('subject', '')
+    # Jika perlu menyimpan nama mata kuliah dari dropdown, gunakan nama variabel baru
+    course_name = request.form.get('course_name', '')  # gunakan name baru
     materi = request.form.get('materi', '')
-    jenis = request.form.get('jenis', '')
     category = request.form.get('category', 'Others')
     description = request.form.get('description', '')
-    price = request.form.get('price', 0)
+    price_str = request.form.get('price', '0').replace(',', '.')
     status = request.form.get('status', 'ACTIVE')
+
+    # Parsing price menjadi Decimal untuk konsistensi dengan tipe DECIMAL(10,2)
+    try:
+        price_decimal = Decimal(price_str)
+    except Exception as e:
+        return jsonify({"message": "Price format invalid", "error": str(e)}), 400
 
     # Hitung ukuran file (dalam byte)
     file_size = os.path.getsize(file_path)
@@ -59,10 +67,22 @@ def upload_file():
         # Pastikan kolom-kolom yang di-insert sesuai dengan struktur tabel di DB
         sql = """
             INSERT INTO materials 
-            (seller_id, course_id, title, subject, materi, jenis, category, description, file_path, file_size, price, status)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            (seller_id, course_id, title, course_name, materi, category, description, file_path, file_size, price_str, status)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
-        cursor.execute(sql, (seller_id, course_id, title, subject, materi, jenis, category, description, file_path, file_size, price, status))
+        cursor.execute(sql, (
+            seller_id,
+            course_id,
+            course_name,
+            title,
+            materi,
+            category,
+            description,
+            file_path,
+            file_size,
+            price_decimal,
+            status
+        ))
         conn.commit()
     except Exception as e:
         return jsonify({'message': 'Database error', 'error': str(e)}), 500

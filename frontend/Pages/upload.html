@@ -53,19 +53,19 @@
                 <form id="uploadForm" action="http://127.0.0.1:5000/api/uploadfile/upload" method="POST" enctype="multipart/form-data">
                     <!-- Input tersembunyi harus berada di dalam form -->
                     <input type="hidden" name="seller_id" value="123">
-                    <input type="hidden" name="course_id" value="456">
+                    <input type="hidden" name="course_id" value="7">
                     
                     <h2 class="text-xl font-bold mb-4">Tambah Dokumen</h2>
                     <div class="grid grid-cols-2 gap-4">
                         <!-- Judul Dokumen -->
                         <div>
-                            <label class="block text-sm font-medium">Judul</label>
+                            <label class="block text-sm font-medium">Title</label>
                             <input type="text" name="title" class="w-full p-2 border rounded-lg" placeholder="Nama produk" required>
                         </div>
                         <!-- Mata Kuliah -->
                         <div>
                             <label class="block text-sm font-medium">Mata Kuliah</label>
-                            <select name="subject" class="w-full p-2 border rounded-lg">
+                            <select name="course_name" class="w-full p-2 border rounded-lg">
                                 <option selected>Pilih Mata Kuliah</option>
                                 <option>Algoritma dan Pemrograman</option>
                                 <option>Struktur Data</option>
@@ -86,8 +86,8 @@
                         </div>
                         <!-- Jenis Dokumen -->
                         <div>
-                            <label class="block text-sm font-medium">Jenis</label>
-                            <select name="jenis" class="w-full p-2 border rounded-lg">
+                            <label class="block text-sm font-medium">Kategori</label>
+                            <select name="category" class="w-full p-2 border rounded-lg">
                                 <option selected>Pilih Jenis Dokumen</option>
                                 <option>Lecture Notes</option>
                                 <option>Assignments</option>
@@ -98,7 +98,7 @@
                         <!-- Harga -->
                         <div>
                             <label class="block text-sm font-medium">Harga</label>
-                            <input type="text" name="price" class="w-full p-2 border rounded-lg" placeholder="xxx,xx" required>
+                            <input type="number" name="price" class="w-full p-2 border rounded-lg" placeholder="0.00" step="0.01" min="0" required>
                         </div>
                         <!-- Deskripsi -->
                         <div>
@@ -107,7 +107,7 @@
                         </div>
                         <!-- Input File -->
                         <div class="col-span-2 flex flex-col items-center border-dashed border-2 border-gray-300 p-6 rounded-lg" id="fileDropZone">
-                            <input type="file" name="file" accept=".docx,.pdf,.png" class="hidden" id="fileInput">
+                            <input type="file" name="file" accept=".docx,.pdf,.png, .jpg" class="hidden" id="fileInput">
                             <label for="fileInput" class="cursor-pointer" id="fileLabel">
                                 <div class="flex flex-col items-center" id="uploadPlaceholder">
                                     <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
