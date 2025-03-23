@@ -11,9 +11,10 @@ def get_recommended():
     
     sql = """
     SELECT
-        course_name,
-        description
-    FROM courses
+        materi,
+        title,
+        price
+    FROM materials
     ORDER BY RAND()
     LIMIT 4
     """
