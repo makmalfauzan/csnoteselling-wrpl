@@ -52,8 +52,6 @@ def login():
     data = request.json
     username = data.get("username")
     password = data.get("password")
-    
-
 
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -68,14 +66,14 @@ def login():
     if user["password"] != password:
         print(f"Login gagal: Password salah untuk user {username}")  # Debugging
         return jsonify({"error": "Password salah"}), 401  
-
-    # Debug: Cetak role user di terminal Flask
+    
+     # Debug: Cetak role user di terminal Flask
     print(f"User {username} login dengan role: {user['role']}")  
 
     return jsonify({
-    "message": "Login sukses",
-    "username": user["username"],
-    "role": user["role"]  # Pastikan role dikirim ke frontend
+        "message": "Login sukses",
+        "username": user["username"],  # Pastikan username dikirim ke frontend
+        "role": user["role"]
     })
 
 
