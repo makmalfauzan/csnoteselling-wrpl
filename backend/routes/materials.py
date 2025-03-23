@@ -111,3 +111,42 @@ def get_material_detail(material_id):
     finally:
         cursor.close()
         conn.close()
+
+@materials_bp.route('/batch', methods=['GET'])
+def get_multiple_materials():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        ids = request.args.get("ids")
+        if not ids:
+            return jsonify({"error": "No material IDs provided"}), 400
+
+        material_ids = ids.split(",")  # Pisahkan ID yang dikirim sebagai string "1,2,3"
+        placeholders = ", ".join(["%s"] * len(material_ids))  # Buat placeholder untuk query
+        query = f"""
+        SELECT 
+            m.material_id, 
+            m.title, 
+            m.category, 
+            m.description, 
+            m.price, 
+            m.status, 
+            m.uploaded_at, 
+            u.username AS seller  
+        FROM materials m
+        LEFT JOIN users u ON m.seller_id = u.user_id  
+        WHERE m.material_id IN ({placeholders})
+        """
+        
+        cursor.execute(query, tuple(material_ids))
+        materials = cursor.fetchall()
+
+        return jsonify(materials)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        cursor.close()
+        conn.close()
