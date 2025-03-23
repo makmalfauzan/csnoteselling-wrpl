@@ -66,6 +66,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             const confirmLogout = confirm("Apakah Anda yakin ingin keluar?");
             if (confirmLogout) {
                 localStorage.removeItem("role"); // Hapus role dari localStorage
+                localStorage.removeItem("user_id");
+                localStorage.removeItem("username");
                 sessionStorage.removeItem("userSession"); // Hapus session (jika ada)
 
                 // Redirect ke halaman login
