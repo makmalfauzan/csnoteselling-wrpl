@@ -218,6 +218,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <a href="/frontend/Pages/dashboard-${userRole}.html" class="text-base font-medium text-blue2 hover:text-gray-900">
                     Home
                 </a>
+                <a href="/frontend/Pages/cart.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                    Keranjang
+                </a>
                 <a href="/frontend/Pages/about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
                     Tentang Kami
                 </a>
