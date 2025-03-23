@@ -40,6 +40,11 @@
             background-color: #D1F8EF;
         }
     }
+    #product-image {
+            max-width: 250px; /* Ukuran maksimum lebih kecil */
+            max-height: 300px; /* Batasi tinggi */
+            object-fit: contain;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -61,72 +66,85 @@
     </header>
 
     <main class="container mx-auto px-4 py-10">
+
+         <!-- Tombol Kembali -->
+         <div class="mb-6">
+            <a href="./dashboard-product.html" class="flex items-center text-blue-600 hover:text-blue-800">
+                <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                <span>Kembali ke Produk</span>
+            </a>
+        </div>
         
         <!-- Product Details -->
-        <div class="flex flex-col md:flex-row -mx-4 bg-white py-4 shadow-sm">
-            <!-- Product Images -->
-            <div class="md:flex-1 px-4 mb-6 md:mb-0">
-                <div class="h-64 md:h-80 rounded-lg bg-gray-100 mb-4">
-                    <img src="https://placehold.co/600x400" alt="Product Image" class="h-full w-full object-contain product-image"/>
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row items-start gap-6 bg-white shadow-lg rounded-lg p-6">
+                
+                <!-- Product Image -->
+                <div class="w-full md:w-2/5 flex justify-center">
+                    <img id="product-image" class="max-w-[600px] max-h-[700px] object-contain rounded-lg shadow-md" alt="Product Image">
                 </div>
-            </div>
-            
-            <!-- Product Info -->
-            <div class="md:flex-1 px-4">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h2 id="product-name" class="text-2xl font-bold text-gray-800 mb-2 product-name">Nama Produk</h2>
-                        <p id="product-seller" class="text-gray-600 text-sm product-seller">Penjual</p>
+                
+                <!-- Product Info -->
+                <div class="w-full md:w-3/5">
+                    <!-- Product Title & Seller -->
+                    <div class="mb-4">
+                        <h2 id="product-name" class="text-2xl font-bold text-gray-800 product-name">Nama Produk</h2>
+                        <p id="product-seller" class="text-gray-600 text-sm product-seller">By Penjual</p>
                     </div>
-                </div>
-                
-                <div class="mb-4">
-                    <span class="text-gray-500 line-through original-price">original-price</span>
-                    <span id="product-price" class="text-3xl font-bold text-gray-800 ml-2 product-price">product-price</span>
-                    <span class="text-sm text-green-500 ml-2 discount-percentage">discount-percentage</span>
-                </div>
-                
-                <p  id="product-description" class="text-black mb-4 product-description"></p>
-                </p>
-            
-                
-                <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 mb-6">
-                    <button id="add-to-cart" class="bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                        Add to Cart
-                    </button>
-                    <button class="bg-gray-200 text-gray-800 py-3 px-6 rounded-lg font-semibold hover:bg-gray-300 transition duration-300 flex items-center justify-center">
-                        Buy Now
-                    </button>
-                </div>
-                
-                <div class="border-t pt-4">
-                    <div class="flex items-center mb-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span class="text-gray-600">Free shipping on orders over $50</span>
+
+                    <!-- Price & Discount -->
+                    <div class="mb-4 flex items-center">
+                        <span class="text-gray-500 line-through original-price">original-price</span>
+                        <span id="product-price" class="text-3xl font-bold text-gray-800 ml-2 product-price">Rp 1.000</span>
+                        <span class="text-sm text-green-500 ml-2 discount-percentage">discount-percentage</span>
                     </div>
-                    <div class="flex items-center mb-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span class="text-gray-600">30-day money-back guarantee</span>
+
+                    <!-- Description -->
+                    <p id="product-description" class="text-gray-700 mb-6 product-description"></p>
+
+                    <!-- Buttons -->
+                    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+                        <button id="add-to-cart" class="bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            Add to Cart
+                        </button>
+                        <button class="bg-gray-200 text-gray-800 py-3 px-6 rounded-lg font-semibold hover:bg-gray-300 transition duration-300 flex items-center justify-center">
+                            Buy Now
+                        </button>
                     </div>
-                    <div class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span class="text-gray-600">2-year warranty included</span>
+
+                    <!-- Benefits -->
+                    <div class="border-t pt-4 mt-6 space-y-2">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span class="text-gray-600">Free shipping on orders over $50</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span class="text-gray-600">30-day money-back guarantee</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span class="text-gray-600">2-year warranty included</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
         
         <!-- Product Details Tabs -->
-        <div class="mt-16">
+        <div class="mt-10  ">
             <div class="border-b border-gray-200">
                 <nav class="flex -mb-px">
                     <a href="#" class="border-b-2 border-blue-500 py-4 px-6 text-blue-500 font-medium">
