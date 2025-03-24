@@ -48,15 +48,26 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Fungsi untuk menangani klik tombol "Add to Cart"
     function handleAddToCart(productId) {
+        const userRole = localStorage.getItem("role"); // Cek apakah user sudah login
+
+        if (!userRole) {
+            // Jika belum login, munculkan alert dan redirect ke login page
+            alert("Anda harus login terlebih dahulu!");
+            window.location.href = "/frontend/Pages/login.html";
+            return;
+        }
+
         const cart = JSON.parse(localStorage.getItem("cart")) || [];
         const existingItem = cart.find(item => item.id === productId);
 
         if (existingItem) {
             alert("Produk ini sudah ada di keranjang Anda!");
+            window.location.href = "/frontend/Pages/cart.html";
         } else {
             cart.push({ id: productId, quantity: 1 });
             localStorage.setItem("cart", JSON.stringify(cart));
             alert("Produk berhasil ditambahkan ke keranjang!");
+            window.location.href = "/frontend/Pages/cart.html";
         }
     }
 

@@ -68,7 +68,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             const paginatedProducts = products.slice(start, start + productsPerPage);
     
             paginatedProducts.forEach(product => {
-                const productCard = document.createElement("div");
+                const productCard = document.createElement("a");
+                productCard.href = `./product-detail.html?id=${product.material_id}`;
                 productCard.className = "bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1 flex flex-col text-center border border-gray-200 w-full max-w-xs";
     
                 const imageUrl = `https://i.pinimg.com/736x/81/21/dc/8121dc48ec937ecf919bc2c54aa961a4.jpg`;
@@ -325,7 +326,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Muat daftar mata kuliah saat halaman pertama kali dimuat
     fetchCourses();
-    fetchProducts();
 });
 
 document.addEventListener("DOMContentLoaded", function () {
