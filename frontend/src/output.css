@@ -52,7 +52,6 @@
     --container-xs: 20rem;
     --container-md: 28rem;
     --container-xl: 36rem;
-    --container-3xl: 48rem;
     --container-4xl: 56rem;
     --container-6xl: 72rem;
     --container-7xl: 80rem;
@@ -313,9 +312,6 @@
   }
   .top-0 {
     top: calc(var(--spacing) * 0);
-  }
-  .top-1 {
-    top: calc(var(--spacing) * 1);
   }
   .top-1\/2 {
     top: calc(1/2 * 100%);
@@ -728,9 +724,6 @@
   .min-h-screen {
     min-height: 100vh;
   }
-  .w-1 {
-    width: calc(var(--spacing) * 1);
-  }
   .w-1\/2 {
     width: calc(1/2 * 100%);
   }
@@ -788,9 +781,6 @@
   .w-screen {
     width: 100vw;
   }
-  .max-w-3xl {
-    max-width: var(--container-3xl);
-  }
   .max-w-4xl {
     max-width: var(--container-4xl);
   }
@@ -835,9 +825,6 @@
   }
   .flex-shrink {
     flex-shrink: 1;
-  }
-  .flex-shrink-0 {
-    flex-shrink: 0;
   }
   .shrink {
     flex-shrink: 1;
@@ -907,10 +894,6 @@
   .translate-full {
     --tw-translate-x: 100%;
     --tw-translate-y: 100%;
-    translate: var(--tw-translate-x) var(--tw-translate-y);
-  }
-  .-translate-y-1 {
-    --tw-translate-y: calc(var(--spacing) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .-translate-y-1\/2 {
@@ -1640,9 +1623,6 @@
   }
   .bg-gray-300 {
     background-color: var(--color-gray-300);
-  }
-  .bg-gray-500 {
-    background-color: var(--color-gray-500);
   }
   .bg-gray-800 {
     background-color: var(--color-gray-800);
@@ -2955,24 +2935,9 @@
       --tw-ring-inset: inset;
     }
   }
-  .disabled\:bg-gray-200 {
-    &:disabled {
-      background-color: var(--color-gray-200);
-    }
-  }
   .disabled\:text-gray-200 {
     &:disabled {
       color: var(--color-gray-200);
-    }
-  }
-  .disabled\:text-gray-400 {
-    &:disabled {
-      color: var(--color-gray-400);
-    }
-  }
-  .disabled\:opacity-50 {
-    &:disabled {
-      opacity: 50%;
     }
   }
   .disabled\:hover\:text-white {
@@ -3287,11 +3252,6 @@
   .lg\:flex-shrink-0 {
     @media (width >= 64rem) {
       flex-shrink: 0;
-    }
-  }
-  .lg\:grid-cols-2 {
-    @media (width >= 64rem) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
   .lg\:grid-cols-3 {
