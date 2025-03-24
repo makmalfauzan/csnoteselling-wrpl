@@ -1,0 +1,8 @@
+# Ignore Python environment & config
+venv/
+__pycache__/
+.env
+
+# Ignore Node.js dependencies
+node_modules/
+src/output.css
