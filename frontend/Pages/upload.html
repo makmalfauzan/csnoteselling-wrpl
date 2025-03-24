@@ -85,43 +85,49 @@
             <main class="flex-1 overflow-y-auto p-6">
                 <div class="bg-white shadow-md rounded-lg p-6 max-w-4xl mx-auto">
                     <h3 class="text-lg font-semibold mb-4">Tambah Dokumen</h3>
-                    <form class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <form id="materialForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Title</label>
-                            <input type="text" placeholder="Nama produk" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <label class="block text-sm font-medium text-gray-700">Judul:</label>
+                            <input type="text" id="title" name="title" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Mata Kuliah</label>
-                            <select class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                <option>Pilih Mata Kuliah</option>
+                            <label class="block text-sm font-medium text-gray-700">Mata Kuliah:</label>
+                            <select id="course_id" name="course_id" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" required></select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Materi:</label>
+                            <input type="text" id="material" name="material" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Kategori:</label>
+                            <select id="category" name="category" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="Lecture Notes">Lecture Notes</option>
+                                <option value="Summaries">Summaries</option>
+                                <option value="Assignments">Assignments</option>
+                                <option value="Others">Others</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Materi</label>
-                            <input type="text" placeholder="Judul materi" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <label class="block text-sm font-medium text-gray-700">Harga (Rp):</label>
+                            <input type="number" id="price" name="price" step="0.01" value="0.00" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Kategori</label>
-                            <select class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                <option>Pilih Jenis Dokumen</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Harga</label>
-                            <input type="number" placeholder="0.00" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Deskripsi</label>
-                            <textarea placeholder="Deskripsi" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            <label class="block text-sm font-medium text-gray-700">Deskripsi:</label>
+                            <textarea id="description" name="description" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                         </div>
                         <div class="col-span-1 md:col-span-2 border-dashed border-2 border-gray-300 rounded-lg p-6 text-center">
-                            <i class="fas fa-upload text-gray-400 text-3xl"></i>
-                            <p class="text-gray-500">Drag and Drop here!</p>
+                            <input type="file" id="file" name="file" class="hidden" required>
+                            <label for="file" class="cursor-pointer">
+                                <i class="fas fa-upload text-gray-400 text-3xl"></i>
+                                <p class="text-gray-500">Drag and Drop here!</p>
+                            </label>
                         </div>
                         <div class="col-span-1 md:col-span-2">
                             <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Upload file!</button>
                         </div>
                     </form>
+                    
+                    
                 </div>
             </main>
         </div>
