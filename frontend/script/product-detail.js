@@ -97,9 +97,6 @@ function updateNavbar() {
     const isLoggedIn = !!userRole; // Cek apakah user sudah login
 
     let navbarHTML = `
-        <a href="/frontend/Pages/about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
-            Tentang Kami
-        </a>
     `;
 
     if (isLoggedIn) {
@@ -115,6 +112,9 @@ function updateNavbar() {
                 <a href="/frontend/Pages/transaction.html" class="text-base font-medium text-blue2 hover:text-gray-900">
                     Transaksi
                 </a>
+                <a href="/frontend/Pages/about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                    Tentang Kami
+                </a>
                 <a href="/frontend/Pages/profile.html" class="text-base font-medium text-blue2 hover:text-gray-900 flex items-center">
                     <img src="/frontend/assets/images/user-icon.svg" class="h-8 w-8 rounded-full border border-gray-300" alt="Profile">
                 </a>
@@ -126,7 +126,7 @@ function updateNavbar() {
                     Home
                 </a>
                 <a href="/frontend/Pages/about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
-                    Tentang Kami
+                    Tentang kami
                 </a>
                 <a href="/frontend/Pages/profile.html" class="text-base font-medium text-blue2 hover:text-gray-900 flex items-center">
                     <img src="/frontend/assets/images/user-icon.svg" class="h-8 w-8 rounded-full border border-gray-300" alt="Profile">
@@ -139,7 +139,10 @@ function updateNavbar() {
             <a href="/frontend/index.html" class="text-base font-medium text-blue2 hover:text-gray-900">
                 Home
             </a>
-            <a href="/frontend/Pages/login.html" class="px-4 py-2 border border-transparent rounded-4xl shadow-sm text-base font-medium text-white bg-blue2 hover:bg-indigo-700">
+            <a href="/frontend/Pages/about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+            Tentang kami
+            </a>
+            <a href="/frontend/Pages/login.html" class="md:inline-flex items-center justify-center px-4 py-1 border border-transparent rounded-4xl shadow-sm text-base font-medium text-white bg-blue2 hover:bg-indigo-700">
                 Login
             </a>
         `;

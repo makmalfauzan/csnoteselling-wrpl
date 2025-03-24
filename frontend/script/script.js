@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 card.innerHTML = `
                     <div class="flex justify-between items-center">
                         <span class="text-blue-600 font-semibold">${name}</span>
-                        <button class="text-2xl text-green-500">🛒</button>
+                        <div class="text-2xl text-green-500">🛒</div>
                     </div>
                     <p class="text-gray-500 text-sm">${category}</p>
                     <p class="text-gray-400 text-xs">Penjual: ${seller}</p>
