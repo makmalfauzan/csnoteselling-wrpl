@@ -5,3 +5,4 @@ __pycache__/
 
 # Ignore Node.js dependencies Frontend
 node_modules/
+./output.css
