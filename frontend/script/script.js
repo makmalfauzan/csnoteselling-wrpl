@@ -1,3 +1,10 @@
+const apiUrl = import.meta.env.VITE_API_URL || "http://127.0.0.1:5000";
+
+fetch(`${apiUrl}/materials`)
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error("Error fetching data:", error));
+  
 document.addEventListener("DOMContentLoaded", async function () {
     const container = document.getElementById("product-list");
 
