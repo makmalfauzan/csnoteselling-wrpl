@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     <p class="text-sm text-gray-600 mt-2 px-4 text-justify line-clamp-3">
                         ${product.description || "Deskripsi tidak tersedia"}
                     </p>
-                    <p class="text-xl font-semibold text-blue-600 mt-auto mb-4">Rp ${product.price.toLocaleString()}</p>
+                    <p class="text-xl font-semibold text-blue-600 mt-auto mb-4">Rp${product.price.toLocaleString()}</p>
                     
                     <!-- Perbaiki Link ke Halaman Detail Produk -->
                     <a href="./product-detail.html?id=${product.material_id}">

@@ -1,5 +1,5 @@
 function formatCurrency(value) {
-    return "Rp " + value.toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return "Rp" + value.toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 let salesData = []; // Menyimpan semua transaksi

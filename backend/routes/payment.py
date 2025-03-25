@@ -190,4 +190,30 @@ def get_seller_sales(seller_id):
         cursor.close()
         conn.close()
 
+@payment_bp.route('/payment/buyer_orders/<int:buyer_id>', methods=['GET'])
+def get_buyer_orders(buyer_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        cursor.execute("""
+            SELECT t.transaction_id, m.seller_id, u.username AS seller_username, 
+                   m.title, t.amount, t.transaction_date, t.payment_status
+            FROM transactions t
+            JOIN materials m ON t.material_id = m.material_id
+            JOIN users u ON m.seller_id = u.user_id
+            WHERE t.buyer_id = %s
+            ORDER BY t.transaction_date DESC
+        """, (buyer_id,))
+        
+        transactions = cursor.fetchall()
+        return jsonify(transactions)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        cursor.close()
+        conn.close()
+
 

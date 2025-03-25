@@ -62,6 +62,12 @@
                             Settings
                         </a>
                     </nav>
+
+                        <div id="wallet-container" class="bg-white p-3 rounded-lg flex items-center justify-between">
+                            <p class="text-sm font-medium text-gray-900">Saldo Anda:</p>
+                            <p id="wallet-balance" class="text-lg font-bold text-indigo-600">Rp 0,00</p>
+                            <button id="topup-button" class="ml-4 bg-indigo-600 text-white px-4 py-1 rounded-md text-sm font-medium hover:bg-indigo-700">Isi Saldo</button>
+                        </div>
                     
                     <div class="p-4 border-t">
                         <div class="flex items-center">
@@ -118,6 +124,7 @@
 
                 <!-- Quick Stats -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <!-- Recent Orders -->
                     <div class="bg-white rounded-xl shadow p-6">
                         <div class="flex items-center">
                             <div class="p-3 rounded-full bg-indigo-100 text-indigo-600">
@@ -125,14 +132,15 @@
                             </div>
                             <div class="ml-4">
                                 <p class="text-sm font-medium text-gray-500">Recent Orders</p>
-                                <p class="text-2xl font-semibold text-gray-900">5</p>
+                                <p class="text-2xl font-semibold text-gray-900" id="recent-orders-count">0</p>
                             </div>
                         </div>
                         <div class="mt-4">
-                            <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View Orders →</a>
+                            <a href="#recent-orders" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View Orders →</a>
                         </div>
                     </div>
 
+                    <!-- Wishlist -->
                     <div class="bg-white rounded-xl shadow p-6">
                         <div class="flex items-center">
                             <div class="p-3 rounded-full bg-green-100 text-green-600">
@@ -140,14 +148,15 @@
                             </div>
                             <div class="ml-4">
                                 <p class="text-sm font-medium text-gray-500">Wishlist</p>
-                                <p class="text-2xl font-semibold text-gray-900">12</p>
+                                <p class="text-2xl font-semibold text-gray-900" id="wishlist-count">0</p>
                             </div>
                         </div>
                         <div class="mt-4">
-                            <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View Wishlist →</a>
+                            <a href="/frontend/Pages/cart.html" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View Wishlist →</a>
                         </div>
                     </div>
 
+                    <!-- Reward Points -->
                     <div class="bg-white rounded-xl shadow p-6">
                         <div class="flex items-center">
                             <div class="p-3 rounded-full bg-purple-100 text-purple-600">
@@ -163,6 +172,9 @@
                         </div>
                     </div>
                 </div>
+
+
+
 
                 <!-- Special Offers -->
                 <div class="mb-6">
@@ -188,249 +200,70 @@
                         <h2 class="text-lg font-semibold text-gray-900">Recommended For You</h2>
                         <a href="dashboard-product.html" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View All</a>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <!-- Product Card 1 -->
-                        <div class="bg-white rounded-xl shadow overflow-hidden">
-                            <div class="relative">
-                                <img src="https://150837389.v2.pressablecdn.com/wp-content/uploads/2023/07/Joshua-Crotts-Book.jpg" alt="Product" class="w-full h-48 object-cover">
-                                <button type="button" class="absolute top-3 right-3 p-1.5 rounded-full bg-white text-gray-900 hover:text-indigo-600">
-                                    <i class="fas fa-heart"></i>
-                                </button>
-                            </div>
-                            <div class="p-4">
-                                <h3 class="text-sm font-medium text-gray-900 mb-1">Algoritma dan Pemrograman</h3>
-                                <p class="text-sm text-gray-500 mb-2">Greedy Algorithm</p>
-                                <div class="flex items-center justify-between">
-                                    <p class="text-sm font-bold text-gray-900">Rp 129101.20</p>
-                                    <div class="flex items-center">
-                                        <div class="flex items-center">
-                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                        </div>
-                                        <span class="text-xs text-gray-500 ml-1">(42)</span>
-                                    </div>
-                                </div>
-                                <button type="button" class="mt-4 w-full bg-indigo-600 text-white rounded-md py-2 text-sm font-medium hover:bg-indigo-700">Add to Cart</button>
-                            </div>
-                        </div>
-
-                        <!-- Product Card 2 -->
-                        <div class="bg-white rounded-xl shadow overflow-hidden">
-                            <div class="relative">
-                                <img src="https://m.media-amazon.com/images/I/81EI+ELW9EL.jpg" alt="Product" class="w-full h-48 object-cover">
-                                <button type="button" class="absolute top-3 right-3 p-1.5 rounded-full bg-white text-gray-900 hover:text-indigo-600">
-                                    <i class="fas fa-heart"></i>
-                                </button>
-                                <div class="absolute top-3 left-3 bg-red-500 text-white text-xs px-2 py-1 rounded-md">-20%</div>
-                            </div>
-                            <div class="p-4">
-                                <h3 class="text-sm font-medium text-gray-900 mb-1">Basis Data</h3>
-                                <p class="text-sm text-gray-500 mb-2">NoSQL</p>
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="text-sm font-bold text-gray-900">Rp 15982.99</p>
-                                        <p class="text-xs text-gray-500 line-through">Rp 19999.99</p>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <div class="flex items-center">
-                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                            <i class="fas fa-star text-gray-300 text-xs"></i>
-                                        </div>
-                                        <span class="text-xs text-gray-500 ml-1">(28)</span>
-                                    </div>
-                                </div>
-                                <button type="button" class="mt-4 w-full bg-indigo-600 text-white rounded-md py-2 text-sm font-medium hover:bg-indigo-700">Add to Cart</button>
-                            </div>
-                        </div>
-
-                        <!-- Product Card 3 -->
-                        <div class="bg-white rounded-xl shadow overflow-hidden">
-                            <div class="relative">
-                                <img src="https://m.media-amazon.com/images/I/61AwZMcq+8L._AC_UF1000,1000_QL80_.jpg" alt="Product" class="w-full h-48 object-cover">
-                                <button type="button" class="absolute top-3 right-3 p-1.5 rounded-full bg-white text-gray-900 hover:text-indigo-600">
-                                    <i class="fas fa-heart"></i>
-                                </button>
-                            </div>
-                            <div class="p-4">
-                                <h3 class="text-sm font-medium text-gray-900 mb-1">Machine Learning</h3>
-                                <p class="text-sm text-gray-500 mb-2">Regression</p>
-                                <div class="flex items-center justify-between">
-                                    <p class="text-sm font-bold text-gray-900">Rp 14529.99</p>
-                                    <div class="flex items-center">
-                                        <div class="flex items-center">
-                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                        </div>
-                                        <span class="text-xs text-gray-500 ml-1">(56)</span>
-                                    </div>
-                                </div>
-                                <button type="button" class="mt-4 w-full bg-indigo-600 text-white rounded-md py-2 text-sm font-medium hover:bg-indigo-700">Add to Cart</button>
-                            </div>
-                        </div>
-
-                        <!-- Product Card 4 -->
-                        <div class="bg-white rounded-xl shadow overflow-hidden">
-                            <div class="relative">
-                                <img src="https://cosmas.org/wp-content/uploads/2025/01/Screenshot-2025-01-03-114432.jpg" alt="Product" class="w-full h-48 object-cover">
-                                <button type="button" class="absolute top-3 right-3 p-1.5 rounded-full bg-white text-gray-900 hover:text-indigo-600">
-                                    <i class="fas fa-heart"></i>
-                                </button>
-                                <div class="absolute top-3 left-3 bg-green-500 text-white text-xs px-2 py-1 rounded-md">New</div>
-                            </div>
-                            <div class="p-4">
-                                <h3 class="text-sm font-medium text-gray-900 mb-1">Machine Learning</h3>
-                                <p class="text-sm text-gray-500 mb-2">Expert System</p>
-                                <div class="flex items-center justify-between">
-                                    <p class="text-sm font-bold text-gray-900">Rp 28349.99</p>
-                                    <div class="flex items-center">
-                                        <div class="flex items-center">
-                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                            <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                            <i class="fas fa-star text-gray-300 text-xs"></i>
-                                        </div>
-                                        <span class="text-xs text-gray-500 ml-1">(19)</span>
-                                    </div>
-                                </div>
-                                <button type="button" class="mt-4 w-full bg-indigo-600 text-white rounded-md py-2 text-sm font-medium hover:bg-indigo-700">Add to Cart</button>
-                            </div>
-                        </div>
+                    <div id="recommended-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Produk akan dimuat di sini oleh JavaScript -->
                     </div>
                 </div>
 
+
                 <!-- Recent Orders -->
-                <div>
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-lg font-semibold text-gray-900">Recent Orders</h2>
-                        <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View All</a>
-                    </div>
-                    <div class="bg-white rounded-xl shadow overflow-hidden">
+                <div id="recent-orders" class="bg-white rounded-xl shadow overflow-hidden max-full mx-auto">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-semibold text-gray-900">Recent Orders</h2>
+                        </div>
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Seller</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Items</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#ORD-5243</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">May 15, 2023</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3 items</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$245.99</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-indigo-600">
-                                            <a href="#">View Details</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#ORD-5242</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">May 10, 2023</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1 item</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$49.99</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Processing</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-indigo-600">
-                                            <a href="#">Track Order</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#ORD-5241</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">May 5, 2023</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2 items</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$159.98</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-indigo-600">
-                                            <a href="#">View Details</a>
-                                        </td>
-                                    </tr>
+                                <tbody id="buyer-orders" class="bg-white divide-y divide-gray-200">
+                                    <!-- Data akan diisi oleh JavaScript -->
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="flex justify-between items-center mt-4 px-6 pb-6">
+                        <button id="prev-btn" class="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-gray-400 transition duration-200 disabled:text-gray-200 disabled:hover:text-white">
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+                        
+                        <span id="current-page" class="text-gray-800 font-semibold text-sm bg-white px-4 py-2">
+                            Halaman 1
+                        </span>
+                        
+                        <button id="next-btn" class="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-gray-400 transition duration-200 disabled:text-gray-200 disabled:hover:text-white">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
                     </div>
                 </div>
             </main>
         </div>
     </div>
-    <!-- Tempatkan input search jika memang ingin tampil di bagian tertentu -->
-
-<script>
-  async function searchCourses(query) {
-    try {
-      const response = await fetch(`http://localhost:5000/api/courses?q=${encodeURIComponent(query)}`);
-      const courses = await response.json();
-      console.log(courses);
-      // Lanjutkan render data courses ke DOM jika diperlukan
-    } catch (error) {
-      console.error('Error searching courses:', error);
-    }
-  }
-
-  document.getElementById('search-input').addEventListener('input', (e) => {
-    searchCourses(e.target.value);
-  });
-</script>
-
-<script>
-  async function loadRecommended() {
-    try {
-      const response = await fetch('http://localhost:5000/api/dbuyerrecommend/recommended');
-      const data = await response.json();
-      console.log(data); // Cek data di console
-
-      // Contoh render sederhana:
-      const container = document.querySelector('.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4.gap-6');
-      if (container) {
-        container.innerHTML = ''; // Kosongkan container
-        data.forEach(item => {
-          const card = document.createElement('div');
-          card.className = 'bg-white rounded-xl shadow overflow-hidden';
-          card.innerHTML = `
-            <div class="relative">
-              <img src="${item.image || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgESkZ1sTPFpp2Qr17c8XOYVkfXTBYqgcZ2w&s'}" alt="${item.materi}" class="w-full h-48 object-cover">
-              <button type="button" class="absolute top-3 right-3 p-1.5 rounded-full bg-white text-gray-900 hover:text-indigo-600">
-                <i class="fas fa-heart"></i>
-              </button>
+    <!-- MODAL Tambah Saldo -->
+    <div id="topup-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h2 class="text-xl font-bold mb-4">Tambah Saldo</h2>
+            <p class="text-gray-600 mb-2">Masukkan jumlah saldo yang ingin ditambahkan:</p>
+            <input type="number" id="topup-amount" class="w-full border p-2 rounded-md mb-4" placeholder="Misal: 50000">
+            <div class="flex justify-end">
+                <button id="close-modal" class="px-4 py-2 bg-gray-300 rounded-md mr-2">Batal</button>
+                <button id="confirm-topup" class="px-4 py-2 bg-green-500 text-white rounded-md">Tambah</button>
             </div>
-            <div class="p-4">
-              <h3 class="text-sm font-medium text-gray-900 mb-1">${item.materi}</h3>
-              <p class="text-sm text-gray-500 mb-2">${item.title}</p>
-              <p class="text-sm text-gray-900 mb-2">Rp ${item.price}</p>
-              <button type="button" class="mt-4 w-full bg-indigo-600 text-white rounded-md py-2 text-sm font-medium hover:bg-indigo-700">Add to Cart</button>
-            </div>
-          `;
-          container.appendChild(card);
-        });
-      }
-    } catch (error) {
-      console.error('Error fetching recommended products:', error);
-    }
-  }
+        </div>
+    </div>
 
-  // Panggil loadRecommended setelah halaman selesai dimuat
-  window.onload = () => {
-    loadRecommended();
-  };
-</script>
+
+
 </body>
+<script src="/frontend/script/dashboard-buyer.js" defer></script>
 </html>
