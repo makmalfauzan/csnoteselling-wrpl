@@ -1,8 +1,8 @@
-# Ignore Python environment & config Backend
+## Ignore Python environment & config Backend
 venv/
 __pycache__/
 .env
 
-# Ignore Node.js dependencies Frontend
+## Ignore Node.js dependencies Frontend
 node_modules/
-./output.css
+src/output.css
