@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     Tentang Kami
                 </a>
                 <a href="/frontend/Pages/profile.html" class="text-base font-medium text-blue2 hover:text-gray-900 flex items-center">
-                    <img src="/frontend/assets/images/user-icon.svg" class="h-8 w-8 rounded-full border border-gray-300" alt="Profile">
+                    <img src="https://randomuser.me/api/portraits/men/44.jpg" class="h-8 w-8 rounded-full border border-gray-300" alt="Profile">
                 </a>
             `;
         } else {
