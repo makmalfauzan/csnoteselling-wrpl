@@ -873,9 +873,6 @@
   .border-transparent {
     border-color: transparent;
   }
-  .bg-\[url\'assets\/images\/bg-header\.svg\'\)\] {
-    background-color: url'assets/images/bg-header.svg');
-  }
   .bg-black {
     background-color: var(--color-black);
   }
@@ -949,11 +946,17 @@
   .bg-\[url\(\'\.\/assets\/images\/bg-header\.svg\'\)\] {
     background-image: url('./assets/images/bg-header.svg');
   }
+  .bg-\[url\(\'\.\/frontend\/assets\/images\/bg-header\.svg\'\)\] {
+    background-image: url('./frontend/assets/images/bg-header.svg');
+  }
+  .bg-\[url\(\'\/assets\/images\/bg-header\.svg\'\)\] {
+    background-image: url('/assets/images/bg-header.svg');
+  }
   .bg-\[url\(\'\/frontend\/assets\/images\/bg-header\.svg\'\)\] {
     background-image: url('/frontend/assets/images/bg-header.svg');
   }
-  .bg-\[url\(\'assets\/images\/bg-header\.svg\'\)\] {
-    background-image: url('assets/images/bg-header.svg');
+  .bg-\[url\(\'frontend\/assets\/images\/bg-header\.svg\'\)\] {
+    background-image: url('frontend/assets/images/bg-header.svg');
   }
   .from-indigo-500 {
     --tw-gradient-from: var(--color-indigo-500);
