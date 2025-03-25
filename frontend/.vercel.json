@@ -1,0 +1,15 @@
+{
+    "rewrites": [
+      { "source": "/profile", "destination": "/Pages/profile.html" },
+      { "source": "/register", "destination": "/Pages/register.html" }
+      { "source": "/dashboard", "destination": "/Pages/dashboard.html" }
+      { "source": "/cart", "destination": "/Pages/cart.html" }
+      { "source": "/dashboard-buyer", "destination": "/Pages/dashboard-buyer.html" }
+      { "source": "/dashboard-seller", "destination": "/Pages/dashboard-seller.html" }
+      { "source": "/payment", "destination": "/Pages/payment.html" }
+      { "source": "/product-detail", "destination": "/Pages/product-detail.html" }
+      { "source": "/upload", "destination": "/Pages/upload.html" }
+      { "source": "/wallet-buyer", "destination": "/Pages/wallet-buyer.html" }
+      { "source": "/wallet-seller", "destination": "/Pages/wallet-seller.html" }
+    ]
+}
