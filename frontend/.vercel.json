@@ -11,5 +11,10 @@
       { "source": "/upload", "destination": "/Pages/upload.html" },
       { "source": "/wallet-buyer", "destination": "/Pages/wallet-buyer.html" },
       { "source": "/wallet-seller", "destination": "/Pages/wallet-seller.html" }
-    ]
+      { "source": "/", "destination": "/index.html" }
+    ],
+
+    "redirects": [
+    { "source": "/", "destination": "/index.html", "statusCode": 308 }
+  ]
 }
