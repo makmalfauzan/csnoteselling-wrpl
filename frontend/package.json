@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "tailwindcss -i ./src/input.css -o ./src/output.css --minify",
-    "watch": "tailwindcss -i ./src/input.css -o ./src/output.css --watch"
+    "watch": "tailwindcss -i ./src/input.css -o ./src/output.css --watch",
+    "postinstall" : "npm run build"
   }
 }
