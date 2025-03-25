@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 sessionStorage.removeItem("userSession"); // Hapus session (jika ada)
 
                 // Redirect ke halaman login
-                window.location.href = "/Pages/login.html";
+                window.location.href = "/frontend/Pages/login.html";
             }
         });
     }
