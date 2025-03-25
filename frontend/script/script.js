@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Redirect ke dashboard-product.html dengan query parameter
-    window.location.href = `/frontend/Pages/dashboard-product.html?q=${encodeURIComponent(
+    window.location.href = `/Pages/dashboard-product.html?q=${encodeURIComponent(
       query
     )}&course=${encodeURIComponent(selectedCourse)}`;
   });

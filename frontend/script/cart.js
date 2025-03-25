@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 const continueShoppingBtn = document.getElementById("continue-shopping");
                 if (continueShoppingBtn) {
                     continueShoppingBtn.addEventListener("click", function () {
-                        window.location.href = "/frontend/pages/dashboard-product.html";
+                        window.location.href = "/pages/dashboard-product.html";
                     });
                 }
             }, 0);
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             cartHTML += `
                 <div class="grid grid-cols-1 md:grid-cols-12 p-4 items-center border-b">
                     <div class="md:col-span-6 flex items-center space-x-4">
-                        <img src="${item.image || '/frontend/assets/default-placeholder.png'}" alt="${item.title}" class="h-20 w-20 rounded border">
+                        <img src="${item.image || '/assets/default-placeholder.png'}" alt="${item.title}" class="h-20 w-20 rounded border">
                         <div>
                             <h3 class="font-medium">${item.title}</h3>
                             <p class="text-gray-500 text-sm">${item.category}</p>
@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (cartItems.length === 0) {
             alert("Your cart is empty!");
         } else {
-            window.location.href = "/frontend/pages/payment.html";
+            window.location.href = "/pages/payment.html";
         }
     });
 
