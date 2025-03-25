@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const productDescription = document.querySelector("#product-description");
     const productSeller = document.querySelector("#product-seller");
     const addToCartButton = document.querySelector("#add-to-cart");
+    const buyNowButton = document.querySelector("#buy-now");
 
     // Periksa apakah elemen-elemen HTML ditemukan
     if (!productImage || !productName || !productPrice || !productDescription || !productSeller) {
@@ -71,6 +72,31 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
+    // Fungsi untuk menangani klik tombol "Buy Now"
+    function handleBuyNow(productId) {
+        const userRole = localStorage.getItem("role"); // Cek apakah user sudah login
+
+        if (!userRole) {
+            // Jika belum login, munculkan alert dan redirect ke login page
+            alert("Anda harus login terlebih dahulu!");
+            window.location.href = "/frontend/Pages/login.html";
+            return;
+        }
+
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const existingItem = cart.find(item => item.id === productId);
+
+        if (existingItem) {
+            // Jika produk sudah ada di keranjang, langsung arahkan ke halaman pembayaran
+            window.location.href = "/frontend/Pages/payment.html";
+        } else {
+            // Jika produk belum ada di keranjang, tambahkan produk ke keranjang dan arahkan ke halaman pembayaran
+            cart.push({ id: productId, quantity: 1 });
+            localStorage.setItem("cart", JSON.stringify(cart));
+            window.location.href = "/frontend/Pages/payment.html";
+        }
+    }
+
     // Ambil ID produk dari URL dan muat detail produk
     const productId = getProductIdFromURL();
     if (productId) {
@@ -82,6 +108,13 @@ document.addEventListener("DOMContentLoaded", async function () {
                 handleAddToCart(productId);
             });
         }
+
+        // Tambahkan event listener ke tombol "Buy Now"
+        if (buyNowButton) {
+            buyNowButton.addEventListener("click", function () {
+                handleBuyNow(productId);
+        });
+    }
     } else {
         alert("Produk tidak ditemukan!");
         window.location.href = "/frontend/Pages/dashboard-product.html";
