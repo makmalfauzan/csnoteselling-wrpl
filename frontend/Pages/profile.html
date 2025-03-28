@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil Pengguna</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="/frontend/src/output.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
 
@@ -17,10 +17,11 @@
                 <div class="bg-white rounded-lg shadow-md p-6 text-center">
                     <div class="flex flex-col items-center">
                         <!-- Avatar -->
-                        <img src="https://randomuser.me/api/portraits/men/44.jpg" alt="User Profile"
+                        <img id="profile_picture" src="https://randomuser.me/api/portraits/men/44.jpg" alt="User Profile"
                             class="h-24 w-24 rounded-full border-2 border-gray-300 mb-3">
                         <h2 class="text-lg font-bold">John Doe</h2>
                         <p class="text-gray-500 text-sm">Member sejak Jan 2023</p>
+                        <p id="role" class="text-gray-500 text-sm">Sebagai users_role</p>
                     </div>
 
                     <!-- Menu Navigasi -->
@@ -70,17 +71,22 @@
                     <div class="mt-6 space-y-4">
                         <div>
                             <h3 class="text-sm font-medium text-gray-600">Username</h3>
-                            <p class="font-semibold">johndoe123</p>
+                            <p id="username" class="font-semibold">johndoe123</p>
+                        </div>
+                        <hr>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-600">Full name</h3>
+                            <p id="full_name" class="font-semibold">johndoe123</p>
                         </div>
                         <hr>
                         <div>
                             <h3 class="text-sm font-medium text-gray-600">Email</h3>
-                            <p class="font-semibold">john.doe@example.com</p>
+                            <p id="email" class="font-semibold">john.doe@example.com</p>
                         </div>
                         <hr>
                         <div>
                             <h3 class="text-sm font-medium text-gray-600">Bio</h3>
-                            <p class="text-sm text-gray-700">
+                            <p id="bio" class="text-sm text-gray-700">
                                 Hi there! Saya John, seorang penggemar belanja online yang suka teknologi dan fashion. Saya suka berburu promo dan membagikan pengalaman belanja saya.
                             </p>
                         </div>

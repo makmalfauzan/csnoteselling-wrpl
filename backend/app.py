@@ -22,7 +22,6 @@ app.register_blueprint(courses_bp, url_prefix='/api')
 app.register_blueprint(user_bp, url_prefix='/api')
 app.register_blueprint(payment_bp, url_prefix='/api')
 
-
 app.register_blueprint(wallets_bp, url_prefix='/api/wallets')
 app.register_blueprint(dbuyerrecommend_bp, url_prefix='/api/dbuyerrecommend')
 app.register_blueprint(dsellertop_bp, url_prefix='/api/dsellertop')
