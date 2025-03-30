@@ -156,7 +156,7 @@ function updateNavbar() {
                     Home
                 </a>
                 <a href="/frontend/Pages/about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
-                    Tentang kami
+                    Tentang Kami
                 </a>
                 <a href="/frontend/Pages/profile.html" class="text-base font-medium text-blue2 hover:text-gray-900 flex items-center">
                     <img src="/frontend/assets/images/user-icon.svg" class="h-8 w-8 rounded-full border border-gray-300" alt="Profile">
@@ -170,7 +170,7 @@ function updateNavbar() {
                 Home
             </a>
             <a href="/frontend/Pages/about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
-            Tentang kami
+            Tentang Kami
             </a>
             <a href="/frontend/Pages/login.html" class="md:inline-flex items-center justify-center px-4 py-1 border border-transparent rounded-4xl shadow-sm text-base font-medium text-white bg-blue2 hover:bg-indigo-700">
                 Login
