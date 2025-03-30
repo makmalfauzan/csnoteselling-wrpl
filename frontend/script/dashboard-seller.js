@@ -1,6 +1,50 @@
-function formatCurrency(value) {
-    return "Rp" + value.toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("Halaman seller dashboard dimuat.");
+    fetchSellerSales();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const username = localStorage.getItem('username') || 'User';
+    
+    // Pilih semua elemen dengan class "username"
+    const usernameElements = document.querySelectorAll('.username');
+
+    // Loop semua elemen dan ubah teksnya
+    usernameElements.forEach(element => {
+        element.textContent = `Halo, ${username}!`;
+    });
+});
+
+async function fetchSellerProducts() {
+    let userId = localStorage.getItem("user_id");
+
+    if (!userId) {
+        console.error("User ID tidak ditemukan di localStorage.");
+        return;
+    }
+
+    try {
+        let response = await fetch(`http://127.0.0.1:5000/api/materials/seller_products/${userId}`);
+
+        if (!response.ok) {
+            let errorText = await response.text();
+            throw new Error(`Gagal mengambil total produk: ${errorText}`);
+        }
+
+        let data = await response.json();
+        console.log("Total Products Data:", data); // Debugging untuk melihat hasil API
+
+        // 🔹 Update ke Dashboard
+        document.querySelector("#total-products").textContent = data.total_products;
+
+    } catch (error) {
+        console.error("Error fetching total products:", error);
+    }
 }
+
+// 🔹 Panggil fungsi saat halaman dimuat
+document.addEventListener("DOMContentLoaded", fetchSellerProducts);
+
 
 let salesData = []; // Menyimpan semua transaksi
 let currentPage = 1;
@@ -23,13 +67,31 @@ async function fetchSellerSales() {
         }
 
         salesData = await response.json();
-        currentPage = 1; // Reset ke halaman pertama setiap fetch data baru
-        renderSalesTable(); // Panggil fungsi render
+        console.log("Data dari API:", salesData); // 🔹 Debug: Data berhasil diambil
+
+        // 🔹 Hitung Total Sales
+        let totalSales = salesData.reduce((sum, sale) => sum + parseFloat(sale.amount), 0);
+        console.log("Total Sales:", totalSales);
+
+        // 🔹 Hitung Total Customers (buyer unik)
+        let uniqueBuyers = new Set(salesData.map(sale => sale.buyer_id)).size;
+        console.log("Total Customers:", uniqueBuyers);
+
+        // 🔹 Update ke Dashboard
+        document.getElementById("total-sales").textContent = formatCurrency(totalSales);
+        document.getElementById("total-customers").textContent = uniqueBuyers;
+
+        // 🔹 Render tabel transaksi seller
+        renderSalesTable();
 
     } catch (error) {
         console.error("Error fetching seller sales:", error);
         document.getElementById("seller-sales").innerHTML = `<tr><td colspan="6" class="text-center py-4 text-red-600">${error.message}</td></tr>`;
     }
+}
+
+function formatCurrency(value) {
+    return "Rp" + value.toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 function renderSalesTable() {
@@ -95,5 +157,3 @@ document.getElementById("next-btn").addEventListener("click", function() {
         renderSalesTable();
     }
 });
-
-document.addEventListener("DOMContentLoaded", fetchSellerSales);

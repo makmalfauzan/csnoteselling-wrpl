@@ -7,9 +7,9 @@ from routes.user import user_bp
 from routes.payment import payment_bp
 from routes.dbuyerrecommend import dbuyerrecommend_bp
 from routes.wallet import wallets_bp
-from routes.dsellertop import dsellertop_bp
 from routes.uploadfile import uploadfile_bp
 from routes.ordersbuyer import orders_bp
+from routes.seller_ttlproduct import seller_bp
 
 
 app = Flask(__name__)
@@ -21,10 +21,9 @@ app.register_blueprint(auth_bp, url_prefix='/api')
 app.register_blueprint(courses_bp, url_prefix='/api')
 app.register_blueprint(user_bp, url_prefix='/api/user')
 app.register_blueprint(payment_bp, url_prefix='/api')
-
+app.register_blueprint(seller_bp)
 app.register_blueprint(wallets_bp, url_prefix='/api/wallets')
 app.register_blueprint(dbuyerrecommend_bp, url_prefix='/api/dbuyerrecommend')
-app.register_blueprint(dsellertop_bp, url_prefix='/api/dsellertop')
 app.register_blueprint(uploadfile_bp, url_prefix='/api/uploadfile')
 app.register_blueprint(orders_bp)
 

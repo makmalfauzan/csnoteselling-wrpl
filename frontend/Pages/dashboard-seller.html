@@ -60,7 +60,7 @@
                         <div class="flex items-center">
                             <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/76.jpg" alt="User avatar">
                             <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-900">John Seller</p>
+                                <p class=" username text-sm font-medium text-gray-900">John Seller</p>
                                 <a href="/frontend/Pages/profile.html" class="text-xs font-medium text-gray-500 hover:text-gray-700">
                                     View Profile
                                   </a>
@@ -94,12 +94,12 @@
             <!-- Dashboard Content -->
             <main class="flex-1 overflow-y-auto p-6">
                 <div class="mb-6">
-                    <h1 class="text-2xl font-semibold text-gray-900">Halo, John!</h1>
+                    <h1 class="username text-2xl font-semibold text-gray-900">Halo, John!</h1>
                     <p class="text-sm text-gray-600">Berikan catatan  terbaik agar nilai konsumer dan saldo Anda naik!</p>
                 </div>
 
                 <!-- Stats Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                     <div class="bg-white rounded-xl shadow p-6">
                         <div class="flex items-center">
                             <div class="p-3 rounded-full bg-indigo-100 text-indigo-600">
@@ -107,12 +107,26 @@
                             </div>
                             <div class="ml-4">
                                 <p class="text-sm font-medium text-gray-500">Total Sales</p>
-                                <p class="text-l font-semibold text-gray-900">Rp 921224.56</p>
+                                <p id="total-sales" class="text-2xl font-semibold text-gray-900">Rpxxx,xx</p>
                             </div>
                         </div>
                         <div class="mt-4">
-                            <span class="text-sm font-medium text-green-600">↑ 12%</span>
-                            <span class="text-sm text-gray-500 ml-2">from last month</span>
+                            <span class="text-sm text-gray-500 ml-2">From all orders</span>
+                        </div>
+                    </div>
+                
+                    <div class="bg-white rounded-xl shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p  class="text-sm font-medium text-gray-500">Customers</p>
+                                <p id="total-customers" class="text-2xl font-semibold text-gray-900">xxx</p>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <span class="text-sm text-gray-500 ml-2">Total customers</span>
                         </div>
                     </div>
 
@@ -123,44 +137,11 @@
                             </div>
                             <div class="ml-4">
                                 <p class="text-sm font-medium text-gray-500">Products</p>
-                                <p class="text-2xl font-semibold text-gray-900">45</p>
+                                <p id="total-products" class="text-2xl font-semibold text-gray-900">xx</p>
                             </div>
                         </div>
                         <div class="mt-4">
-                            <span class="text-sm font-medium text-green-600">↑ 5%</span>
-                            <span class="text-sm text-gray-500 ml-2">new products</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-xl shadow p-6">
-                        <div class="flex items-center">
-                            <div class="p-3 rounded-full bg-blue-100 text-blue-600">
-                                <i class="fas fa-shopping-cart"></i>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm font-medium text-gray-500">Orders</p>
-                                <p class="text-2xl font-semibold text-gray-900">128</p>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <span class="text-sm font-medium text-green-600">↑ 8%</span>
-                            <span class="text-sm text-gray-500 ml-2">from last week</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-xl shadow p-6">
-                        <div class="flex items-center">
-                            <div class="p-3 rounded-full bg-purple-100 text-purple-600">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm font-medium text-gray-500">Customers</p>
-                                <p class="text-2xl font-semibold text-gray-900">840</p>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <span class="text-sm font-medium text-green-600">↑ 15%</span>
-                            <span class="text-sm text-gray-500 ml-2">new customers</span>
+                            <span class="text-sm text-gray-500 ml-2">Total products</span>
                         </div>
                     </div>
                 </div>
