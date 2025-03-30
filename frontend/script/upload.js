@@ -18,6 +18,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Fungsi untuk mengambil daftar mata kuliah dari API
     async function fetchCourses() {
         try {
+            const loadingScreen = document.getElementById("loading-screen");
+            // Tampilkan loading
+            loadingScreen.style.display = "flex";
             const response = await fetch("http://127.0.0.1:5000/api/courses");
             const courses = await response.json();
 
@@ -27,6 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 option.value = course.course_id;
                 option.textContent = course.course_name;
                 courseDropdown.appendChild(option);
+            // Sembunyikan loading setelah data berhasil dimuat
+            loadingScreen.style.display = "none";
             });
         } catch (error) {
             console.error("Gagal mengambil daftar mata kuliah:", error);

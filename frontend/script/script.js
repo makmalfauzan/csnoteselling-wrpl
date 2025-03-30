@@ -1,8 +1,11 @@
 document.addEventListener("DOMContentLoaded", async function () {
     const container = document.getElementById("product-list");
+    const loadingScreen = document.getElementById("loading-screen");
 
     async function fetchMaterials() {
         try {
+            // Tampilkan loading
+            loadingScreen.style.display = "flex";
             const response = await fetch("http://127.0.0.1:5000/api/materials");
             const materials = await response.json();
 
@@ -37,8 +40,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                 `;
             
                 container.appendChild(card);
+                // Sembunyikan loading setelah data berhasil dimuat
+                loadingScreen.style.display = "none";
             });
-            
 
         } catch (error) {
             console.error("Error fetching materials:", error);
@@ -72,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 option.value = course.course_id || course.id; // Pastikan field sesuai database
                 option.textContent = course.course_name || course.name;
                 filterMatkul.appendChild(option);
+                
             });
         } catch (error) {
             console.error("Gagal mengambil data mata kuliah:", error);

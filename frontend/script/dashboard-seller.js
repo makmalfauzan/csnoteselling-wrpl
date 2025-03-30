@@ -24,6 +24,9 @@ async function fetchSellerProducts() {
     }
 
     try {
+        const loadingScreen = document.getElementById("loading-screen");
+            // Tampilkan loading
+            loadingScreen.style.display = "flex";
         let response = await fetch(`http://127.0.0.1:5000/api/materials/seller_products/${userId}`);
 
         if (!response.ok) {
@@ -36,7 +39,8 @@ async function fetchSellerProducts() {
 
         // 🔹 Update ke Dashboard
         document.querySelector("#total-products").textContent = data.total_products;
-
+        // Sembunyikan loading setelah data berhasil dimuat
+        loadingScreen.style.display = "none";
     } catch (error) {
         console.error("Error fetching total products:", error);
     }

@@ -7,6 +7,9 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
+    const loadingScreen = document.getElementById("loading-screen");
+            // Tampilkan loading
+            loadingScreen.style.display = "flex";
     fetch(`http://127.0.0.1:5000/api/materials/seller/${sellerId}`)
     .then(response => {
         if (!response.ok) {
@@ -37,6 +40,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 </tr>
             `;
             productList.innerHTML += row;
+            // Sembunyikan loading setelah data berhasil dimuat
+        loadingScreen.style.display = "none";
         });
     })
     .catch(error => {

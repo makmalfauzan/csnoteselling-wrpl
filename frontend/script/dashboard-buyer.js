@@ -7,6 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
 // 1. Menampilkan rekomendasi produk
 async function loadRecommended() {
     try {
+        const loadingScreen = document.getElementById("loading-screen");
+        // Tampilkan loading
+        loadingScreen.style.display = "flex";
         const response = await fetch('http://127.0.0.1:5000/api/dbuyerrecommend/recommended');
         if (!response.ok) {
             throw new Error("Gagal mengambil data rekomendasi.");
@@ -50,6 +53,8 @@ async function loadRecommended() {
             `;
 
             container.appendChild(productCard);
+            // Sembunyikan loading setelah data berhasil dimuat
+                loadingScreen.style.display = "none";
         });
 
     } catch (error) {

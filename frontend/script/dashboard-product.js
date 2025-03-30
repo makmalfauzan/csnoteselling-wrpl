@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const maxPriceInput = document.querySelector('input[placeholder="Max Price"]');
     const productContainer = document.querySelector(".col-span-3");
     const selectedFilterContainer = document.querySelector(".selected-filters");
+    const loadingScreen = document.getElementById("loading-screen");
 
     let paginationContainer = document.querySelector(".pagination-container");
     if (!paginationContainer) {
@@ -48,7 +49,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             const maxPrice = params.get("maxPrice") || "";
             let currentPage = parseInt(params.get("page")) || 1;
             const productsPerPage = 9;
-    
+            // Tampilkan loading
+            loadingScreen.style.display = "flex";
+
             let apiUrl = `http://127.0.0.1:5000/api/materials?page=${currentPage}&limit=${productsPerPage}&course=${selectedCourse}&q=${searchQuery}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
             const response = await fetch(apiUrl);
             const products = await response.json();
@@ -97,6 +100,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 `;
     
                 productContainer.appendChild(productCard);
+                // Sembunyikan loading setelah data berhasil dimuat
+                loadingScreen.style.display = "none";
             });
     
             setupPagination(totalPages, currentPage);

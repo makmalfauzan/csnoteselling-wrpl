@@ -69,6 +69,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     async function fetchProfile() {
         try {
+            const loadingScreen = document.getElementById("loading-screen");
+            // Tampilkan loading
+            loadingScreen.style.display = "flex";
             const url = `http://127.0.0.1:5000/api/user/profile?user_id=${encodeURIComponent(userId)}`;
             console.log("📡 Mengirim request ke:", url); // Debugging
     
@@ -98,7 +101,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     
             // Gunakan gambar default jika profile picture tidak tersedia
             document.getElementById("profile_picture").src = data.profile_picture || "/frontend/assets/images/profile.png";
-    
+            // Sembunyikan loading setelah data berhasil dimuat
+            loadingScreen.style.display = "none";
         } catch (error) {
             console.error("❌ Error fetching profile data:", error);
             alert("Terjadi kesalahan saat mengambil data profil.");
