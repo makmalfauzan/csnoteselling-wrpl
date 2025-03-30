@@ -70,17 +70,35 @@ function formatCurrency(amount) {
 document.addEventListener("DOMContentLoaded", loadRecommended);
 
 
-// Fungsi format harga ke dalam format Rupiah
-function formatCurrency(amount) {
-    return new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-        minimumFractionDigits: 2
-    }).format(amount);
-}
+document.addEventListener('DOMContentLoaded', function() {
+    const username = localStorage.getItem('username') || 'User';
+    
+    // Pilih semua elemen dengan class "username"
+    const usernameElements = document.querySelectorAll('.username');
 
-// Panggil fungsi saat halaman dimuat
-document.addEventListener("DOMContentLoaded", loadRecommended);
+    // Loop semua elemen dan ubah teksnya
+    usernameElements.forEach(element => {
+        element.textContent = `Halo, ${username}!`;
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    const shopNowButton = document.getElementById("shop-now");
+
+    if (shopNowButton) {
+        shopNowButton.addEventListener("click", function(event) {
+            event.preventDefault(); // Mencegah navigasi langsung
+            
+            // Menampilkan pop-up
+            alert("Event belum tersedia");
+            
+            // Redirect setelah pop-up ditutup
+            window.location.href = "dashboard-product.html";
+        });
+    }
+});
+
+
 
 // Fitur quick stats
 async function updateQuickStats() {

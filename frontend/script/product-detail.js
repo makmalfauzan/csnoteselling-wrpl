@@ -142,14 +142,11 @@ function updateNavbar() {
                 <a href="/frontend/Pages/cart.html" class="text-base font-medium text-blue2 hover:text-gray-900">
                     Keranjang
                 </a>
-                <a href="/frontend/Pages/transaction.html" class="text-base font-medium text-blue2 hover:text-gray-900">
-                    Transaksi
-                </a>
                 <a href="/frontend/Pages/about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
                     Tentang Kami
                 </a>
                 <a href="/frontend/Pages/profile.html" class="text-base font-medium text-blue2 hover:text-gray-900 flex items-center">
-                    <img src="/frontend/assets/images/user-icon.svg" class="h-8 w-8 rounded-full border border-gray-300" alt="Profile">
+                    <img src="/frontend/assets/images/profile.png" class="h-8 w-8 rounded-full border border-gray-300" alt="Profile">
                 </a>
             `;
         } else {
