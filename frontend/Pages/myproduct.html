@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Products</title>
+    <link href="/frontend/src/output.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="sidebar hidden md:flex md:flex-shrink-0">
+            <div class="flex flex-col w-64 bg-white border-r">
+                <div class="flex items-center justify-center h-16 border-b">
+                    <a href="dashboard-product.html">
+                        <img src="/frontend/assets/images/logo1.svg" alt="Logo CS NOTESelling" class="h-8 w-auto"/>
+                    </a>
+                </div>
+                <nav class="flex-1 px-2 py-4 space-y-1">
+                    <a href="dashboard-seller.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                        <i class="fas fa-th-large mr-3"></i>
+                        Dashboard
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-white bg-indigo-600 rounded-md">
+                        <i class="fas fa-box mr-3"></i>
+                        My Products
+                    </a>
+                    <a href="upload.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                        <i class="fas fa-upload mr-3"></i>
+                        Upload Files
+                    </a>
+                </nav>
+                <div class="p-4 border-t">
+                    <div class="flex items-center">
+                        <img class="h-10 w-10 rounded-full" src="/frontend/assets/images/profile.png" alt="User avatar">
+                        <div class="ml-3">
+                            <p class=" username text-sm font-medium text-gray-900">John Seller</p>
+                            <a href="/frontend/Pages/profile.html" class="text-xs font-medium text-gray-500 hover:text-gray-700">
+                                View Profile
+                              </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex flex-col flex-1 overflow-hidden">
+            <header class="bg-white shadow">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <h1 class="text-2xl font-semibold text-gray-900">My Products</h1>
+                    <button type="button" onclick="window.location.href='upload.html'" class="p-2 bg-indigo-600 text-white rounded-lg flex items-center hover:bg-indigo-700">
+                        <i class="fas fa-upload mr-2"></i> Upload
+                    </button>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto p-6">
+                <div class="bg-white rounded-xl shadow p-6">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Your Uploaded Products</h2>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Produk</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Mata Kuliah</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kategori</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Materi</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Harga</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Deskripsi</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal Unggah</th>
+                                </tr>
+                            </thead>
+                            <tbody id="product-list" class="bg-white divide-y divide-gray-200">
+                                <!-- Data akan diisi oleh JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+<script src="/frontend/script/myproduct.js" defer></script>
+</html>

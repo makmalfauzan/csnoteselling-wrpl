@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 fetchSellerTransactions();
 
                 localStorage.removeItem("cart");
-                window.location.href = "./dashboard-product.html";
+                window.location.href = "./dashboard-buyer.html#recent-orders";
             } else {
                 alert("Pembayaran gagal: " + result.error);
             }
