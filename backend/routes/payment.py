@@ -47,6 +47,18 @@ def checkout():
         if not user_id or not items:
             return jsonify({"error": "User ID dan item diperlukan"}), 400
 
+        # Cek apakah ada transaksi PENDING yang sudah ada untuk produk yang ada dalam keranjang
+        pending_transactions = []
+        for item in items:
+            material_id = item.get("id")
+            cursor.execute("""
+                SELECT * FROM transactions WHERE buyer_id = %s AND material_id = %s AND payment_status = 'PENDING'
+            """, (user_id, material_id))
+            pending_transactions += cursor.fetchall()
+
+        if pending_transactions:
+            return jsonify({"error": "Anda sudah memiliki transaksi PENDING untuk produk-produk ini. Silakan lunasi terlebih dahulu."}), 400
+
         # Ambil saldo buyer dengan LOCK untuk menghindari race condition
         cursor.execute("SELECT balance FROM wallets WHERE user_id = %s FOR UPDATE", (user_id,))
         wallet = cursor.fetchone()
@@ -166,7 +178,51 @@ def checkout():
     finally:
         cursor.close()
         conn.close()
-    
+
+
+@payment_bp.route('/update_payment_status', methods=['POST'])
+def update_payment_status():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        data = request.json
+        transaction_id = data.get("transaction_id")
+        user_id = data.get("user_id")
+
+        if not transaction_id or not user_id:
+            return jsonify({"error": "Transaction ID dan User ID diperlukan"}), 400
+
+        # Cek apakah transaksi PENDING
+        cursor.execute("""
+            SELECT * FROM transactions WHERE transaction_id = %s AND buyer_id = %s AND payment_status = 'PENDING'
+        """, (transaction_id, user_id))
+        transaction = cursor.fetchone()
+
+        if not transaction:
+            return jsonify({"error": "Transaksi tidak ditemukan atau sudah lunas"}), 404
+
+        # Update status transaksi menjadi COMPLETED
+        cursor.execute("""
+            UPDATE transactions 
+            SET payment_status = 'COMPLETED' 
+            WHERE transaction_id = %s
+        """, (transaction_id,))
+
+        conn.commit()
+        return jsonify({
+            "success": True,
+            "message": "Status pembayaran berhasil diperbarui ke COMPLETED"
+        })
+
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        cursor.close()
+        conn.close()
+
 # **API untuk mengambil transaksi seller**
 @payment_bp.route('/seller_transactions/<int:user_id>', methods=['GET'])
 def get_seller_transactions(user_id):
