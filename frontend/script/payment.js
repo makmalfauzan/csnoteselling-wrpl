@@ -181,7 +181,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 }
 
-
     async function fetchSellerTransactions() {
         try {
             let response = await fetch(`http://127.0.0.1:5000/api/seller_transactions/${userId}`);
