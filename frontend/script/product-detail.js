@@ -23,6 +23,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Fungsi untuk mengambil data produk dari API Flask
     async function fetchProductDetail(productId) {
         try {
+            const loadingScreen = document.getElementById("loading-screen");
+            // Tampilkan loading
+            loadingScreen.style.display = "flex";
             console.log("Fetching product ID:", productId);
 
             const response = await fetch(`http://127.0.0.1:5000/api/materials/${productId}`);
@@ -39,11 +42,12 @@ document.addEventListener("DOMContentLoaded", async function () {
             productPrice.textContent = `Rp ${parseFloat(data.price).toLocaleString("id-ID")}`;
             productDescription.textContent = data.description;
             productSeller.innerHTML = `By <a href="#" class="text-blue-500 hover:underline">${data.seller}</a>`;
-
+            // Sembunyikan loading setelah data berhasil dimuat
+            loadingScreen.style.display = "none";
         } catch (error) {
             console.error("Error fetching product:", error);
             alert("Produk tidak ditemukan!");
-            window.location.href = "/frontend/Pages/dashboard-product.html";
+            window.location.href = "dashboard-product.html";
         }
     }
 
@@ -54,7 +58,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (!userRole) {
             // Jika belum login, munculkan alert dan redirect ke login page
             alert("Anda harus login terlebih dahulu!");
-            window.location.href = "/frontend/Pages/login.html";
+            window.location.href = "login.html";
             return;
         }
 
@@ -63,12 +67,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         if (existingItem) {
             alert("Produk ini sudah ada di keranjang Anda!");
-            window.location.href = "/frontend/Pages/cart.html";
+            window.location.href = "cart.html";
         } else {
             cart.push({ id: productId, quantity: 1 });
             localStorage.setItem("cart", JSON.stringify(cart));
             alert("Produk berhasil ditambahkan ke keranjang!");
-            window.location.href = "/frontend/Pages/cart.html";
+            window.location.href = "cart.html";
         }
     }
 
@@ -79,7 +83,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (!userRole) {
             // Jika belum login, munculkan alert dan redirect ke login page
             alert("Anda harus login terlebih dahulu!");
-            window.location.href = "/frontend/Pages/login.html";
+            window.location.href = "login.html";
             return;
         }
 
@@ -88,12 +92,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         if (existingItem) {
             // Jika produk sudah ada di keranjang, langsung arahkan ke halaman pembayaran
-            window.location.href = "/frontend/Pages/payment.html";
+            window.location.href = "payment.html";
         } else {
             // Jika produk belum ada di keranjang, tambahkan produk ke keranjang dan arahkan ke halaman pembayaran
             cart.push({ id: productId, quantity: 1 });
             localStorage.setItem("cart", JSON.stringify(cart));
-            window.location.href = "/frontend/Pages/payment.html";
+            window.location.href = "payment.html";
         }
     }
 
@@ -117,7 +121,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
     } else {
         alert("Produk tidak ditemukan!");
-        window.location.href = "/frontend/Pages/dashboard-product.html";
+        window.location.href = "dashboard-product.html";
     }
 });
 
@@ -136,29 +140,29 @@ function updateNavbar() {
         // Jika user adalah BUYER, tampilkan menu khusus buyer
         if (userRole === "BUYER") {
             navbarHTML = `
-                <a href="/frontend/Pages/dashboard-buyer.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                <a href="dashboard-buyer.html" class="text-base font-medium text-blue2 hover:text-gray-900">
                     Dashboard
                 </a>
-                <a href="/frontend/Pages/cart.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                <a href="cart.html" class="text-base font-medium text-blue2 hover:text-gray-900">
                     Keranjang
                 </a>
-                <a href="/frontend/Pages/about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                <a href="about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
                     Tentang Kami
                 </a>
-                <a href="/frontend/Pages/profile.html" class="text-base font-medium text-blue2 hover:text-gray-900 flex items-center">
+                <a href="profile.html" class="text-base font-medium text-blue2 hover:text-gray-900 flex items-center">
                     <img src="/frontend/assets/images/profile.png" class="h-8 w-8 rounded-full border border-gray-300" alt="Profile">
                 </a>
             `;
         } else {
             // Jika role selain buyer, default ke home dan profil
             navbarHTML = `
-                <a href="/frontend/Pages/dashboard-${userRole}.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                <a href="dashboard-${userRole}.html" class="text-base font-medium text-blue2 hover:text-gray-900">
                     Home
                 </a>
-                <a href="/frontend/Pages/about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                <a href="about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
                     Tentang Kami
                 </a>
-                <a href="/frontend/Pages/profile.html" class="text-base font-medium text-blue2 hover:text-gray-900 flex items-center">
+                <a href="profile.html" class="text-base font-medium text-blue2 hover:text-gray-900 flex items-center">
                     <img src="/frontend/assets/images/user-icon.svg" class="h-8 w-8 rounded-full border border-gray-300" alt="Profile">
                 </a>
             `;
@@ -169,10 +173,10 @@ function updateNavbar() {
             <a href="/frontend/index.html" class="text-base font-medium text-blue2 hover:text-gray-900">
                 Home
             </a>
-            <a href="/frontend/Pages/about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+            <a href="about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
             Tentang Kami
             </a>
-            <a href="/frontend/Pages/login.html" class="md:inline-flex items-center justify-center px-4 py-1 border border-transparent rounded-4xl shadow-sm text-base font-medium text-white bg-blue2 hover:bg-indigo-700">
+            <a href="login.html" class="md:inline-flex items-center justify-center px-4 py-1 border border-transparent rounded-4xl shadow-sm text-base font-medium text-white bg-blue2 hover:bg-indigo-700">
                 Login
             </a>
         `;
@@ -191,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (userRole === "SELLER") {
         alert("Seller tidak dapat mengakses halaman ini!");
-        window.location.href = "/frontend/Pages/dashboard-seller.html"; // Redirect ke dashboard seller
+        window.location.href = "dashboard-seller.html"; // Redirect ke dashboard seller
     }
 });
 

@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", async function () {
     const cartContainer = document.getElementById("shopping-cart");
     const subtotalElement = document.getElementById("subtotal");
-    const taxElement = document.getElementById("tax");
-    const shippingElement = document.getElementById("shipping");
     const totalElement = document.getElementById("total");
     const balanceElement = document.getElementById("saldo");
     const payButton = document.getElementById("pay-button");
@@ -23,11 +21,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     async function fetchUserBalance() {
         try {
+            const loadingScreen = document.getElementById("loading-screen");
+            // Tampilkan loading
+            loadingScreen.style.display = "flex";
             const response = await fetch(`http://127.0.0.1:5000/api/wallets/${userId}`);
             if (!response.ok) throw new Error("Gagal mengambil saldo");
 
             const data = await response.json();
             balanceElement.textContent = formatCurrency(data.saldo);
+            // Sembunyikan loading setelah data berhasil dimuat
+            loadingScreen.style.display = "none";
         } catch (error) {
             console.error("Error fetching balance:", error);
             balanceElement.textContent = formatCurrency(0);
@@ -53,6 +56,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             displayCartItems(updatedCart);
             updatePaymentDetails(updatedCart);
+            
         } catch (error) {
             console.error("Error fetching cart details:", error);
             updatePaymentDetails([]);
@@ -74,13 +78,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     function updatePaymentDetails(items) {
         let subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        let tax = subtotal * 0.08;
-        let shipping = 5000;
-        let total = subtotal + tax + shipping;
+        let total = subtotal;
 
         subtotalElement.textContent = formatCurrency(subtotal);
-        taxElement.textContent = formatCurrency(tax);
-        shippingElement.textContent = formatCurrency(shipping);
         totalElement.textContent = formatCurrency(total);
     }
 
@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }));
 
         try {
+            
             let response = await fetch("http://127.0.0.1:5000/api/checkout", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -112,6 +113,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     user_id: userId,
                     items: formattedCart
                 })
+                
             });
 
             if (!response.ok) {
@@ -131,6 +133,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             } else {
                 alert("Pembayaran gagal: " + result.error);
             }
+            
         } catch (error) {
             console.error("Error selama pembayaran:", error);
             alert("Terjadi kesalahan saat pembayaran. Periksa konsol untuk detail lebih lanjut.");

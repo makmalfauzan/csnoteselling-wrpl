@@ -8,6 +8,10 @@
 </head>
 <body class="bg-gray-100">
 
+    <!-- Tambahkan ini sebelum konten utama -->
+    <div id="loading-screen" class="fixed inset-0 flex justify-center items-center bg-white z-50">
+        <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
+    </div>
     <!-- Header -->
     <header class="flex justify-between items-center px-8 py-4 bg-white shadow-md">
         <a href="../index.html">
@@ -59,14 +63,6 @@
                 <p class="flex justify-between text-lg">
                     <span>Subtotal</span>
                     <span id="subtotal">Rp 0</span>
-                </p>
-                <p class="flex justify-between text-lg">
-                    <span>Shipping:</span> <span id="shipping">Rp 0</span>
-                </p>
-  
-                <p class="flex justify-between text-lg">
-                    <span>Pajak (8%)</span>
-                    <span id="tax">Rp 0</span>
                 </p>
                 <hr class="my-2">
                 <p class="flex justify-between text-lg font-bold">
