@@ -166,7 +166,7 @@ function payNow(materialId, transactionId) {
             transactionId: transactionId
         });
         localStorage.setItem("cart", JSON.stringify(cart));
-        alert("Produk berhasil ditambahkan ke keranjang dengan status PENDING!");
+        alert("Anda akan diarahkan ke payment page untuk pembayaran!");
     }
 
     window.location.href = "payment.html";

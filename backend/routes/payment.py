@@ -85,9 +85,34 @@ def checkout():
 
         # **Cek apakah saldo mencukupi**
         if balance < total_cost:
-            return jsonify({"error": "Saldo tidak mencukupi"}), 400
+            # Jika saldo tidak cukup, masukkan transaksi dengan status PENDING
+            transaction_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-        # **Kurangi saldo buyer**
+            for item in items:
+                material_id = item.get("id")
+                quantity = item.get("quantity", 1)
+
+                cursor.execute("SELECT price, seller_id FROM materials WHERE material_id = %s", (material_id,))
+                material = cursor.fetchone()
+
+                if material:
+                    amount = Decimal(str(material["price"])) * quantity
+                    seller_id = material["seller_id"]
+
+                    cursor.execute("""
+                        INSERT INTO transactions (material_id, buyer_id, seller_id, amount, transaction_date, payment_status)
+                        VALUES (%s, %s, %s, %s, %s, %s)
+                    """, (material_id, user_id, seller_id, amount, transaction_date, "PENDING"))
+
+            conn.commit()
+            return jsonify({
+                "success": True,
+                "message": "Saldo tidak mencukupi. Transaksi disimpan dengan status PENDING.",
+                "new_balance": str(balance),
+                "seller_balances": seller_earnings
+            })
+
+        # **Kurangi saldo buyer dan buat transaksi untuk setiap item jika saldo cukup**
         new_balance = balance - total_cost
         cursor.execute("UPDATE wallets SET balance = %s WHERE user_id = %s", (new_balance, user_id))
 
@@ -141,7 +166,7 @@ def checkout():
     finally:
         cursor.close()
         conn.close()
-
+    
 # **API untuk mengambil transaksi seller**
 @payment_bp.route('/seller_transactions/<int:user_id>', methods=['GET'])
 def get_seller_transactions(user_id):
