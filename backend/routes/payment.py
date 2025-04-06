@@ -3,6 +3,7 @@ from db_connection import get_db_connection
 from flask_cors import CORS
 from datetime import datetime
 from decimal import Decimal
+import pytz
 
 payment_bp = Blueprint('payment', __name__)
 CORS(payment_bp)
@@ -38,6 +39,8 @@ def get_wallet_balance():
 def checkout():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
+    cursor.execute("SET time_zone = '+07:00'")
+    wib = pytz.timezone('Asia/Jakarta')
 
     try:
         data = request.json
@@ -98,7 +101,7 @@ def checkout():
         # **Cek apakah saldo mencukupi**
         if balance < total_cost:
             # Jika saldo tidak cukup, masukkan transaksi dengan status PENDING
-            transaction_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            transaction_date = datetime.now(wib).strftime('%Y-%m-%d %H:%M:%S')
 
             for item in items:
                 material_id = item.get("id")
@@ -118,18 +121,20 @@ def checkout():
 
             conn.commit()
             return jsonify({
-                "success": True,
-                "message": "Saldo tidak mencukupi. Transaksi disimpan dengan status PENDING.",
-                "new_balance": str(balance),
-                "seller_balances": seller_earnings
-            })
+            "success": True,
+            "message": "Saldo tidak mencukupi. Transaksi disimpan dengan status PENDING.",
+            "payment_status": "PENDING",
+            "new_balance": str(balance),
+            "seller_balances": seller_earnings
+        })
+
 
         # **Kurangi saldo buyer dan buat transaksi untuk setiap item jika saldo cukup**
         new_balance = balance - total_cost
         cursor.execute("UPDATE wallets SET balance = %s WHERE user_id = %s", (new_balance, user_id))
 
         # **Buat transaksi untuk setiap item**
-        transaction_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        transaction_date = datetime.now(wib).strftime('%Y-%m-%d %H:%M:%S')
 
         for item in items:
             material_id = item.get("id")
@@ -165,11 +170,13 @@ def checkout():
 
         conn.commit()
         return jsonify({
-            "success": True,
-            "message": "Transaksi berhasil!",
-            "new_balance": str(new_balance),
-            "seller_balances": updated_seller_balances
-        })
+        "success": True,
+        "message": "Transaksi berhasil!",
+        "payment_status": "COMPLETED",
+        "new_balance": str(new_balance),
+        "seller_balances": updated_seller_balances
+    })
+
 
     except Exception as e:
         conn.rollback()
@@ -178,7 +185,6 @@ def checkout():
     finally:
         cursor.close()
         conn.close()
-
 
 @payment_bp.route('/update_payment_status', methods=['POST'])
 def update_payment_status():
@@ -193,16 +199,42 @@ def update_payment_status():
         if not transaction_id or not user_id:
             return jsonify({"error": "Transaction ID dan User ID diperlukan"}), 400
 
-        # Cek apakah transaksi PENDING
+        # Ambil data transaksi dan pastikan statusnya masih PENDING
         cursor.execute("""
-            SELECT * FROM transactions WHERE transaction_id = %s AND buyer_id = %s AND payment_status = 'PENDING'
+            SELECT * FROM transactions 
+            WHERE transaction_id = %s AND buyer_id = %s AND payment_status = 'PENDING'
         """, (transaction_id, user_id))
         transaction = cursor.fetchone()
 
         if not transaction:
             return jsonify({"error": "Transaksi tidak ditemukan atau sudah lunas"}), 404
 
-        # Update status transaksi menjadi COMPLETED
+        amount = Decimal(str(transaction["amount"]))
+        seller_id = transaction["seller_id"]
+
+        # Ambil saldo buyer dengan LOCK
+        cursor.execute("SELECT balance FROM wallets WHERE user_id = %s FOR UPDATE", (user_id,))
+        wallet = cursor.fetchone()
+
+        if not wallet or Decimal(str(wallet["balance"])) < amount:
+            return jsonify({"error": "Saldo tidak mencukupi untuk melunasi transaksi ini."}), 400
+
+        new_buyer_balance = Decimal(str(wallet["balance"])) - amount
+
+        # Kurangi saldo buyer
+        cursor.execute("UPDATE wallets SET balance = %s WHERE user_id = %s", (new_buyer_balance, user_id))
+
+        # Tambahkan saldo seller
+        cursor.execute("SELECT balance FROM wallets WHERE user_id = %s FOR UPDATE", (seller_id,))
+        seller_wallet = cursor.fetchone()
+
+        if seller_wallet:
+            new_seller_balance = Decimal(str(seller_wallet["balance"])) + amount
+            cursor.execute("UPDATE wallets SET balance = %s WHERE user_id = %s", (new_seller_balance, seller_id))
+        else:
+            cursor.execute("INSERT INTO wallets (user_id, balance) VALUES (%s, %s)", (seller_id, amount))
+
+        # Update status transaksi
         cursor.execute("""
             UPDATE transactions 
             SET payment_status = 'COMPLETED' 
@@ -212,7 +244,8 @@ def update_payment_status():
         conn.commit()
         return jsonify({
             "success": True,
-            "message": "Status pembayaran berhasil diperbarui ke COMPLETED"
+            "message": "Transaksi berhasil dilunasi.",
+            "new_buyer_balance": str(new_buyer_balance)
         })
 
     except Exception as e:
@@ -222,6 +255,7 @@ def update_payment_status():
     finally:
         cursor.close()
         conn.close()
+
 
 # **API untuk mengambil transaksi seller**
 @payment_bp.route('/seller_transactions/<int:user_id>', methods=['GET'])

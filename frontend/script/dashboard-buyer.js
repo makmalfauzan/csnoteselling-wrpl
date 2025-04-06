@@ -190,20 +190,7 @@ function formatCurrency(amount) {
     }).format(amount);
 }
 
-// 4. Pencarian kursus
-async function searchCourses(query) {
-    try {
-        const response = await fetch(`http://127.0.0.1:5000/api/courses?q=${encodeURIComponent(query)}`);
-        const courses = await response.json();
-        console.log(courses);
-    } catch (error) {
-        console.error('Error searching courses:', error);
-    }
-}
 
-document.getElementById('search-input')?.addEventListener('input', (e) => {
-    searchCourses(e.target.value);
-});
 
 // 5. Sidebar toggle untuk mobile
 const sidebar = document.querySelector(".sidebar");

@@ -85,68 +85,29 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     async function handlePayment() {
-        let totalAmount = parseFloat(totalElement.textContent.replace("Rp", "").replace(/\./g, "").replace(",", "."));
-        let userBalance = parseFloat(balanceElement.textContent.replace("Rp", "").replace(/\./g, "").replace(",", "."));
+        const totalAmount = parseFloat(totalElement.textContent.replace("Rp", "").replace(/\./g, "").replace(",", "."));
+        const userBalance = parseFloat(balanceElement.textContent.replace("Rp", "").replace(/\./g, "").replace(",", "."));
     
-        if (userBalance < totalAmount) {
-            alert("Saldo tidak cukup! Transaksi disimpan dengan status PENDING.");
-            
-            let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-            if (cartItems.length === 0) {
-                alert("Keranjang belanja kosong!");
-                return;
-            }
-    
-            let formattedCart = cartItems.map(item => ({
-                id: item.id,
-                quantity: item.quantity
-            }));
-    
-            try {
-                let response = await fetch("http://127.0.0.1:5000/api/checkout", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        user_id: userId,
-                        items: formattedCart
-                    })
-                });
-    
-                if (!response.ok) {
-                    let errorText = await response.text();
-                    throw new Error(`Request gagal dengan status ${response.status}: ${errorText}`);
-                }
-    
-                let result = await response.json();
-                if (result.success) {
-                    // Arahkan pengguna ke halaman pending transactions setelah pembayaran gagal
-                    window.location.href = "pending-transactions.html";
-                } else {
-                    alert("Pembayaran gagal: " + result.error);
-                }
-                
-            } catch (error) {
-                console.error("Error selama pembayaran:", error);
-                alert("Terjadi kesalahan saat pembayaran. Periksa konsol untuk detail lebih lanjut.");
-            }
-    
-            return;
-        }
-    
-        // Lanjutkan pembayaran jika saldo cukup
         let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
         if (cartItems.length === 0) {
             alert("Keranjang belanja kosong!");
             return;
         }
     
-        let formattedCart = cartItems.map(item => ({
+        const isBalanceEnough = userBalance >= totalAmount;
+    
+        if (!isBalanceEnough) {
+            const confirmPending = confirm("Saldo tidak mencukupi. Transaksi akan disimpan sebagai 'PENDING'. Lanjutkan?");
+            if (!confirmPending) return;
+        }
+    
+        const formattedCart = cartItems.map(item => ({
             id: item.id,
             quantity: item.quantity
         }));
     
         try {
-            let response = await fetch("http://127.0.0.1:5000/api/checkout", {
+            const response = await fetch("http://127.0.0.1:5000/api/checkout", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -155,37 +116,28 @@ document.addEventListener("DOMContentLoaded", async function () {
                 })
             });
     
+            const result = await response.json();
+    
             if (!response.ok) {
-                let errorText = await response.text();
-                throw new Error(`Request gagal dengan status ${response.status}: ${errorText}`);
+                throw new Error(`Request gagal dengan status ${response.status}: ${JSON.stringify(result)}`);
             }
     
-            let result = await response.json();
             if (result.success) {
-                alert("Pembayaran berhasil! Saldo baru: " + formatCurrency(result.new_balance));
-    
-                // **Panggil fungsi untuk memperbarui status transaksi yang PENDING menjadi COMPLETED**
-                let transactionUpdateResponse = await fetch("http://127.0.0.1:5000/api/update_payment_status", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        transaction_id: result.transaction_id,  // Dapatkan transaction_id dari response checkout
-                        user_id: userId
-                    })
-                });
-    
-                let updateResult = await transactionUpdateResponse.json();
-                if (updateResult.success) {
-                    alert("Transaksi berhasil dilunasi!");
-                } else {
-                    alert("Gagal memperbarui status transaksi.");
-                }
-    
                 localStorage.removeItem("cart");
-                window.location.href = "./dashboard-buyer.html#recent-orders";
+            
+                if (result.payment_status === "COMPLETED") {
+                    alert("Pembayaran berhasil! Saldo baru: " + formatCurrency(result.new_balance));
+                    window.location.href = "./dashboard-buyer.html#recent-orders";
+                } else if (result.payment_status === "PENDING") {
+                    alert("Saldo tidak cukup. Transaksi disimpan sebagai PENDING.");
+                    window.location.href = "./pending-transactions.html";
+                } else {
+                    alert("Transaksi berhasil, tapi status tidak diketahui.");
+                }
             } else {
                 alert("Pembayaran gagal: " + result.error);
             }
+            
     
         } catch (error) {
             console.error("Error selama pembayaran:", error);
@@ -194,7 +146,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
     
     
-
     async function fetchSellerTransactions() {
         try {
             let response = await fetch(`http://127.0.0.1:5000/api/seller_transactions/${userId}`);

@@ -1,23 +1,47 @@
 document.addEventListener("DOMContentLoaded", () => {
     loadWalletBalance();
+    loadPendingTransactions();
+
+    document.getElementById("bayarPendingBtn")?.addEventListener("click", async () => {
+        const userId = localStorage.getItem("user_id");
+        if (!userId) return alert("User ID tidak ditemukan.");
+        
+        try {
+            const response = await fetch("http://127.0.0.1:5000/api/pay_pending_transactions", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ user_id: userId })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                alert("Semua transaksi berhasil dibayar!");
+                window.location.href = "./dashboard-buyer.html#recent-orders";
+            } else {
+                alert("Gagal bayar: " + result.error);
+            }
+        } catch (error) {
+            console.error("Error bayar semua:", error);
+            alert("Terjadi kesalahan saat membayar semua transaksi.");
+        }
+    });
 });
 
-
-
-// 3. Menampilkan saldo wallet di sidebar
-// Fungsi untuk menampilkan saldo di sidebar
+// Load saldo wallet
 async function loadWalletBalance() {
     try {
         const userId = localStorage.getItem("user_id");
         if (!userId) return;
+
         const loadingScreen = document.getElementById("loading-screen");
-            // Tampilkan loading
-            loadingScreen.style.display = "flex";
+        loadingScreen.style.display = "flex";
+
         const response = await fetch(`http://127.0.0.1:5000/api/wallets/${userId}`);
         if (!response.ok) return;
 
         const data = await response.json();
         const walletContainer = document.querySelector("#wallet-container");
+
         if (walletContainer) {
             walletContainer.innerHTML = `
                 <div class="bg-white p-4 w-full rounded-xl flex flex-col items-center">
@@ -26,19 +50,17 @@ async function loadWalletBalance() {
                     <button id="topup-button" class="ml-4 bg-indigo-600 text-white px-4 py-1 rounded-md text-sm font-medium hover:bg-indigo-700">Isi Saldo</button>
                 </div>`;
 
-            // Menambahkan event listener untuk tombol "Isi Saldo" setelah elemen terbuat
             document.getElementById("topup-button")?.addEventListener("click", () => {
                 document.getElementById("topup-modal")?.classList.remove("hidden");
             });
         }
-        // Sembunyikan loading setelah data berhasil dimuat
+
         loadingScreen.style.display = "none";
     } catch (error) {
-        console.error("Error loading wallet balance:", error);
+        console.error("Gagal load wallet:", error);
     }
 }
 
-// Fungsi format saldo ke format Rp xxx.xxx,xx
 function formatCurrency(amount) {
     return new Intl.NumberFormat("id-ID", {
         style: "decimal",
@@ -47,12 +69,67 @@ function formatCurrency(amount) {
     }).format(amount);
 }
 
+// Load pending transactions
+async function loadPendingTransactions() {
+    const userId = localStorage.getItem("user_id");
+    if (!userId) return;
 
-// 5. Sidebar toggle untuk mobile
-const sidebar = document.querySelector(".sidebar");
-document.querySelector(".fa-bars")?.addEventListener("click", () => {
-    sidebar.classList.toggle("hidden");
-});
+    try {
+        const response = await fetch(`http://127.0.0.1:5000/pending-transactions?user_id=${userId}`);
+        const text = await response.text();
+        const transactions = JSON.parse(text);
+
+        const tableBody = document.getElementById("pending-transactions");
+        tableBody.innerHTML = "";
+
+        transactions.forEach(transaction => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td class="px-6 py-4 text-sm text-gray-900">${transaction.transaction_id}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">${transaction.title}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">${transaction.seller}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">Rp ${Number(transaction.amount).toLocaleString()}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">${new Date(transaction.transaction_date).toLocaleDateString()}</td>
+                <td class="px-6 py-4 text-red-500 font-semibold text-sm">${transaction.payment_status}</td>
+                <td class="px-6 py-4 text-sm">
+                    <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                        onclick="payNowSingle(${transaction.transaction_id})">Pay</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+    } catch (error) {
+        console.error("Gagal load transaksi:", error);
+    }
+}
+
+// Fungsi bayar satu transaksi saja
+async function payNowSingle(transactionId) {
+    const userId = localStorage.getItem("user_id");
+    if (!userId) return alert("User ID tidak ditemukan.");
+
+    try {
+        const response = await fetch("http://127.0.0.1:5000/api/pay_pending_transactions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: userId, transaction_id: transactionId }) // Kirim spesifik ID
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert("Transaksi berhasil dibayar!");
+            loadWalletBalance();
+            loadPendingTransactions();
+        } else {
+            alert("Gagal membayar transaksi: " + result.error);
+        }
+
+    } catch (error) {
+        console.error("Error saat bayar:", error);
+        alert("Terjadi kesalahan saat membayar transaksi.");
+    }
+}
 
 // 6. Event listener untuk tombol top-up saldo
 document.addEventListener("DOMContentLoaded", () => {
@@ -97,79 +174,3 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
-
-document.addEventListener("DOMContentLoaded", function () {
-    const userId = localStorage.getItem("user_id");
-    if (!userId) {
-        console.error("User ID not found in localStorage");
-        return;
-    }
-
-    const apiUrl = `http://127.0.0.1:5000/pending-transactions?user_id=${userId}`;
-
-    fetch(apiUrl)
-        .then(response => response.text()) // Ambil response sebagai text terlebih dahulu
-        .then(text => {
-            try {
-                return JSON.parse(text); // Coba parse sebagai JSON
-            } catch (error) {
-                console.error("Response is not valid JSON:", text);
-                throw error;
-            }
-        })
-        .then(transactions => {
-            console.log("Data transaksi diterima:", transactions);
-            const tableBody = document.getElementById("pending-transactions");
-            tableBody.innerHTML = "";
-
-            transactions.forEach(transaction => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${transaction.transaction_id}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${transaction.title}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${transaction.seller}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp ${Number(transaction.amount).toLocaleString()}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${new Date(transaction.transaction_date).toLocaleDateString()}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-red-500 font-semibold">${transaction.payment_status}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition" onclick="payNow(${transaction.material_id})">Pay</button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-        })
-        .catch(error => console.error("Error fetching transactions:", error));
-});
-
-function payNow(materialId, transactionId) {
-    const userRole = localStorage.getItem("role"); // Cek apakah user sudah login
-
-    if (!userRole) {
-        // Jika belum login, munculkan alert dan redirect ke login page
-        alert("Anda harus login terlebih dahulu!");
-        window.location.href = "login.html";
-        return;
-    }
-
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    
-    // Menambahkan material ke cart dengan status PENDING dan transactionId
-    const existingItem = cart.find(item => item.id === materialId);
-
-    if (existingItem) {
-        alert("Produk ini sudah ada di keranjang Anda!");
-    } else {
-        cart.push({
-            id: materialId, 
-            quantity: 1, 
-            status: 'PENDING', 
-            transactionId: transactionId
-        });
-        localStorage.setItem("cart", JSON.stringify(cart));
-        alert("Anda akan diarahkan ke payment page untuk pembayaran!");
-    }
-
-    window.location.href = "payment.html";
-}
-
-
