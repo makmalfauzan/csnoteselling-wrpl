@@ -5,36 +5,45 @@ document.addEventListener("DOMContentLoaded", async function () {
     const clearCartButton = document.getElementById("clear-cart"); // Tombol clear cart
 
     function formatCurrency(value) {
-        return "Rp" + value.toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        return "Rp " + value.toLocaleString("id-ID", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
     }
+    
 
     let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 
     async function fetchCartDetails() {
+        const loadingScreen = document.getElementById("loading-screen");
+            // Tampilkan loading
+            loadingScreen.style.display = "flex";
+
         if (cartItems.length === 0) {
             updateCartUI([]);
+            loadingScreen.style.display = "none"; // Sembunyikan loading saat cart kosong
             return;
         }
 
         try {
-            const loadingScreen = document.getElementById("loading-screen");
-            // Tampilkan loading
-            loadingScreen.style.display = "flex";
+            
             const materialIds = cartItems.map(item => item.id).join(",");
             const response = await fetch(`http://127.0.0.1:5000/api/materials/batch?ids=${materialIds}`);
+            
             const materials = await response.json();
-
             let updatedCart = cartItems.map(item => {
                 let material = materials.find(mat => mat.material_id == item.id);
                 return material ? { ...material, quantity: item.quantity } : null;
             }).filter(item => item !== null);
 
             updateCartUI(updatedCart);
-            // Sembunyikan loading setelah data berhasil dimuat
-            loadingScreen.style.display = "none";
+            
         } catch (error) {
             console.error("Error fetching cart details:", error);
             updateCartUI([]);
+        } finally {
+            // Sembunyikan loading setelah try/catch
+            loadingScreen.style.display = "none";
         }
     }
 
@@ -68,9 +77,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             <div class="bg-white rounded-lg shadow-sm p-4">
                 <div class="grid grid-cols-1 md:grid-cols-12 p-4 text-sm font-medium text-gray-500 border-b">
                     <div class="col-span-6">Product</div>
-                    <div class="col-span-2 text-center">Price</div>
                     <div class="col-span-2 text-center">Quantity</div>
-                    <div class="col-span-2 text-center">Total</div>
+                    <div class="col-span-2 text-center">Price</div>
                 </div>
         `;
 
@@ -86,8 +94,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                                 🗑 Remove
                             </button>
                         </div>
-sdh                    </div>
-                    <div class="md:col-span-2 text-center">${formatCurrency(item.price)}</div>
+                    </div>
                     <div class="md:col-span-2 flex justify-center">
                         <span class="px-4 py-1">${item.quantity}</span>
                     </div>

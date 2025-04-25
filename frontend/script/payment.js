@@ -7,8 +7,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     const transactionList = document.getElementById("transaction-list"); // Untuk daftar transaksi seller
 
     function formatCurrency(value) {
-        return "Rp" + value.toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        return "Rp" + value.toLocaleString("id-ID", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
     }
+    
 
     let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
     let userId = localStorage.getItem("user_id");
@@ -106,7 +110,12 @@ document.addEventListener("DOMContentLoaded", async function () {
             quantity: item.quantity
         }));
     
+        const loadingScreen2 = document.getElementById("loading-screen2");
+    
         try {
+            // Tampilkan loading
+            loadingScreen2.style.display = "flex";
+    
             const response = await fetch("http://127.0.0.1:5000/api/checkout", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -124,7 +133,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     
             if (result.success) {
                 localStorage.removeItem("cart");
-            
+    
                 if (result.payment_status === "COMPLETED") {
                     alert("Pembayaran berhasil! Saldo baru: " + formatCurrency(result.new_balance));
                     window.location.href = "./dashboard-buyer.html#recent-orders";
@@ -137,13 +146,16 @@ document.addEventListener("DOMContentLoaded", async function () {
             } else {
                 alert("Pembayaran gagal: " + result.error);
             }
-            
     
         } catch (error) {
             console.error("Error selama pembayaran:", error);
             alert("Terjadi kesalahan saat pembayaran. Periksa konsol untuk detail lebih lanjut.");
+        } finally {
+            // Sembunyikan loading apapun hasilnya
+            loadingScreen2.style.display = "none";
         }
     }
+    
     
     
     async function fetchSellerTransactions() {

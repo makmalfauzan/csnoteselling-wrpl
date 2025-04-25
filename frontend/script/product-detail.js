@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             // Menampilkan data produk di halaman
             productImage.src = "https://i.pinimg.com/736x/81/21/dc/8121dc48ec937ecf919bc2c54aa961a4.jpg"; // Gambar tetap
             productName.textContent = data.title;
-            productPrice.textContent = `Rp ${parseFloat(data.price).toLocaleString("id-ID")}`;
+            productPrice.textContent = `Rp${parseFloat(data.price).toLocaleString("id-ID")}`;
             productDescription.textContent = data.description;
             productSeller.innerHTML = `By <a href="#" class="text-blue-500 hover:underline">${data.seller}</a>`;
             // Sembunyikan loading setelah data berhasil dimuat

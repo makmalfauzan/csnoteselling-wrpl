@@ -3,6 +3,10 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchSellerSales();
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    loadWalletBalance();
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     const username = localStorage.getItem('username') || 'User';
     
@@ -14,6 +18,43 @@ document.addEventListener('DOMContentLoaded', function() {
         element.textContent = `Halo, ${username}!`;
     });
 });
+
+async function loadWalletBalance() {
+    try {
+        const userId = localStorage.getItem("user_id");
+        if (!userId) return;
+
+        const response = await fetch(`http://127.0.0.1:5000/api/wallets/${userId}`);
+        if (!response.ok) return;
+
+        const data = await response.json();
+        const walletContainer = document.querySelector("#wallet-container");
+        if (walletContainer) {
+            walletContainer.innerHTML = `
+                <div class="bg-white p-4 w-full rounded-xl flex flex-col items-center">
+                    <p class="text-sm font-medium text-gray-900">Saldo Anda:</p>
+                    <p id="wallet-balance" class="text-xl font-bold text-indigo-600">Rp${(data.saldo)}</p>
+                    <button id="topup-button" class="ml-4 bg-indigo-600 text-white px-4 py-1 rounded-md text-sm font-medium hover:bg-indigo-700">Isi Saldo</button>
+                </div>`;
+
+            // Menambahkan event listener untuk tombol "Isi Saldo" setelah elemen terbuat
+            document.getElementById("topup-button")?.addEventListener("click", () => {
+                document.getElementById("topup-modal")?.classList.remove("hidden");
+            });
+        }
+    } catch (error) {
+        console.error("Error loading wallet balance:", error);
+    }
+}
+
+// Fungsi format saldo ke format Rp xxx.xxx,xx
+function formatCurrency(amount) {
+    return new Intl.NumberFormat("id-ID", {
+        style: "decimal",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    }).format(amount);
+}
 
 async function fetchSellerProducts() {
     let userId = localStorage.getItem("user_id");

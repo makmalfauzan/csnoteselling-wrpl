@@ -11,6 +11,7 @@ def get_recommended():
     
     sql = """
     SELECT
+        m.material_id,
         m.materi,
         m.title,
         m.price,

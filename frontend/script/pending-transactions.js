@@ -1,3 +1,15 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const username = localStorage.getItem('username') || 'User';
+    
+    // Pilih semua elemen dengan class "username"
+    const usernameElements = document.querySelectorAll('.username');
+
+    // Loop semua elemen dan ubah teksnya
+    usernameElements.forEach(element => {
+        element.textContent = `Halo, ${username}!`;
+    });
+});
+
 document.addEventListener("DOMContentLoaded", () => {
     loadWalletBalance();
     loadPendingTransactions();
