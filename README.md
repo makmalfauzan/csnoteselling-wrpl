@@ -22,3 +22,11 @@
 # NOTE:
 
 - Data base sudah terhosting online di railway
+
+# CARA TESTING
+
+## PASTIKAN DATABASE SUDAH SIAP AGAR DATA TESTING TIDAK BERTUBRUKAN
+
+- Pastikan terminal sdh ada di root (/csnoteselling-wrpl)
+- run pytest backend/test/(nama file)
+- run pytest backend/test (untuk langsung menjalankan semua testing)
