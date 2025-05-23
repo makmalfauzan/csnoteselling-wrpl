@@ -4,9 +4,9 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 
 import pytest
 from app import create_app
-from db_connection import db  # SESUAIKAN dengan letak `db` kamu
+from db_connection import db
 
-from app.models import User, Wallet, Transaction  # sesuaikan
+from app.models import User, Wallet, Transaction
 
 @pytest.fixture
 def client():
