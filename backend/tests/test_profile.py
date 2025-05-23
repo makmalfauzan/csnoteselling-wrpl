@@ -1,6 +1,5 @@
 import pytest
 
-# Ganti dengan user_id yang valid di database test kamu
 TEST_USER_ID = 1  
 
 def test_get_profile_existing_user(client):
@@ -37,7 +36,7 @@ def test_update_profile_success(client):
     assert response.status_code == 200
     assert response.json["message"] == "Profil berhasil diperbarui"
 
-    # Optional: cek apakah update berhasil lewat GET profile
+    # cek apakah update berhasil lewat GET profile
     get_resp = client.get('/api/user/profile', query_string={"user_id": TEST_USER_ID})
     profile_data = get_resp.json
     assert profile_data["full_name"] == update_data["full_name"]
