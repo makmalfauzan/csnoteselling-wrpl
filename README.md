@@ -22,6 +22,8 @@
 # NOTE:
 
 - Data base sudah terhosting online di railway
+- add new file .env  
+  " DATABASE_URL=mysql://root:YHtIPFbrYOuawzOkzApwjTCatBRzVyDh@centerbeam.proxy.rlwy.net:11729/railway "
 
 # CARA TESTING
 
