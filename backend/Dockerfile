@@ -1,16 +1,26 @@
 # backend/Dockerfile
-
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY . .
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    default-libmysqlclient-dev \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install dependencies
+# Copy requirements first for better caching
+COPY requirements.txt .
+
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose port Flask
+# Copy application code
+COPY . .
+
+# Expose port
 EXPOSE 5000
 
-# Jalankan Flask app
+# Command to run the application
 CMD ["python", "app.py"]
