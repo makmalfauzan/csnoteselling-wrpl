@@ -3,7 +3,7 @@ version: '3.8'
 services:
   backend:
     build: ./backend
-    container_name: csn-backend
+    container_name: backend
     env_file:
       - ./backend/.env
     ports:

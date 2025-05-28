@@ -2,6 +2,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const loginForm = document.querySelector("#login-form");
     const registerForm = document.querySelector("#register-form");
 
+    const realFetch = window.fetch;
+    window.fetch = async (url, options) => {
+    if (typeof url === "string" && url.startsWith("http://127.0.0.1:5000")) {
+        const newUrl = url.replace("http://127.0.0.1:5000", window.location.hostname.includes("localhost") ? "http://127.0.0.1:5000" : "http://backend:5000");
+        return realFetch(newUrl, options);
+    }
+    return realFetch(url, options);
+    };
+
     if (loginForm) {
         loginForm.addEventListener("submit", async function (e) {
             e.preventDefault();

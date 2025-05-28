@@ -2,11 +2,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     const container = document.getElementById("product-list");
     const loadingScreen = document.getElementById("loading-screen");
 
+    
     async function fetchMaterials() {
         try {
             // Tampilkan loading
             loadingScreen.style.display = "flex";
-            const response = await fetch("http://127.0.0.1:5000/api/materials");
+            const response = await fetch("http://backend:5000/api/materials");
             const materials = await response.json();
 
             console.log("Data dari API:", materials); // Debugging
@@ -62,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Ambil daftar course dari database
     async function fetchCourses() {
         try {
-            const response = await fetch("http://127.0.0.1:5000/api/courses"); // Endpoint Flask
+            const response = await fetch("http://backend:5000/api/courses"); // Endpoint Flask
             if (!response.ok) {
                 throw new Error("Gagal mengambil data course");
             }
