@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             document.getElementById("bio").textContent = data.bio;
     
             // Gunakan gambar default jika profile picture tidak tersedia
-            document.getElementById("profile_picture").src = data.profile_picture || "/frontend/assets/images/profile.png";
+            document.getElementById("profile_picture").src = data.profile_picture || "../assets/images/profile.png";
             // Sembunyikan loading setelah data berhasil dimuat
             loadingScreen.style.display = "none";
         } catch (error) {
@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 localStorage.removeItem("username");
                 sessionStorage.removeItem("userSession");
 
-                window.location.href = "/frontend/Pages/login.html";
+                window.location.href = "../pages/login.html";
             }
         });
     }

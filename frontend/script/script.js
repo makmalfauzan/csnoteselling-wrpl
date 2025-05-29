@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             // Perbaiki URL untuk Docker environment
-            window.location.href = `/Pages/dashboard-product.html?q=${encodeURIComponent(query)}&course=${encodeURIComponent(selectedCourse)}`;
+            window.location.href = `../pages/dashboard-product.html?q=${encodeURIComponent(query)}&course=${encodeURIComponent(selectedCourse)}`;
         });
     }
 });

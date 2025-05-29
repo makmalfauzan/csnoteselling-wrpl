@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 const continueShoppingBtn = document.getElementById("continue-shopping");
                 if (continueShoppingBtn) {
                     continueShoppingBtn.addEventListener("click", function () {
-                        window.location.href = "/frontend/pages/dashboard-product.html";
+                        window.location.href = "../pages/dashboard-product.html";
                     });
                 }
             }, 0);
@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (cartItems.length === 0) {
             alert("Your cart is empty!");
         } else {
-            window.location.href = "/frontend/pages/payment.html";
+            window.location.href = "../pages/payment.html";
         }
     });
 

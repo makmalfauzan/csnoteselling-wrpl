@@ -150,7 +150,7 @@ function updateNavbar() {
                     Tentang Kami
                 </a>
                 <a href="profile.html" class="text-base font-medium text-blue2 hover:text-gray-900 flex items-center">
-                    <img src="/frontend/assets/images/profile.png" class="h-8 w-8 rounded-full border border-gray-300" alt="Profile">
+                    <img src="../assets/images/profile.png" class="h-8 w-8 rounded-full border border-gray-300" alt="Profile">
                 </a>
             `;
         } else {
@@ -163,14 +163,14 @@ function updateNavbar() {
                     Tentang Kami
                 </a>
                 <a href="profile.html" class="text-base font-medium text-blue2 hover:text-gray-900 flex items-center">
-                    <img src="/frontend/assets/images/user-icon.svg" class="h-8 w-8 rounded-full border border-gray-300" alt="Profile">
+                    <img src="../assets/images/user-icon.svg" class="h-8 w-8 rounded-full border border-gray-300" alt="Profile">
                 </a>
             `;
         }
     } else {
         // Jika user belum login, tampilkan menu default
         navbarHTML += `
-            <a href="/frontend/index.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+            <a href="../index.html" class="text-base font-medium text-blue2 hover:text-gray-900">
                 Home
             </a>
             <a href="about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
