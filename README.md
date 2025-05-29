@@ -1,28 +1,12 @@
 ﻿# UTAMAKAN PULL
 
-## Langkah-langkah running:
-
-- conda info --envs <!-- cek info env -->
-- conda activate (Nama env) <!-- aktifkan env (yg terinstal flask) -->
-- buat 2 terminal
-- jalankan live server dari file index.html
-
-### BE (terminal 1):
-
-- cd backend
-- run pip install -r requirements.txt <!-- Cek apakah sdh install depedensi untuk backend -->
-- python app.py <!-- Jalankan backend -->
-
-### FE (terminal 2):
-
-- cd frontend
-- npm install <!--cek apakah dependensi sdh terinstall sesuai package.json  -->
-- npm run watch <!-- Jalankan tailwindcss -->
+## Langkah-langkah running (Via docker):
+- (Pastikan terminal sdh diroot) jalankan docker-compose build --up
 
 # NOTE:
 
 - Data base sudah terhosting online di railway
-- add new file .env  
+## add new file .env  
   " DATABASE_URL=mysql://root:YHtIPFbrYOuawzOkzApwjTCatBRzVyDh@centerbeam.proxy.rlwy.net:11729/railway "
 
 # CARA TESTING
