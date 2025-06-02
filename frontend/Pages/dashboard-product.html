@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Produk</title>
-    <link href="/frontend/src/output.css" rel="stylesheet">
+    <link href="../src/output.css" rel="stylesheet">
     <style>
         @layer utilities {
         .bg-blue1 {
@@ -71,13 +71,17 @@
     </style>
 </head>
 <body class="bg-gray-100 ">
+      <!-- Tambahkan ini sebelum konten utama -->
+      <div id="loading-screen" class="fixed inset-0 flex justify-center items-center bg-white z-50">
+        <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
+    </div>
     <!-- Header -->
     <header class="sticky top-0 z-50 bg-white shadow-sm py-1">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-2">
                 <div class="flex items-center">
-                    <a href="/frontend/index.html">
-                        <img src="/frontend/assets/images/logo1.svg" alt="Logo" class="h-10 mx-auto">
+                    <a href="../index.html">
+                        <img src="../assets/images/logo1.svg" alt="Logo" class="h-10 mx-auto">
                     </a>
                 </div>
                 <!-- Navbar Dinamis -->
@@ -169,5 +173,5 @@
     </footer>
 
 </body>
-<script src="/frontend/script/dashboard-product.js"></script>
+<script src="../script/dashboard-product.js"></script>
 </html>

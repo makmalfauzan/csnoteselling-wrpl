@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
- 
-    <link rel="stylesheet" href="/frontend/src/output.css">
+    <link rel="stylesheet" href="../src/output.css">
 </head>
 <body class="bg-gray-100">
+        <!-- Tambahkan ini sebelum konten utama -->
+        <div id="loading-screen" class="fixed inset-0 flex justify-center items-center bg-white z-50">
+            <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
+        </div>
 
     <div class="container mx-auto px-4 py-8 max-w-6xl">
         <h1 class="text-3xl font-bold mb-8">Shopping Cart</h1>
@@ -17,7 +20,7 @@
         </div>
 
         <div class="mt-8 flex justify-between items-center">
-            <a href="/frontend/pages/dashboard-product.html" class="text-blue-600 hover:underline">← Continue Shopping</a>
+            <a href="../pages/dashboard-product.html" class="text-blue-600 hover:underline">← Continue Shopping</a>
             <button id="clear-cart" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Clear Cart</button>
         </div>
 
@@ -29,14 +32,7 @@
                     <span class="text-gray-600">Subtotal</span>
                     <span id="subtotal">$0.00</span>
                 </div>
-                <div class="flex justify-between">
-                    <span class="text-gray-600">Shipping</span>
-                    <span id="shipping">$4.99</span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-gray-600">Tax (8%)</span>
-                    <span id="tax">$0.00</span>
-                </div>
+                
                 <hr>
                 <div class="flex justify-between font-bold">
                     <span>Total</span>
@@ -50,6 +46,6 @@
         </div>
     </div>
 
-    <script src="/frontend/script/cart.js"></script>
+    <script src="../script/cart.js"></script>
 </body>
 </html>

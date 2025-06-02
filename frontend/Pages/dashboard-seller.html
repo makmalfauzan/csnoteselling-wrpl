@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seller Dashboard</title>
-    
-    <link href="/frontend/src/output.css" rel="stylesheet">
+    <link href="../src/output.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -27,6 +26,10 @@
     </style>
 </head>
 <body class="bg-gray-50">
+    <!-- Tambahkan ini sebelum konten utama -->
+    <div id="loading-screen" class="fixed inset-0 flex justify-center items-center bg-white z-50">
+        <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
+    </div>
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
         <div class="sidebar hidden md:flex md:flex-shrink-0">
@@ -35,7 +38,7 @@
                     <div class="h-16 flex items-center justify-center border-b">
                       <a href="dashboard-product.html">
                         <img 
-                          src="/frontend/assets/images/logo1.svg" 
+                          src="../assets/images/logo1.svg" 
                           alt="Logo CS NOTESelling" 
                           class="h-8 w-auto"
                         />
@@ -48,29 +51,26 @@
                             <i class="fas fa-th-large mr-3"></i>
                             Dashboard
                         </a>
-                        <a href="wallet-seller.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
-                             <i class="fas fa-wallet mr-3"></i>
-                             Wallet
-                        </a>
-                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                        <a href="myproduct.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
                             <i class="fas fa-box mr-3"></i>
-                            Products
+                            My Products
                         </a>
                         <a  href="upload.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
                             <i class="fas fa-upload mr-3"></i>
                              Upload Files
                         </a>
-                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
-                            <i class="fas fa-cog mr-3"></i>
-                            Settings
-                        </a>
                     </nav>
+                    <div id="wallet-container" class="bg-white p-3 rounded-lg flex items-center justify-between">
+                        <p class="text-sm font-medium text-gray-900">Saldo Anda:</p>
+                        <p id="wallet-balance" class="text-lg font-bold text-indigo-600">Rp 0,00</p>
+                        <button id="topup-button" class="ml-4 bg-indigo-600 text-white px-4 py-1 rounded-md text-sm font-medium hover:bg-indigo-700">Withdraw</button>
+                    </div>
                     <div class="p-4 border-t">
                         <div class="flex items-center">
-                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/76.jpg" alt="User avatar">
+                            <img class="h-10 w-10 rounded-full" src="../assets/images/profile.png" alt="User avatar">
                             <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-900">John Seller</p>
-                                <a href="profile.html" class="text-xs font-medium text-gray-500 hover:text-gray-700">
+                                <p class=" username text-sm font-medium text-gray-900">John Seller</p>
+                                <a href="../pages/profile.html" class="text-xs font-medium text-gray-500 hover:text-gray-700">
                                     View Profile
                                   </a>
                             </div>
@@ -85,39 +85,30 @@
             <!-- Top Navigation -->
             <header class="bg-white shadow">
                 <div class="flex items-center justify-between px-6 py-4">
-                    <div class="flex items-center md:hidden">
-                        <button type="button" class="text-gray-500 hover:text-gray-600 focus:outline-none">
-                            <i class="fas fa-bars"></i>
-                        </button>
-                    </div>
+
                     <div class="flex-1 flex justify-center md:justify-end">
-                        <div class="relative w-full max-w-md">
-                            <input type="text" placeholder="Search..." class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                            <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                <i class="fas fa-search text-gray-400"></i>
-                            </button>
-                        </div>
+                        
                     </div>
-                    <div class="ml-4 flex items-center md:ml-6">
-                        <button type="button" class="p-1 rounded-full text-gray-500 hover:text-gray-600 focus:outline-none">
-                            <i class="fas fa-bell"></i>
-                        </button>
-                        <button type="button" class="p-1 ml-3 rounded-full text-gray-500 hover:text-gray-600 focus:outline-none">
-                            <i class="fas fa-envelope"></i>
+                    <div class="ml-4 flex items-center md:ml-6 space-x-3">
+                       
+                        <!-- Tombol Upload -->
+                        <button type="button" onclick="window.location.href='upload.html'" class="p-2 bg-indigo-600 text-white rounded-lg flex items-center hover:bg-indigo-700 focus:outline-none">
+                            <i class="fas fa-upload mr-2"></i> Upload
                         </button>
                     </div>
                 </div>
             </header>
+            
 
             <!-- Dashboard Content -->
             <main class="flex-1 overflow-y-auto p-6">
                 <div class="mb-6">
-                    <h1 class="text-2xl font-semibold text-gray-900">Halo, John!</h1>
+                    <h1 class="username text-2xl font-semibold text-gray-900">Halo, John!</h1>
                     <p class="text-sm text-gray-600">Berikan catatan  terbaik agar nilai konsumer dan saldo Anda naik!</p>
                 </div>
 
                 <!-- Stats Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                     <div class="bg-white rounded-xl shadow p-6">
                         <div class="flex items-center">
                             <div class="p-3 rounded-full bg-indigo-100 text-indigo-600">
@@ -125,12 +116,26 @@
                             </div>
                             <div class="ml-4">
                                 <p class="text-sm font-medium text-gray-500">Total Sales</p>
-                                <p class="text-l font-semibold text-gray-900">Rp 921224.56</p>
+                                <p id="total-sales" class="text-2xl font-semibold text-gray-900">Rpxxx,xx</p>
                             </div>
                         </div>
                         <div class="mt-4">
-                            <span class="text-sm font-medium text-green-600">↑ 12%</span>
-                            <span class="text-sm text-gray-500 ml-2">from last month</span>
+                            <span class="text-sm text-gray-500 ml-2">From all orders</span>
+                        </div>
+                    </div>
+                
+                    <div class="bg-white rounded-xl shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p  class="text-sm font-medium text-gray-500">Customers</p>
+                                <p id="total-customers" class="text-2xl font-semibold text-gray-900">xxx</p>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <span class="text-sm text-gray-500 ml-2">Total customers</span>
                         </div>
                     </div>
 
@@ -141,50 +146,17 @@
                             </div>
                             <div class="ml-4">
                                 <p class="text-sm font-medium text-gray-500">Products</p>
-                                <p class="text-2xl font-semibold text-gray-900">45</p>
+                                <p id="total-products" class="text-2xl font-semibold text-gray-900">xx</p>
                             </div>
                         </div>
                         <div class="mt-4">
-                            <span class="text-sm font-medium text-green-600">↑ 5%</span>
-                            <span class="text-sm text-gray-500 ml-2">new products</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-xl shadow p-6">
-                        <div class="flex items-center">
-                            <div class="p-3 rounded-full bg-blue-100 text-blue-600">
-                                <i class="fas fa-shopping-cart"></i>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm font-medium text-gray-500">Orders</p>
-                                <p class="text-2xl font-semibold text-gray-900">128</p>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <span class="text-sm font-medium text-green-600">↑ 8%</span>
-                            <span class="text-sm text-gray-500 ml-2">from last week</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-xl shadow p-6">
-                        <div class="flex items-center">
-                            <div class="p-3 rounded-full bg-purple-100 text-purple-600">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <div class="ml-4">
-                                <p class="text-sm font-medium text-gray-500">Customers</p>
-                                <p class="text-2xl font-semibold text-gray-900">840</p>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <span class="text-sm font-medium text-green-600">↑ 15%</span>
-                            <span class="text-sm text-gray-500 ml-2">new customers</span>
+                            <span class="text-sm text-gray-500 ml-2">Total products</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Recent Orders -->
-                <div class="bg-white rounded-xl shadow overflow-hidden max-w-4xl mx-auto">
+                <div class="bg-white rounded-xl shadow overflow-hidden max-w-full mx-auto">
                     <div class="p-6">
                         <div class="flex items-center justify-between mb-4">
                             <h2 class="text-lg font-semibold text-gray-900">Recent Orders</h2>
@@ -218,18 +190,14 @@
                             Halaman 1
                         </span>
                         
-                        <button id="next-btn" class="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-gray-400 transition duration-200   disabled:text-gray-200 disabled:hover:text-white">
+                        <button id="next-btn" class="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-gray-400 transition duration-200 disabled:text-gray-200 disabled:hover:text-white">
                             Next <i class="fas fa-chevron-right"></i>
                         </button>
                     </div>
                 </div>
-                
-  
-                
-                
             </main>
         </div>
     </div>
 </body>
-<script src="/frontend/script/dashboard-seller.js" defer></script>
+<script src="../script/dashboard-seller.js" defer></script>
 </html>

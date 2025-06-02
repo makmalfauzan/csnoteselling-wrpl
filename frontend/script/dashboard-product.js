@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const maxPriceInput = document.querySelector('input[placeholder="Max Price"]');
     const productContainer = document.querySelector(".col-span-3");
     const selectedFilterContainer = document.querySelector(".selected-filters");
+    const loadingScreen = document.getElementById("loading-screen");
 
     let paginationContainer = document.querySelector(".pagination-container");
     if (!paginationContainer) {
@@ -48,7 +49,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             const maxPrice = params.get("maxPrice") || "";
             let currentPage = parseInt(params.get("page")) || 1;
             const productsPerPage = 9;
-    
+            // Tampilkan loading
+            loadingScreen.style.display = "flex";
+
             let apiUrl = `http://127.0.0.1:5000/api/materials?page=${currentPage}&limit=${productsPerPage}&course=${selectedCourse}&q=${searchQuery}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
             const response = await fetch(apiUrl);
             const products = await response.json();
@@ -68,7 +71,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             const paginatedProducts = products.slice(start, start + productsPerPage);
     
             paginatedProducts.forEach(product => {
-                const productCard = document.createElement("div");
+                const productCard = document.createElement("a");
+                productCard.href = `./product-detail.html?id=${product.material_id}`;
                 productCard.className = "bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1 flex flex-col text-center border border-gray-200 w-full max-w-xs";
     
                 const imageUrl = `https://i.pinimg.com/736x/81/21/dc/8121dc48ec937ecf919bc2c54aa961a4.jpg`;
@@ -84,7 +88,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     <p class="text-sm text-gray-600 mt-2 px-4 text-justify line-clamp-3">
                         ${product.description || "Deskripsi tidak tersedia"}
                     </p>
-                    <p class="text-xl font-semibold text-blue-600 mt-auto mb-4">Rp ${product.price.toLocaleString()}</p>
+                    <p class="text-xl font-semibold text-blue-600 mt-auto mb-4">Rp${product.price.toLocaleString()}</p>
                     
                     <!-- Perbaiki Link ke Halaman Detail Produk -->
                     <a href="./product-detail.html?id=${product.material_id}">
@@ -96,6 +100,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 `;
     
                 productContainer.appendChild(productCard);
+                // Sembunyikan loading setelah data berhasil dimuat
+                loadingScreen.style.display = "none";
             });
     
             setupPagination(totalPages, currentPage);
@@ -206,35 +212,34 @@ document.addEventListener("DOMContentLoaded", async function () {
         const userRole = localStorage.getItem("role"); // Ambil role dari localStorage
         const isLoggedIn = !!userRole; // Jika ada role, berarti user login
     
-        let navbarHTML = `
-            <a href="/frontend/Pages/about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
-                Tentang Kami
-            </a>
-        `;
+        let navbarHTML = ` `;
     
         if (isLoggedIn) {
             // Jika user SUDAH login
             navbarHTML = `
-                <a href="/frontend/Pages/dashboard-${userRole}.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                <a href="../pages/dashboard-${userRole}.html" class="text-base font-medium text-blue2 hover:text-gray-900">
                     Home
                 </a>
-                <a href="/frontend/Pages/cart.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                <a href="../pages/cart.html" class="text-base font-medium text-blue2 hover:text-gray-900">
                     Keranjang
                 </a>
-                <a href="/frontend/Pages/about.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                <a href="#" class="text-base font-medium text-blue2 hover:text-gray-900">
                     Tentang Kami
                 </a>
-                <a href="/frontend/Pages/profile.html" class="text-base font-medium text-blue2 hover:text-gray-900 flex items-center">
-                    <img src="/frontend/assets/images/user-icon.svg" class="h-8 w-8 rounded-full border border-gray-300" alt="Profile">
+                <a href="../pages/profile.html" class="text-base font-medium text-blue2 hover:text-gray-900 flex items-center">
+                    <img src="../assets/images/profile.png" class="h-8 w-8 rounded-full border border-gray-300" alt="Profile">
                 </a>
             `;
         } else {
             // Jika user BELUM login
             navbarHTML += `
-                <a href="/frontend/index.html" class="text-base font-medium text-blue2 hover:text-gray-900">
+                <a href="../index.html" class="text-base font-medium text-blue2 hover:text-gray-900">
                     Home
                 </a>
-                <a href="/frontend/Pages/login.html" class="px-4 py-2 border border-transparent rounded-4xl shadow-sm text-base font-medium text-white bg-blue2 hover:bg-indigo-700">
+                <a href="#" class="text-base font-medium text-blue2 hover:text-gray-900">
+                Tentang Kami
+                </a>
+                <a href="../pages/login.html" class="px-4 py-1 border border-transparent rounded-4xl shadow-sm text-base font-medium text-white bg-blue2 hover:bg-indigo-700">
                     Login
                 </a>
             `;
@@ -325,7 +330,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Muat daftar mata kuliah saat halaman pertama kali dimuat
     fetchCourses();
-    fetchProducts();
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -336,9 +340,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const userRole = localStorage.getItem("role"); // Ambil role user dari localStorage
 
             if (userRole) {
-                window.location.href = `/frontend/Pages/dashboard-${userRole}.html`; // Arahkan ke dashboard sesuai role
+                window.location.href = `../pages/dashboard-${userRole}.html`; // Arahkan ke dashboard sesuai role
             } else {
-                window.location.href = "/frontend/index.html"; // Jika tidak ada role, arahkan ke halaman utama
+                window.location.href = "../index.html"; // Jika tidak ada role, arahkan ke halaman utama
             }
         });
     }

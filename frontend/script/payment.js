@@ -1,16 +1,18 @@
 document.addEventListener("DOMContentLoaded", async function () {
     const cartContainer = document.getElementById("shopping-cart");
     const subtotalElement = document.getElementById("subtotal");
-    const taxElement = document.getElementById("tax");
-    const shippingElement = document.getElementById("shipping");
     const totalElement = document.getElementById("total");
     const balanceElement = document.getElementById("saldo");
     const payButton = document.getElementById("pay-button");
     const transactionList = document.getElementById("transaction-list"); // Untuk daftar transaksi seller
 
     function formatCurrency(value) {
-        return "Rp" + value.toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        return "Rp" + value.toLocaleString("id-ID", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
     }
+    
 
     let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
     let userId = localStorage.getItem("user_id");
@@ -23,11 +25,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     async function fetchUserBalance() {
         try {
+            const loadingScreen = document.getElementById("loading-screen");
+            // Tampilkan loading
+            loadingScreen.style.display = "flex";
             const response = await fetch(`http://127.0.0.1:5000/api/wallets/${userId}`);
             if (!response.ok) throw new Error("Gagal mengambil saldo");
 
             const data = await response.json();
             balanceElement.textContent = formatCurrency(data.saldo);
+            // Sembunyikan loading setelah data berhasil dimuat
+            loadingScreen.style.display = "none";
         } catch (error) {
             console.error("Error fetching balance:", error);
             balanceElement.textContent = formatCurrency(0);
@@ -53,6 +60,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             displayCartItems(updatedCart);
             updatePaymentDetails(updatedCart);
+            
         } catch (error) {
             console.error("Error fetching cart details:", error);
             updatePaymentDetails([]);
@@ -74,38 +82,41 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     function updatePaymentDetails(items) {
         let subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        let tax = subtotal * 0.08;
-        let shipping = 5000;
-        let total = subtotal + tax + shipping;
+        let total = subtotal;
 
         subtotalElement.textContent = formatCurrency(subtotal);
-        taxElement.textContent = formatCurrency(tax);
-        shippingElement.textContent = formatCurrency(shipping);
         totalElement.textContent = formatCurrency(total);
     }
 
     async function handlePayment() {
-        let totalAmount = parseFloat(totalElement.textContent.replace("Rp", "").replace(/\./g, "").replace(",", "."));
-        let userBalance = parseFloat(balanceElement.textContent.replace("Rp", "").replace(/\./g, "").replace(",", "."));
-
-        if (userBalance < totalAmount) {
-            alert("Saldo tidak cukup! Silakan tambah saldo.");
-            return;
-        }
-
+        const totalAmount = parseFloat(totalElement.textContent.replace("Rp", "").replace(/\./g, "").replace(",", "."));
+        const userBalance = parseFloat(balanceElement.textContent.replace("Rp", "").replace(/\./g, "").replace(",", "."));
+    
         let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
         if (cartItems.length === 0) {
             alert("Keranjang belanja kosong!");
             return;
         }
-
-        let formattedCart = cartItems.map(item => ({
+    
+        const isBalanceEnough = userBalance >= totalAmount;
+    
+        if (!isBalanceEnough) {
+            const confirmPending = confirm("Saldo tidak mencukupi. Transaksi akan disimpan sebagai 'PENDING'. Lanjutkan?");
+            if (!confirmPending) return;
+        }
+    
+        const formattedCart = cartItems.map(item => ({
             id: item.id,
             quantity: item.quantity
         }));
-
+    
+        const loadingScreen2 = document.getElementById("loading-screen2");
+    
         try {
-            let response = await fetch("http://127.0.0.1:5000/api/checkout", {
+            // Tampilkan loading
+            loadingScreen2.style.display = "flex";
+    
+            const response = await fetch("http://127.0.0.1:5000/api/checkout", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -113,30 +124,40 @@ document.addEventListener("DOMContentLoaded", async function () {
                     items: formattedCart
                 })
             });
-
+    
+            const result = await response.json();
+    
             if (!response.ok) {
-                let errorText = await response.text();
-                throw new Error(`Request gagal dengan status ${response.status}: ${errorText}`);
+                throw new Error(`Request gagal dengan status ${response.status}: ${JSON.stringify(result)}`);
             }
-
-            let result = await response.json();
+    
             if (result.success) {
-                alert("Pembayaran berhasil! Saldo baru: " + formatCurrency(result.new_balance));
-
-                // **Panggil fungsi untuk mengambil transaksi seller**
-                fetchSellerTransactions();
-
                 localStorage.removeItem("cart");
-                window.location.href = "./dashboard-product.html";
+    
+                if (result.payment_status === "COMPLETED") {
+                    alert("Pembayaran berhasil! Saldo baru: " + formatCurrency(result.new_balance));
+                    window.location.href = "./dashboard-buyer.html#recent-orders";
+                } else if (result.payment_status === "PENDING") {
+                    alert("Saldo tidak cukup. Transaksi disimpan sebagai PENDING.");
+                    window.location.href = "./pending-transactions.html";
+                } else {
+                    alert("Transaksi berhasil, tapi status tidak diketahui.");
+                }
             } else {
                 alert("Pembayaran gagal: " + result.error);
             }
+    
         } catch (error) {
             console.error("Error selama pembayaran:", error);
             alert("Terjadi kesalahan saat pembayaran. Periksa konsol untuk detail lebih lanjut.");
+        } finally {
+            // Sembunyikan loading apapun hasilnya
+            loadingScreen2.style.display = "none";
         }
     }
-
+    
+    
+    
     async function fetchSellerTransactions() {
         try {
             let response = await fetch(`http://127.0.0.1:5000/api/seller_transactions/${userId}`);

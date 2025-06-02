@@ -20,7 +20,11 @@ def get_wallet_balance(user_id):
         if not wallet:
             return jsonify({"error": "Saldo tidak ditemukan"}), 404
 
-        return jsonify({"saldo": wallet["balance"]})
+        # Format balance ke Rp xxx.xxx,xx
+        balance = wallet["balance"]
+        formatted_balance = f"{balance:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+        return jsonify({"saldo": formatted_balance})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -28,6 +32,7 @@ def get_wallet_balance(user_id):
     finally:
         cursor.close()
         conn.close()
+
 
 
 # API untuk pembayaran (mengurangi saldo)

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyer Dashboard</title>
+    <link href="../src/output.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <!-- Tambahkan ini sebelum konten utama -->
+    <div id="loading-screen" class="fixed inset-0 flex justify-center items-center bg-white z-50">
+        <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
+    </div>
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="sidebar hidden md:flex md:flex-shrink-0">
+            <div class="flex flex-col w-64 bg-white border-r">
+                <div class="flex items-center justify-center h-16 border-b">
+                    <div class="h-16 flex items-center justify-center border-b">
+                      <a href="dashboard-product.html">
+                        <img 
+                          src="../assets/images/logo1.svg" 
+                          alt="Logo CS NOTESelling" 
+                          class="h-8 w-auto"
+                        />
+                      </a>
+                    </div>
+                </div>
+                <div class="flex flex-col flex-grow overflow-y-auto">
+                    <nav class="flex-1 px-2 py-4 space-y-1">
+                        <a href="dashboard-buyer.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-th-large mr-3"></i>
+                            Dashboard
+                        </a>
+                        
+                        <a href="dashboard-product.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-box mr-3"></i>
+                            Products
+                        </a>
+                        <a href="pending-transactions.html" class="flex items-center px-4 py-3 text-sm font-medium text-white bg-indigo-600 rounded-md">
+                            <i class="fas fa-clock mr-3"></i>
+                            Pending Payments
+                        </a>
+                        <a href="cart.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                            <i class="fas fa-shopping-cart mr-3"></i>
+                            My Cart
+                        </a>
+                    </nav>
+
+                        <div id="wallet-container" class="bg-white p-3 rounded-lg flex items-center justify-between">
+                            <p class="text-sm font-medium text-gray-900">Saldo Anda:</p>
+                            <p id="wallet-balance" class="text-lg font-bold text-indigo-600">Rp 0,00</p>
+                            <button id="topup-button" class="ml-4 bg-indigo-600 text-white px-4 py-1 rounded-md text-sm font-medium hover:bg-indigo-700">Isi Saldo</button>
+                        </div>
+                    
+                    <div class="p-4 border-t">
+                        <div class="flex items-center">
+                            <img class="h-10 w-10 rounded-full" src="../assets/images/profile.png" alt="User avatar">
+                            <div class="ml-3">
+                                <p class="username ext-sm font-medium text-gray-900">Username Buyer</p>
+                                <a href="profile.html" class="text-xs font-medium text-gray-500 hover:text-gray-700">
+                                    View Profile
+                                  </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex flex-col flex-1 overflow-hidden">
+            <!-- Top Navigation -->
+            <header class="bg-white shadow">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <div class="flex items-center md:hidden">
+                        <button type="button" class="text-gray-500 hover:text-gray-600 focus:outline-none">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                    </div>
+                    <div class="flex-1 flex justify-center md:justify-end">
+                        <div class="relative w-full max-w-md"></div>
+                    </div>
+                    <div class="ml-4 flex items-center md:ml-6">
+                        <button type="button" onclick="window.location.href='cart.html'"
+                            class="p-1 ml-3 rounded-full text-gray-500 hover:text-gray-600 focus:outline-none relative">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500"></span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Pending Payments Content -->
+            <main class="flex-1 overflow-y-auto p-6">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-semibold text-gray-900">Pending Payments</h1>
+                    <p class="text-sm text-gray-600">Daftar pembayaran yang masih dalam status pending.</p>
+                </div>
+
+                <!-- Pending Payments Table -->
+                <div class="bg-white rounded-xl shadow overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-semibold text-gray-900">Pending Transactions</h2>
+                            <button id="bayarPendingBtn" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
+                                Bayar Semua Transaksi
+                            </button>
+                        </div>                       
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Transaction ID</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Seller</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pending-transactions" class="bg-white divide-y divide-gray-200">
+                                    <!-- Data akan diisi oleh JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+    </div>
+    <!-- MODAL Tambah Saldo -->
+    <div id="topup-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h2 class="text-xl font-bold mb-4">Tambah Saldo</h2>
+            <p class="text-gray-600 mb-2">Masukkan jumlah saldo yang ingin ditambahkan:</p>
+            <input type="number" id="topup-amount" class="w-full border p-2 rounded-md mb-4" placeholder="Misal: 50000">
+            <div class="flex justify-end">
+                <button id="close-modal" class="px-4 py-2 bg-gray-300 rounded-md mr-2">Batal</button>
+                <button id="confirm-topup" class="px-4 py-2 bg-green-500 text-white rounded-md">Tambah</button>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+<script src="../script/pending-transactions.js" defer></script>
+</html>

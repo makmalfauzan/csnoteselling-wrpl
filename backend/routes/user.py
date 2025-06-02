@@ -2,42 +2,81 @@ from flask import Blueprint, jsonify, request
 from db_connection import get_db_connection
 from flask_cors import CORS
 
-user_bp = Blueprint('user', __name__)
-CORS(user_bp, resources={r"/api/*": {"origins": "*"}})
+user_bp = Blueprint('user', __name__, url_prefix='/api/user')
+CORS(user_bp, resources={r"/api/user/*": {"origins": "*"}})
 
-# API untuk mendapatkan data profil pengguna
 @user_bp.route('/profile', methods=['GET'])
 def get_profile():
-    username = request.args.get("username")  # Ambil username dari request
+    user_id = request.args.get("user_id")
+
+    if not user_id:
+        return jsonify({"error": "User ID is required"}), 400
 
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    # Query untuk mengambil informasi user dari tabel users dan profiles
-    cursor.execute("""
-        SELECT 
-            users.username, users.email, users.role,
-            profiles.full_name, profiles.bio, profiles.profile_picture
-        FROM users
-        JOIN profiles ON users.user_id = profiles.user_id
-        WHERE users.username = %s
-    """, (username,))
-
+    # Ambil data user dari tabel users (termasuk created_at)
+    cursor.execute("SELECT username, email, role, created_at FROM users WHERE user_id = %s", (user_id,))
     user = cursor.fetchone()
 
     if not user:
-        return jsonify({"error": "User not found"}), 404
+        return jsonify({"error": "User not found"}), 404  # Jika user tidak ada
 
-    # Query untuk aktivitas terbaru pengguna
-    cursor.execute("SELECT action, timestamp FROM activity WHERE username = %s ORDER BY timestamp DESC LIMIT 5", (username,))
-    activity = cursor.fetchall()
+    # Cek apakah user sudah punya profil
+    cursor.execute("SELECT full_name, bio FROM profiles WHERE user_id = %s", (user_id,))
+    profile = cursor.fetchone()
 
+    if not profile:
+        # Jika belum ada, buat profil kosong
+        cursor.execute("INSERT INTO profiles (user_id, full_name, bio) VALUES (%s, '', '')", (user_id,))
+        conn.commit()
+
+        # Set profil kosong untuk dikembalikan
+        profile = {"full_name": "", "bio": ""}
+
+    # Gabungkan data user dan profil
     return jsonify({
         "username": user["username"],
         "email": user["email"],
         "role": user["role"],
-        "full_name": user["full_name"],
-        "bio": user["bio"],
-        "profile_picture": user["profile_picture"],
-        "recent_activity": activity
+        "full_name": profile["full_name"],
+        "bio": profile["bio"],
+        "created_at": user["created_at"]  # Tambahkan created_at ke response
     })
+
+@user_bp.route('/update-profile', methods=['PUT'])
+def update_profile():
+    data = request.json
+    user_id = data.get("user_id")
+    full_name = data.get("full_name")
+    bio = data.get("bio")
+
+    if not user_id or not full_name or not bio:
+        return jsonify({"error": "Semua field harus diisi"}), 400
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Pastikan user ada di tabel users
+    cursor.execute("SELECT * FROM users WHERE user_id = %s", (user_id,))
+    user = cursor.fetchone()
+    if not user:
+        return jsonify({"error": "User tidak ditemukan"}), 404
+
+    # Perbarui atau buat data di tabel profiles
+    cursor.execute("SELECT * FROM profiles WHERE user_id = %s", (user_id,))
+    profile = cursor.fetchone()
+
+    if profile:
+        cursor.execute(
+            "UPDATE profiles SET full_name = %s, bio = %s WHERE user_id = %s",
+            (full_name, bio, user_id),
+        )
+    else:
+        cursor.execute(
+            "INSERT INTO profiles (user_id, full_name, bio) VALUES (%s, %s, %s)",
+            (user_id, full_name, bio),
+        )
+
+    conn.commit()
+    return jsonify({"message": "Profil berhasil diperbarui"})

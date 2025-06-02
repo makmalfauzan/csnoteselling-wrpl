@@ -5,41 +5,55 @@ document.addEventListener("DOMContentLoaded", function () {
     if (loginForm) {
         loginForm.addEventListener("submit", async function (e) {
             e.preventDefault();
+            
+            const loadingScreen = document.getElementById("loading-screen2");
+            loadingScreen.style.display = "flex"; // Tampilkan loading
+    
             const username = document.getElementById("name").value;
             const password = document.getElementById("password").value;
-
-            const response = await fetch("http://127.0.0.1:5000/api/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, password })
-            });
-
-            const result = await response.json();
-            console.log("Hasil Login:", result);
-
-            if (response.ok) {
-                alert("Login Berhasil!");
-
-                // ✅ Simpan user_id, username, dan role di localStorage
-                localStorage.setItem("user_id", result.user_id);  // Simpan user_id
-                localStorage.setItem("username", result.username);
-                localStorage.setItem("role", result.role);
-
-                // Redirect ke dashboard sesuai role
-                if (result.role.toLowerCase() === "seller") {  
-                    window.location.href = "dashboard-seller.html";
+    
+            try {
+                const response = await fetch("http://127.0.0.1:5000/api/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
+    
+                const result = await response.json();
+                console.log("Hasil Login:", result);
+    
+                if (response.ok) {
+                    alert("Login Berhasil!");
+    
+                    localStorage.setItem("user_id", result.user_id);
+                    localStorage.setItem("username", result.username);
+                    localStorage.setItem("role", result.role);
+    
+                    if (result.role.toLowerCase() === "seller") {
+                        window.location.href = "dashboard-seller.html";
+                    } else {
+                        window.location.href = "dashboard-buyer.html";
+                    }
                 } else {
-                    window.location.href = "dashboard-buyer.html";
+                    alert(result.error || "Login gagal");
                 }
-            } else {
-                alert(result.error || "Login gagal");
+            } catch (error) {
+                console.error("Login error:", error);
+                alert("Terjadi kesalahan saat login.");
+            } finally {
+                loadingScreen.style.display = "none"; // Sembunyikan loading, apapun hasilnya
             }
         });
     }
+    
 
     if (registerForm) {
         registerForm.addEventListener("submit", async function (e) {
             e.preventDefault();
+
+            const loadingScreen = document.getElementById("loading-screen2");
+            loadingScreen.style.display = "flex"; // Tampilkan loading
+
             const username = document.getElementById("name").value;
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
@@ -61,10 +75,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (response.ok) {
                 alert("Registrasi Berhasil! Silakan Login.");
+                loadingScreen.style.display = "none"; // Sembunyikan loading, apapun hasilnya
                 window.location.href = "login.html";
             } else {
                 alert(result.error || "Registrasi gagal");
-            }
+                loadingScreen.style.display = "none"; // Sembunyikan loading, apapun hasilnya
+            } 
         });
     }
 });

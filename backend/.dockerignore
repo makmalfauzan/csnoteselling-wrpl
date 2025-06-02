@@ -1,0 +1,17 @@
+# backend/.dockerignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.coverage
+.pytest_cache/
+.DS_Store
+.git/
+.gitignore
+README.md
+.env.example
+venv/
+env/
+.venv/

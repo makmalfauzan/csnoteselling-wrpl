@@ -11,10 +11,14 @@ def get_recommended():
     
     sql = """
     SELECT
-        materi,
-        title,
-        price
-    FROM materials
+        m.material_id,
+        m.materi,
+        m.title,
+        m.price,
+        u.username AS seller_username
+    FROM materials m
+    LEFT JOIN users u ON m.seller_id = u.user_id
+    WHERE u.role = 'SELLER'
     ORDER BY RAND()
     LIMIT 4
     """

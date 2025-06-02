@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Detail - Modern E-commerce</title>
-    <link href="/frontend/src/output.css" rel="stylesheet">
+    <link href="../src/output.css" rel="stylesheet">
     <style>
         @layer utilities {
         .bg-blue1 {
@@ -48,13 +48,17 @@
     </style>
 </head>
 <body class="bg-gray-50">
+    <!-- Tambahkan ini sebelum konten utama -->
+    <div id="loading-screen" class="fixed inset-0 flex justify-center items-center bg-white z-50">
+        <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
+    </div>
     <!-- Header -->
     <header class="sticky top-0 z-50 bg-white shadow-sm py-1">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-2">
                 <div class="flex items-center">
-                    <a href="/frontend/index.html">
-                        <img src="/frontend/assets/images/logo1.svg" alt="Logo" class="h-10 mx-auto">
+                    <a href="../index.html">
+                        <img src="../assets/images/logo1.svg" alt="Logo" class="h-10 mx-auto">
                     </a>
                 </div>
                 <!-- Navbar Dinamis -->
@@ -69,7 +73,7 @@
 
          <!-- Tombol Kembali -->
          <div class="mb-6">
-            <a href="./dashboard-product.html" class="flex items-center text-blue-600 hover:text-blue-800">
+            <a href="dashboard-product.html" class="flex items-center text-blue-600 hover:text-blue-800">
                 <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
                 </svg>
@@ -96,9 +100,9 @@
 
                     <!-- Price & Discount -->
                     <div class="mb-4 flex items-center">
-                        <span class="text-gray-500 line-through original-price">original-price</span>
-                        <span id="product-price" class="text-3xl font-bold text-gray-800 ml-2 product-price">Rp 1.000</span>
-                        <span class="text-sm text-green-500 ml-2 discount-percentage">discount-percentage</span>
+                        <!-- <span class="text-gray-500 line-through original-price">original-price</span> -->
+                        <span id="product-price" class="text-3xl font-bold text-gray-800 ml-2 product-price">Rp xxx,xx</span>
+                        <!-- <span class="text-sm text-green-500 ml-2 discount-percentage">discount-percentage</span> -->
                     </div>
 
                     <!-- Description -->
@@ -106,14 +110,14 @@
 
                     <!-- Buttons -->
                     <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-                        <a href="/frontend/Pages/cart.html">
+                        <a href="#">
                         <button id="add-to-cart" class="bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                             </svg>
                             Add to Cart
                         </button></a>
-                        <button class="bg-gray-200 text-gray-800 py-3 px-6 rounded-lg font-semibold hover:bg-gray-300 transition duration-300 flex items-center justify-center">
+                        <button id="buy-now" class="bg-gray-200 text-gray-800 py-3 px-6 rounded-lg font-semibold hover:bg-gray-300 transition duration-300 flex items-center justify-center">
                             Buy Now
                         </button>
                     </div>
@@ -124,7 +128,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                             </svg>
-                            <span class="text-gray-600">Free shipping on orders over $50</span>
+                            <span class="text-gray-600">Free shipping on orders over Rp1.000.000</span>
                         </div>
                         <div class="flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -236,7 +240,7 @@
                 <div class="space-y-8 xl:col-span-1">
                     <div class="flex items-center">
                         <a href="#">
-                            <img src="/frontend/assets/images/logo1.svg" alt="Logo" class="h-12 mx-auto">
+                            <img src="../assets/images/logo1.svg" alt="Logo" class="h-12 mx-auto">
                         </a>
                     </div>
                     <p class="text-gray-300 text-base">
@@ -392,5 +396,5 @@
         </div>
     </footer>
 </body>
-<script src="/frontend/script/product-detail.js"></script>
+<script src="../script/product-detail.js"></script>
 </html>
