@@ -20,11 +20,6 @@ if DATABASE_URL:
 else:
     raise ValueError("DATABASE_URL not found!")
 
-# Koneksi ke database
-def get_db_connection():
-    conn = mysql.connector.connect(**db_config)
-    return conn
-
 # Penanganan error
 def get_db_connection():
     try:

@@ -17,7 +17,7 @@ async function loadWalletBalance() {
                 <div class="bg-white p-4 w-full rounded-xl flex flex-col items-center">
                     <p class="text-sm font-medium text-gray-900">Saldo Anda:</p>
                     <p id="wallet-balance" class="text-xl font-bold text-indigo-600">Rp${(data.saldo)}</p>
-                    <button id="topup-button" class="ml-4 bg-indigo-600 text-white px-4 py-1 rounded-md text-sm font-medium hover:bg-indigo-700">Isi Saldo</button>
+                    <button id="topup-button" class="ml-4 bg-indigo-600 text-white px-4 py-1 rounded-md text-sm font-medium hover:bg-indigo-700">Withdraw</button>
                 </div>`;
 
             // Menambahkan event listener untuk tombol "Isi Saldo" setelah elemen terbuat

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Products</title>
-    <link href="/frontend/src/output.css" rel="stylesheet">
+    <link href="../src/output.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -24,7 +24,7 @@
             <div class="flex flex-col w-64 bg-white border-r">
                 <div class="flex items-center justify-center h-16 border-b">
                     <a href="dashboard-product.html">
-                        <img src="/frontend/assets/images/logo1.svg" alt="Logo CS NOTESelling" class="h-8 w-auto"/>
+                        <img src="../assets/images/logo1.svg" alt="Logo CS NOTESelling" class="h-8 w-auto"/>
                     </a>
                 </div>
                 <nav class="flex-1 px-2 py-4 space-y-1">
@@ -41,12 +41,17 @@
                         Upload Files
                     </a>
                 </nav>
+                <div id="wallet-container" class="bg-white p-3 rounded-lg flex items-center justify-between">
+                        <p class="text-sm font-medium text-gray-900">Saldo Anda:</p>
+                        <p id="wallet-balance" class="text-lg font-bold text-indigo-600">Rp 0,00</p>
+                        <button id="topup-button" class="ml-4 bg-indigo-600 text-white px-4 py-1 rounded-md text-sm font-medium hover:bg-indigo-700">Isi Saldo</button>
+                    </div>
                 <div class="p-4 border-t">
                     <div class="flex items-center">
-                        <img class="h-10 w-10 rounded-full" src="/frontend/assets/images/profile.png" alt="User avatar">
+                        <img class="h-10 w-10 rounded-full" src="../assets/images/profile.png" alt="User avatar">
                         <div class="ml-3">
                             <p class=" username text-sm font-medium text-gray-900">John Seller</p>
-                            <a href="/frontend/Pages/profile.html" class="text-xs font-medium text-gray-500 hover:text-gray-700">
+                            <a href="../Pages/profile.html" class="text-xs font-medium text-gray-500 hover:text-gray-700">
                                 View Profile
                               </a>
                         </div>
@@ -92,5 +97,5 @@
         </div>
     </div>
 </body>
-<script src="/frontend/script/myproduct.js" defer></script>
+<script src="../script/myproduct.js" defer></script>
 </html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil Pengguna</title>
-    <link href="/frontend/src/output.css" rel="stylesheet">
+    <link href="../src/output.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
     <!-- Tambahkan ini sebelum konten utama -->
@@ -20,7 +20,7 @@
                 <div class="bg-white rounded-lg shadow-md p-6 text-center">
                     <div class="flex flex-col items-center">
                         <!-- Avatar -->
-                        <img id="profile_picture" src="/frontend/assets/images/profile.png" alt="User Profile"
+                        <img id="profile_picture" src="../assets/images/profile.png" alt="User Profile"
                             class="h-24 w-24 rounded-full border-2 border-gray-300 mb-3">
                         <h2 id="user_name" class="text-lg font-bold">John Doe</h2>
                         <p id="member-since" class="text-gray-500 text-sm">Member sejak...</p>
@@ -29,13 +29,7 @@
 
                     <!-- Menu Navigasi -->
                     <div class="mt-6">
-                        <button id="goto-cart" class="w-full flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
-                            <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" stroke-width="2" 
-                                viewBox="0 0 24 24">
-                                <path d="M5 12h14M12 5l7 7-7 7"></path>
-                            </svg>
-                            <span>Wishlist</span>
-                        </button>
+                        
                         <button id="logout-button" class="w-full flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-100 rounded-lg">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" 
                                 viewBox="0 0 24 24">
@@ -113,6 +107,6 @@
     </div>
 
 </body>
-<script src="/frontend/script/profile.js"></script>
+<script src="../script/profile.js"></script>
 
 </html>

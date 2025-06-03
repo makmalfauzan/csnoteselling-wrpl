@@ -1,0 +1,88 @@
+name: Application CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # Job untuk Backend (Python) - Contoh Placeholder
+  test-backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend # Set working directory untuk backend
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10'] # Versi Python yang ingin diuji
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip' # Cache dependensi pip
+        cache-dependency-path: backend/requirements.txt # Path ke requirements.txt
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Python Linter (e.g., Flake8 or Pylint)
+      run: | # Ganti dengan perintah linter Python-mu
+        # pip install flake8
+        # flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        echo "Python linter placeholder"
+
+    - name: Run Python tests (e.g., Pytest)
+      run: | # Ganti dengan perintah tes Python-mu
+        # pip install pytest pytest-cov
+        # pytest --cov=. --cov-report=xml
+        echo "Python tests placeholder"
+
+  # Job untuk Frontend (Node.js)
+  test-frontend:
+    runs-on: ubuntu-latest
+    needs: [] # Bisa dibuat 'needs: test-backend' jika mau backend sukses dulu
+    defaults:
+      run:
+        working-directory: ./frontend # Set working directory untuk frontend
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x] # Versi Node.js yang ingin diuji
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json # Path ke package-lock.json
+
+    - name: Install frontend dependencies
+      run: npm ci # Menggunakan npm ci lebih disarankan di CI
+
+    - name: Run frontend linter
+      run: npm run lint
+
+    # - name: Check frontend formatting
+    #   run: npm run format:check
+
+    - name: Run frontend tests with coverage
+      run: npm run test:ci # Skrip yang menjalankan Jest dengan cakupan
+
+    # Opsional: Unggah laporan cakupan frontend
+    # - name: Upload frontend coverage to Codecov
+    #   uses: codecov/codecov-action@v3
+    #   with:
+    #     token: ${{ secrets.CODECOV_TOKEN_FRONTEND }} # Gunakan token berbeda jika perlu
+    #     files: ./coverage/lcov.info
+    #     working-directory: ./frontend # Pastikan ini ada jika file path relatif dari root repo
+    #     flags: frontend
+    #     name: codecov-frontend
