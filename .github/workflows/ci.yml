@@ -1,88 +1,28 @@
-name: Application CI
+name: Frontend CI
 
 on:
   push:
     branches: [ main, develop ]
-  pull_request:
     branches: [ main ]
 
 jobs:
-  # Job untuk Backend (Python) - Contoh Placeholder
-  test-backend:
+  lint-test-build-frontend:
+    name: Lint, Test & Build Frontend
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./backend # Set working directory untuk backend
-    services:
-      mysql:
-        image: mysql:8.0       # versi MySQL yang mau kamu pakai
-        env:
-          MYSQL_ROOT_PASSWORD: rootpassword
-          MYSQL_DATABASE: test_db   # nama database untuk testing
-          MYSQL_USER: testuser
-          MYSQL_PASSWORD: testpass
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-  
-    strategy:
-      matrix:
-        python-version: ['3.10'] # Versi Python yang ingin diuji
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
-        cache: 'pip' # Cache dependensi pip
-        cache-dependency-path: backend/requirements.txt # Path ke requirements.txt
-
-    - name: Wait for MySQL to be ready
-      run: |
-        for i in {1..30}; do
-          mysql -h 127.0.0.1 -u testuser -ptestpass -e "SELECT 1" && break
-          echo "Waiting for MySQL..."
-          sleep 2
-        done
-
-    - name: Install Python dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-
-    - name: Run Python Linter (e.g., Flake8 or Pylint)
-      run: |
-        pip install flake8
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-
-    - name: Run Python tests (e.g., Pytest)
-      env:
-        DATABASE_URL: ${{secrets.DATABASE_URL}}
-      run: |
-        pip install pytest pytest-cov
-        pytest --cov=. --cov-report=xml
-
-  # Job untuk Frontend (Node.js)
-  test-frontend:
-    runs-on: ubuntu-latest
-    needs: [] # Bisa dibuat 'needs: test-backend' jika mau backend sukses dulu
+    
     defaults:
       run:
         working-directory: ./frontend # Set working directory untuk frontend
+
     strategy:
       matrix:
-        node-version: [18.x, 20.x] # Versi Node.js yang ingin diuji
+        node-version: [18.x, 20.x] 
+    
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Setup Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
@@ -96,15 +36,7 @@ jobs:
       run: npm run lint
 
     - name: Check frontend formatting
-      run: npm run format:check
+      run: npm run format:check # Mengaktifkan kembali check formatting
 
     - name: Run frontend tests with coverage
       run: npm run test:ci # Skrip yang menjalankan Jest dengan cakupan
-
-    - name: Upload Python coverage to Codecov
-      uses: codecov/codecov-action@v3
-      with:
-        token: ${{secrets.CODECOV_TOKEN_BACKEND}} # Make sure to set this secret
-        files: ./backend/coverage.xml # Adjust path if needed
-        flags: backend
-        name: codecov-backend
