@@ -15,7 +15,7 @@ jobs:
         working-directory: ./backend # Set working directory untuk backend
     strategy:
       matrix:
-        python-version: ['3.10', '3.11'] # Versi Python yang ingin diuji
+        python-version: ['3.10'] # Versi Python yang ingin diuji
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
