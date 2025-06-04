@@ -182,7 +182,7 @@ async function loadWalletBalance() {
 }
 
 // Fungsi format saldo ke format Rp xxx.xxx,xx
-function formatCurrency(amount) {
+function formatCurrencyy(amount) {
     return new Intl.NumberFormat("id-ID", {
         style: "decimal",
         minimumFractionDigits: 2,
@@ -298,7 +298,7 @@ function renderOrdersTable() {
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${order.transaction_id}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${order.seller_username}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${order.title}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatCurrency(order.amount)}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatCurrencyy(order.amount)}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${new Date(order.transaction_date).toLocaleString("id-ID")}</td>
             <td class="px-6 py-4 whitespace-nowrap">
                 <span class="${statusClass}">${order.payment_status}</span>
