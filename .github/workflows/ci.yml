@@ -39,7 +39,7 @@ jobs:
 
     - name: Run Python tests (e.g., Pytest)
       env:
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        DATABASE_URL: ${{secrets.DATABASE_URL}}
       run: |
         pip install pytest pytest-cov
         pytest --cov=. --cov-report=xml
@@ -80,7 +80,7 @@ jobs:
     - name: Upload Python coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
-        token: ${{ secrets.CODECOV_TOKEN_BACKEND }} # Make sure to set this secret
+        token: ${{secrets.CODECOV_TOKEN_BACKEND}} # Make sure to set this secret
         files: ./backend/coverage.xml # Adjust path if needed
         flags: backend
         name: codecov-backend
