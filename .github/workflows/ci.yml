@@ -13,6 +13,22 @@ jobs:
     defaults:
       run:
         working-directory: ./backend # Set working directory untuk backend
+    services:
+      mysql:
+        image: mysql:8.0       # versi MySQL yang mau kamu pakai
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: test_db   # nama database untuk testing
+          MYSQL_USER: testuser
+          MYSQL_PASSWORD: testpass
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+  
     strategy:
       matrix:
         python-version: ['3.10'] # Versi Python yang ingin diuji
@@ -26,6 +42,14 @@ jobs:
         python-version: ${{ matrix.python-version }}
         cache: 'pip' # Cache dependensi pip
         cache-dependency-path: backend/requirements.txt # Path ke requirements.txt
+
+    - name: Wait for MySQL to be ready
+      run: |
+        for i in {1..30}; do
+          mysql -h 127.0.0.1 -u testuser -ptestpass -e "SELECT 1" && break
+          echo "Waiting for MySQL..."
+          sleep 2
+        done
 
     - name: Install Python dependencies
       run: |
