@@ -75,7 +75,7 @@ def get_materials():
 
 
 # **Endpoint untuk mendapatkan detail produk berdasarkan material_id**
-@materials_bp.route('/<int:material_id>', methods=['GET'])
+@materials_bp.route('/materials/<int:material_id>', methods=['GET'])
 def get_material_detail(material_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
