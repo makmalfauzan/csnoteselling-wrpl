@@ -7,7 +7,7 @@ materials_bp = Blueprint('materials', __name__)
 CORS(materials_bp)
 
 # **Endpoint untuk mendapatkan daftar produk dengan filter**
-@materials_bp.route('/', methods=['GET'])
+@materials_bp.route('/materials', methods=['GET'])
 def get_materials():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
