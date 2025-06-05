@@ -13,7 +13,7 @@ jobs:
     
     defaults:
       run:
-        working-directory: ./frontend # Set working directory untuk frontend
+        working-directory: ./frontend
 
     strategy:
       matrix:
@@ -28,16 +28,19 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: frontend/package-lock.json # Path ke package-lock.json
+        cache-dependency-path: frontend/package-lock.json
 
     - name: Install frontend dependencies
-      run: npm ci # Menggunakan npm ci lebih disarankan di CI
+      run: npm ci
+
+    - name: Check installed dependencies
+      run: ls node_modules
 
     - name: Run frontend linter
       run: npm run lint
 
     - name: Check frontend formatting
-      run: npm run format:check # Mengaktifkan kembali check formatting
+      run: npm run format:check
 
     - name: Run frontend tests with coverage
-      run: npm run test:ci # Skrip yang menjalankan Jest dengan cakupan
+      run: npm run test:ci
