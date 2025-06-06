@@ -112,7 +112,7 @@ def get_material_detail(material_id):
         cursor.close()
         conn.close()
 
-@materials_bp.route('/batch', methods=['GET'])
+@materials_bp.route('/materials/batch', methods=['GET'])
 def get_multiple_materials():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
