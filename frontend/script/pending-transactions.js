@@ -1,11 +1,11 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const username = localStorage.getItem('username') || 'User';
-    
+
   // Pilih semua elemen dengan class "username"
   const usernameElements = document.querySelectorAll('.username');
 
   // Loop semua elemen dan ubah teksnya
-  usernameElements.forEach(element => {
+  usernameElements.forEach((element) => {
     element.textContent = `Halo, ${username}!`;
   });
 });
@@ -17,12 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('bayarPendingBtn')?.addEventListener('click', async () => {
     const userId = localStorage.getItem('user_id');
     if (!userId) return alert('User ID tidak ditemukan.');
-        
+
     try {
       const response = await fetch('http://127.0.0.1:5000/api/pay_pending_transactions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: userId })
+        body: JSON.stringify({ user_id: userId }),
       });
 
       const result = await response.json();
@@ -94,7 +94,7 @@ async function loadPendingTransactions() {
     const tableBody = document.getElementById('pending-transactions');
     tableBody.innerHTML = '';
 
-    transactions.forEach(transaction => {
+    transactions.forEach((transaction) => {
       const row = document.createElement('tr');
       row.innerHTML = `
                 <td class="px-6 py-4 text-sm text-gray-900">${transaction.transaction_id}</td>
@@ -110,7 +110,6 @@ async function loadPendingTransactions() {
             `;
       tableBody.appendChild(row);
     });
-
   } catch (error) {
     console.error('Gagal load transaksi:', error);
   }
@@ -125,7 +124,7 @@ async function payNowSingle(transactionId) {
     const response = await fetch('http://127.0.0.1:5000/api/pay_pending_transactions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: userId, transaction_id: transactionId }) // Kirim spesifik ID
+      body: JSON.stringify({ user_id: userId, transaction_id: transactionId }), // Kirim spesifik ID
     });
 
     const result = await response.json();
@@ -136,7 +135,6 @@ async function payNowSingle(transactionId) {
     } else {
       alert('Gagal membayar transaksi: ' + result.error);
     }
-
   } catch (error) {
     console.error('Error saat bayar:', error);
     alert('Terjadi kesalahan saat membayar transaksi.');
@@ -170,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
       let response = await fetch('http://127.0.0.1:5000/api/wallets/topup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: userId, amount: topupAmount })
+        body: JSON.stringify({ user_id: userId, amount: topupAmount }),
       });
       let result = await response.json();
       if (response.ok && result.success) {

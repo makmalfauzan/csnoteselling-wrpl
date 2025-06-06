@@ -5,30 +5,30 @@ document.addEventListener('DOMContentLoaded', function () {
   if (loginForm) {
     loginForm.addEventListener('submit', async function (e) {
       e.preventDefault();
-            
+
       const loadingScreen = document.getElementById('loading-screen2');
       loadingScreen.style.display = 'flex'; // Tampilkan loading
-    
+
       const username = document.getElementById('name').value;
       const password = document.getElementById('password').value;
-    
+
       try {
         const response = await fetch('http://127.0.0.1:5000/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password })
+          body: JSON.stringify({ username, password }),
         });
-    
+
         const result = await response.json();
         console.log('Hasil Login:', result);
-    
+
         if (response.ok) {
           alert('Login Berhasil!');
-    
+
           localStorage.setItem('user_id', result.user_id);
           localStorage.setItem('username', result.username);
           localStorage.setItem('role', result.role);
-    
+
           if (result.role.toLowerCase() === 'seller') {
             window.location.href = 'dashboard-seller.html';
           } else {
@@ -45,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
-    
 
   if (registerForm) {
     registerForm.addEventListener('submit', async function (e) {
@@ -68,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const response = await fetch('http://127.0.0.1:5000/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password, role })
+        body: JSON.stringify({ username, email, password, role }),
       });
 
       const result = await response.json();
@@ -80,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
       } else {
         alert(result.error || 'Registrasi gagal');
         loadingScreen.style.display = 'none'; // Sembunyikan loading, apapun hasilnya
-      } 
+      }
     });
   }
 });

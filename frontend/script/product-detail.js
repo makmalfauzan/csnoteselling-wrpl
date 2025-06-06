@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const existingItem = cart.find(item => item.id === productId);
+    const existingItem = cart.find((item) => item.id === productId);
 
     if (existingItem) {
       alert('Produk ini sudah ada di keranjang Anda!');
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const existingItem = cart.find(item => item.id === productId);
+    const existingItem = cart.find((item) => item.id === productId);
 
     if (existingItem) {
       // Jika produk sudah ada di keranjang, langsung arahkan ke halaman pembayaran
@@ -198,4 +198,3 @@ document.addEventListener('DOMContentLoaded', function () {
     window.location.href = 'dashboard-seller.html'; // Redirect ke dashboard seller
   }
 });
-

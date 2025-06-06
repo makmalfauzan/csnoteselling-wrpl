@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', async function () {
       // Set role dari localStorage
       const userRole = localStorage.getItem('role') || 'User';
       roleElement.textContent = `Sebagai ${userRole}`;
-
     } catch (error) {
       console.error('❌ Error fetching user data:', error);
       alert('Terjadi kesalahan saat mengambil data pengguna.');
@@ -53,8 +52,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   fetchUserData();
 });
-
-
 
 document.addEventListener('DOMContentLoaded', async function () {
   const logoutButton = document.querySelector('#logout-button');
@@ -74,17 +71,17 @@ document.addEventListener('DOMContentLoaded', async function () {
       loadingScreen.style.display = 'flex';
       const url = `http://127.0.0.1:5000/api/user/profile?user_id=${encodeURIComponent(userId)}`;
       console.log('📡 Mengirim request ke:', url); // Debugging
-    
+
       const response = await fetch(url);
       console.log('🔄 Status Response:', response.status); // Debugging
-    
+
       if (!response.ok) {
         throw new Error(`Gagal mengambil data profil: ${response.status}`);
       }
-    
+
       const data = await response.json();
       console.log('✅ Data profil diterima:', data); // Debugging
-    
+
       // Periksa apakah data profil kosong, jika iya, isi dengan nilai default
       if (!data.full_name) {
         data.full_name = 'Nama belum diisi';
@@ -92,15 +89,16 @@ document.addEventListener('DOMContentLoaded', async function () {
       if (!data.bio) {
         data.bio = 'Bio belum diisi';
       }
-    
+
       // Update elemen di halaman profil
       document.getElementById('username').textContent = data.username || 'Unknown User';
       document.getElementById('email').textContent = data.email || 'No Email';
       document.getElementById('full_name').textContent = data.full_name;
       document.getElementById('bio').textContent = data.bio;
-    
+
       // Gunakan gambar default jika profile picture tidak tersedia
-      document.getElementById('profile_picture').src = data.profile_picture || '../assets/images/profile.png';
+      document.getElementById('profile_picture').src =
+        data.profile_picture || '../assets/images/profile.png';
       // Sembunyikan loading setelah data berhasil dimuat
       loadingScreen.style.display = 'none';
     } catch (error) {
@@ -108,7 +106,6 @@ document.addEventListener('DOMContentLoaded', async function () {
       alert('Terjadi kesalahan saat mengambil data profil.');
     }
   }
-    
 
   if (logoutButton) {
     logoutButton.addEventListener('click', function () {
@@ -135,7 +132,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
-
 
 document.addEventListener('DOMContentLoaded', async function () {
   const editProfileButton = document.getElementById('edit-profile');
@@ -176,7 +172,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         body: JSON.stringify({
           user_id: userId,
           full_name: newFullName,
-          bio: newBio
+          bio: newBio,
         }),
       });
 

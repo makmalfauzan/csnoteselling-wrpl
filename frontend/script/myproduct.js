@@ -16,7 +16,7 @@ async function loadWalletBalance() {
       walletContainer.innerHTML = `
                 <div class="bg-white p-4 w-full rounded-xl flex flex-col items-center">
                     <p class="text-sm font-medium text-gray-900">Saldo Anda:</p>
-                    <p id="wallet-balance" class="text-xl font-bold text-indigo-600">Rp${(data.saldo)}</p>
+                    <p id="wallet-balance" class="text-xl font-bold text-indigo-600">Rp${data.saldo}</p>
                     <button id="topup-button" class="ml-4 bg-indigo-600 text-white px-4 py-1 rounded-md text-sm font-medium hover:bg-indigo-700">Withdraw</button>
                 </div>`;
 
@@ -43,13 +43,13 @@ document.addEventListener('DOMContentLoaded', function () {
   // Tampilkan loading
   loadingScreen.style.display = 'flex';
   fetch(`http://127.0.0.1:5000/api/materials/seller/${sellerId}`)
-    .then(response => {
+    .then((response) => {
       if (!response.ok) {
         throw new Error('Gagal mengambil data produk');
       }
       return response.json();
     })
-    .then(data => {
+    .then((data) => {
       const products = data.products; // Ambil array "products"
 
       if (!Array.isArray(products)) {
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const productList = document.getElementById('product-list');
       productList.innerHTML = '';
 
-      products.forEach(product => {
+      products.forEach((product) => {
         const row = `
                 <tr>
                     <td class="px-6 py-4">${product.title}</td>
@@ -76,20 +76,19 @@ document.addEventListener('DOMContentLoaded', function () {
         loadingScreen.style.display = 'none';
       });
     })
-    .catch(error => {
+    .catch((error) => {
       console.error('Error fetching products:', error);
     });
-
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const username = localStorage.getItem('username') || 'User';
-    
+
   // Pilih semua elemen dengan class "username"
   const usernameElements = document.querySelectorAll('.username');
 
   // Loop semua elemen dan ubah teksnya
-  usernameElements.forEach(element => {
+  usernameElements.forEach((element) => {
     element.textContent = `Halo, ${username}!`;
   });
 });

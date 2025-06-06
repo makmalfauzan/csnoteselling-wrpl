@@ -5,12 +5,14 @@ document.addEventListener('DOMContentLoaded', async function () {
   const clearCartButton = document.getElementById('clear-cart'); // Tombol clear cart
 
   function formatCurrency(value) {
-    return 'Rp ' + value.toLocaleString('id-ID', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
+    return (
+      'Rp ' +
+      value.toLocaleString('id-ID', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+    );
   }
-    
 
   let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -26,18 +28,18 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     try {
-            
-      const materialIds = cartItems.map(item => item.id).join(',');
+      const materialIds = cartItems.map((item) => item.id).join(',');
       const response = await fetch(`http://127.0.0.1:5000/api/materials/batch?ids=${materialIds}`);
-            
+
       const materials = await response.json();
-      let updatedCart = cartItems.map(item => {
-        let material = materials.find(mat => mat.material_id == item.id);
-        return material ? { ...material, quantity: item.quantity } : null;
-      }).filter(item => item !== null);
+      let updatedCart = cartItems
+        .map((item) => {
+          let material = materials.find((mat) => mat.material_id == item.id);
+          return material ? { ...material, quantity: item.quantity } : null;
+        })
+        .filter((item) => item !== null);
 
       updateCartUI(updatedCart);
-            
     } catch (error) {
       console.error('Error fetching cart details:', error);
       updateCartUI([]);
@@ -107,7 +109,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     cartContainer.innerHTML = cartHTML;
 
     // Tambahkan event listener untuk remove button
-    document.querySelectorAll('.remove-btn').forEach(btn => {
+    document.querySelectorAll('.remove-btn').forEach((btn) => {
       btn.addEventListener('click', function () {
         const index = this.dataset.index;
         removeItem(index);

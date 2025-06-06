@@ -7,12 +7,14 @@ document.addEventListener('DOMContentLoaded', async function () {
   const transactionList = document.getElementById('transaction-list'); // Untuk daftar transaksi seller
 
   function formatCurrency(value) {
-    return 'Rp' + value.toLocaleString('id-ID', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
+    return (
+      'Rp' +
+      value.toLocaleString('id-ID', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+    );
   }
-    
 
   let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
   let userId = localStorage.getItem('user_id');
@@ -48,19 +50,20 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     try {
-      const materialIds = cartItems.map(item => item.id).join(',');
+      const materialIds = cartItems.map((item) => item.id).join(',');
       const response = await fetch(`http://127.0.0.1:5000/api/materials/batch?ids=${materialIds}`);
       if (!response.ok) throw new Error('Gagal mengambil produk');
 
       const materials = await response.json();
-      let updatedCart = cartItems.map(item => {
-        let material = materials.find(mat => mat.material_id == item.id);
-        return material ? { ...material, quantity: item.quantity } : null;
-      }).filter(item => item !== null);
+      let updatedCart = cartItems
+        .map((item) => {
+          let material = materials.find((mat) => mat.material_id == item.id);
+          return material ? { ...material, quantity: item.quantity } : null;
+        })
+        .filter((item) => item !== null);
 
       displayCartItems(updatedCart);
       updatePaymentDetails(updatedCart);
-            
     } catch (error) {
       console.error('Error fetching cart details:', error);
       updatePaymentDetails([]);
@@ -69,7 +72,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   function displayCartItems(items) {
     cartContainer.innerHTML = '';
-    items.forEach(item => {
+    items.forEach((item) => {
       let cartItem = document.createElement('div');
       cartItem.className = 'cart-item flex justify-between border-b py-2';
       cartItem.innerHTML = `
@@ -81,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 
   function updatePaymentDetails(items) {
-    let subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    let subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
     let total = subtotal;
 
     subtotalElement.textContent = formatCurrency(subtotal);
@@ -89,51 +92,59 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 
   async function handlePayment() {
-    const totalAmount = parseFloat(totalElement.textContent.replace('Rp', '').replace(/\./g, '').replace(',', '.'));
-    const userBalance = parseFloat(balanceElement.textContent.replace('Rp', '').replace(/\./g, '').replace(',', '.'));
-    
+    const totalAmount = parseFloat(
+      totalElement.textContent.replace('Rp', '').replace(/\./g, '').replace(',', '.'),
+    );
+    const userBalance = parseFloat(
+      balanceElement.textContent.replace('Rp', '').replace(/\./g, '').replace(',', '.'),
+    );
+
     let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     if (cartItems.length === 0) {
       alert('Keranjang belanja kosong!');
       return;
     }
-    
+
     const isBalanceEnough = userBalance >= totalAmount;
-    
+
     if (!isBalanceEnough) {
-      const confirmPending = confirm('Saldo tidak mencukupi. Transaksi akan disimpan sebagai \'PENDING\'. Lanjutkan?');
+      const confirmPending = confirm(
+        "Saldo tidak mencukupi. Transaksi akan disimpan sebagai 'PENDING'. Lanjutkan?",
+      );
       if (!confirmPending) return;
     }
-    
-    const formattedCart = cartItems.map(item => ({
+
+    const formattedCart = cartItems.map((item) => ({
       id: item.id,
-      quantity: item.quantity
+      quantity: item.quantity,
     }));
-    
+
     const loadingScreen2 = document.getElementById('loading-screen2');
-    
+
     try {
       // Tampilkan loading
       loadingScreen2.style.display = 'flex';
-    
+
       const response = await fetch('http://127.0.0.1:5000/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           user_id: userId,
-          items: formattedCart
-        })
+          items: formattedCart,
+        }),
       });
-    
+
       const result = await response.json();
-    
+
       if (!response.ok) {
-        throw new Error(`Request gagal dengan status ${response.status}: ${JSON.stringify(result)}`);
+        throw new Error(
+          `Request gagal dengan status ${response.status}: ${JSON.stringify(result)}`,
+        );
       }
-    
+
       if (result.success) {
         localStorage.removeItem('cart');
-    
+
         if (result.payment_status === 'COMPLETED') {
           alert('Pembayaran berhasil! Saldo baru: ' + formatCurrency(result.new_balance));
           window.location.href = './dashboard-buyer.html#recent-orders';
@@ -146,7 +157,6 @@ document.addEventListener('DOMContentLoaded', async function () {
       } else {
         alert('Pembayaran gagal: ' + result.error);
       }
-    
     } catch (error) {
       console.error('Error selama pembayaran:', error);
       alert('Terjadi kesalahan saat pembayaran. Periksa konsol untuk detail lebih lanjut.');
@@ -155,9 +165,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       loadingScreen2.style.display = 'none';
     }
   }
-    
-    
-    
+
   async function fetchSellerTransactions() {
     try {
       let response = await fetch(`http://127.0.0.1:5000/api/seller_transactions/${userId}`);
@@ -166,12 +174,11 @@ document.addEventListener('DOMContentLoaded', async function () {
       let transactions = await response.json();
 
       transactionList.innerHTML = '<h3>Transaksi Seller:</h3>';
-      transactions.forEach(tx => {
+      transactions.forEach((tx) => {
         let item = document.createElement('p');
         item.textContent = `Produk: ${tx.material_id}, Pendapatan: ${formatCurrency(tx.amount)}`;
         transactionList.appendChild(item);
       });
-
     } catch (error) {
       console.error('Error fetching seller transactions:', error);
     }
@@ -209,7 +216,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       let response = await fetch('http://127.0.0.1:5000/api/wallets/topup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: userId, amount: topupAmount })
+        body: JSON.stringify({ user_id: userId, amount: topupAmount }),
       });
 
       let result = await response.json();

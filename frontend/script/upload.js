@@ -16,7 +16,7 @@ async function loadWalletBalance() {
       walletContainer.innerHTML = `
                 <div class="bg-white p-4 w-full rounded-xl flex flex-col items-center">
                     <p class="text-sm font-medium text-gray-900">Saldo Anda:</p>
-                    <p id="wallet-balance" class="text-xl font-bold text-indigo-600">Rp${(data.saldo)}</p>
+                    <p id="wallet-balance" class="text-xl font-bold text-indigo-600">Rp${data.saldo}</p>
                     <button id="topup-button" class="ml-4 bg-indigo-600 text-white px-4 py-1 rounded-md text-sm font-medium hover:bg-indigo-700">Withdraw</button>
                 </div>`;
 
@@ -39,14 +39,14 @@ function formatCurrency(amount) {
   }).format(amount);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const username = localStorage.getItem('username') || 'User';
-    
+
   // Pilih semua elemen dengan class "username"
   const usernameElements = document.querySelectorAll('.username');
 
   // Loop semua elemen dan ubah teksnya
-  usernameElements.forEach(element => {
+  usernameElements.forEach((element) => {
     element.textContent = `Halo, ${username}!`;
   });
 });
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const courses = await response.json();
 
       courseDropdown.innerHTML = '<option value="">Pilih Mata Kuliah</option>';
-      courses.forEach(course => {
+      courses.forEach((course) => {
         const option = document.createElement('option');
         option.value = course.course_id;
         option.textContent = course.course_name;
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append('seller_id', localStorage.getItem('user_id'));  // Ambil ID seller dari localStorage
+    formData.append('seller_id', localStorage.getItem('user_id')); // Ambil ID seller dari localStorage
     formData.append('title', document.getElementById('title').value);
     formData.append('course_id', courseDropdown.value);
     formData.append('material', document.getElementById('material').value);
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
     try {
       const response = await fetch('http://127.0.0.1:5000/api/uploadfile/upload', {
         method: 'POST',
-        body: formData
+        body: formData,
       });
 
       const result = await response.json();

@@ -8,7 +8,7 @@ function formatCurrency(amount) {
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
     currency: 'IDR',
-    minimumFractionDigits: 2
+    minimumFractionDigits: 2,
   }).format(amount);
 }
 
@@ -32,12 +32,14 @@ async function loadRecommended() {
 
     container.innerHTML = ''; // Bersihkan container sebelum menambahkan elemen baru
 
-    data.forEach(product => {
+    data.forEach((product) => {
       const productCard = document.createElement('a');
       productCard.href = `./product-detail.html?id=${product.material_id}`;
-      productCard.className = 'bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1 flex flex-col text-center border border-gray-200 w-full max-w-xs';
+      productCard.className =
+        'bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1 flex flex-col text-center border border-gray-200 w-full max-w-xs';
 
-      const imageUrl = product.image || 'https://i.pinimg.com/736x/81/21/dc/8121dc48ec937ecf919bc2c54aa961a4.jpg';
+      const imageUrl =
+        product.image || 'https://i.pinimg.com/736x/81/21/dc/8121dc48ec937ecf919bc2c54aa961a4.jpg';
 
       productCard.innerHTML = `
                 <img src="${imageUrl}" 
@@ -64,46 +66,41 @@ async function loadRecommended() {
       // Sembunyikan loading setelah data berhasil dimuat
       loadingScreen.style.display = 'none';
     });
-
   } catch (error) {
     console.error('Error fetching recommended products:', error);
   }
 }
 
-
 // Panggil fungsi saat halaman dimuat
 document.addEventListener('DOMContentLoaded', loadRecommended);
 
-
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const username = localStorage.getItem('username') || 'User';
-    
+
   // Pilih semua elemen dengan class "username"
   const usernameElements = document.querySelectorAll('.username');
 
   // Loop semua elemen dan ubah teksnya
-  usernameElements.forEach(element => {
+  usernameElements.forEach((element) => {
     element.textContent = `Halo, ${username}!`;
   });
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const shopNowButton = document.getElementById('shop-now');
 
   if (shopNowButton) {
-    shopNowButton.addEventListener('click', function(event) {
+    shopNowButton.addEventListener('click', function (event) {
       event.preventDefault(); // Mencegah navigasi langsung
-            
+
       // Menampilkan pop-up
       alert('Event belum tersedia');
-            
+
       // Redirect setelah pop-up ditutup
       window.location.href = 'dashboard-product.html';
     });
   }
 });
-
-
 
 // Fitur quick stats
 async function updateQuickStats() {
@@ -126,7 +123,6 @@ async function updateQuickStats() {
     // Ambil data cart dari localStorage
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     document.getElementById('wishlist-count').textContent = cart.length;
-
   } catch (error) {
     console.error('Error updating quick stats:', error);
   }
@@ -139,17 +135,14 @@ document.addEventListener('DOMContentLoaded', function () {
   updateWishlistCount();
 });
 
-
 // 🔹 Update Wishlist Count dari Local Storage
 function updateWishlistCount() {
   const cart = JSON.parse(localStorage.getItem('cart')) || [];
   document.getElementById('wishlist-count').textContent = cart.length;
 }
 
-
 // Panggil fungsi saat halaman dimuat
 document.addEventListener('DOMContentLoaded', updateQuickStats);
-
 
 // 3. Menampilkan saldo wallet di sidebar
 // Fungsi untuk menampilkan saldo di sidebar
@@ -167,7 +160,7 @@ async function loadWalletBalance() {
       walletContainer.innerHTML = `
                 <div class="bg-white p-4 w-full rounded-xl flex flex-col items-center">
                     <p class="text-sm font-medium text-gray-900">Saldo Anda:</p>
-                    <p id="wallet-balance" class="text-xl font-bold text-indigo-600">Rp${(data.saldo)}</p>
+                    <p id="wallet-balance" class="text-xl font-bold text-indigo-600">Rp${data.saldo}</p>
                     <button id="topup-button" class="ml-4 bg-indigo-600 text-white px-4 py-1 rounded-md text-sm font-medium hover:bg-indigo-700">Isi Saldo</button>
                 </div>`;
 
@@ -180,7 +173,6 @@ async function loadWalletBalance() {
     console.error('Error loading wallet balance:', error);
   }
 }
-
 
 // 5. Sidebar toggle untuk mobile
 const sidebar = document.querySelector('.sidebar');
@@ -215,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
       let response = await fetch('http://127.0.0.1:5000/api/wallets/topup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: userId, amount: topupAmount })
+        body: JSON.stringify({ user_id: userId, amount: topupAmount }),
       });
       let result = await response.json();
       if (response.ok && result.success) {
@@ -241,7 +233,8 @@ async function fetchBuyerOrders() {
 
   if (!userId) {
     console.error('User ID tidak ditemukan di localStorage.');
-    document.getElementById('buyer-orders').innerHTML = '<tr><td colspan="6" class="text-center py-4 text-red-600">User ID tidak ditemukan.</td></tr>';
+    document.getElementById('buyer-orders').innerHTML =
+      '<tr><td colspan="6" class="text-center py-4 text-red-600">User ID tidak ditemukan.</td></tr>';
     return;
   }
 
@@ -255,10 +248,10 @@ async function fetchBuyerOrders() {
     ordersData = await response.json();
     currentPage = 1; // Reset ke halaman pertama setiap fetch data baru
     renderOrdersTable(); // Panggil fungsi render
-
   } catch (error) {
     console.error('Error fetching buyer orders:', error);
-    document.getElementById('buyer-orders').innerHTML = `<tr><td colspan="6" class="text-center py-4 text-red-600">${error.message}</td></tr>`;
+    document.getElementById('buyer-orders').innerHTML =
+      `<tr><td colspan="6" class="text-center py-4 text-red-600">${error.message}</td></tr>`;
   }
 }
 
@@ -267,7 +260,8 @@ function renderOrdersTable() {
   ordersContainer.innerHTML = '';
 
   if (ordersData.length === 0) {
-    ordersContainer.innerHTML = '<tr><td colspan="6" class="text-center py-4">Belum ada transaksi</td></tr>';
+    ordersContainer.innerHTML =
+      '<tr><td colspan="6" class="text-center py-4">Belum ada transaksi</td></tr>';
     return;
   }
 
@@ -277,12 +271,13 @@ function renderOrdersTable() {
 
   let fragment = document.createDocumentFragment();
 
-  paginatedOrders.forEach(order => {
+  paginatedOrders.forEach((order) => {
     let row = document.createElement('tr');
 
-    let statusClass = order.payment_status === 'COMPLETED' ? 
-      'bg-green-100 text-green-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full' : 
-      'bg-yellow-100 text-yellow-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full';
+    let statusClass =
+      order.payment_status === 'COMPLETED'
+        ? 'bg-green-100 text-green-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full'
+        : 'bg-yellow-100 text-yellow-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full';
 
     row.innerHTML = `
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${order.transaction_id}</td>
@@ -306,19 +301,19 @@ function updatePaginationButtons() {
   let totalPages = Math.ceil(ordersData.length / itemsPerPage);
 
   document.getElementById('current-page').textContent = `Halaman ${currentPage} dari ${totalPages}`;
-    
+
   document.getElementById('prev-btn').disabled = currentPage === 1;
   document.getElementById('next-btn').disabled = currentPage === totalPages;
 }
 
-document.getElementById('prev-btn').addEventListener('click', function() {
+document.getElementById('prev-btn').addEventListener('click', function () {
   if (currentPage > 1) {
     currentPage--;
     renderOrdersTable();
   }
 });
 
-document.getElementById('next-btn').addEventListener('click', function() {
+document.getElementById('next-btn').addEventListener('click', function () {
   let totalPages = Math.ceil(ordersData.length / itemsPerPage);
   if (currentPage < totalPages) {
     currentPage++;
