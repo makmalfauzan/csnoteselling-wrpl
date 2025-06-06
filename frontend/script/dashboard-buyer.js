@@ -3,6 +3,14 @@ document.addEventListener("DOMContentLoaded", () => {
     loadWalletBalance();
 });
 
+// Fungsi format harga ke dalam format Rupiah
+function formatCurrency(amount) {
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 2
+    }).format(amount);
+}
 
 // 1. Menampilkan rekomendasi produk
 async function loadRecommended() {
@@ -42,7 +50,7 @@ async function loadRecommended() {
                 <p class="text-sm text-gray-600 mt-2 px-4 text-justify line-clamp-3">
                     ${product.description || "Deskripsi tidak tersedia"}
                 </p>
-                <p class="text-xl font-semibold text-blue-600 mt-auto mb-4">Rp${formatCurrency(product.price)}</p>
+                <p class="text-xl font-semibold text-blue-600 mt-auto mb-4">${formatCurrency(product.price)}</p>
                 
                 <a href="./product-detail.html?id=${product.material_id}">
                     <button class="w-full bg-green-500 hover:bg-green-600 text-white font-medium px-4 py-2 rounded-lg transition shadow-md flex items-center justify-center space-x-2">
@@ -62,14 +70,6 @@ async function loadRecommended() {
     }
 }
 
-// Fungsi format harga ke dalam format Rupiah
-function formatCurrency(amount) {
-    return new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-        minimumFractionDigits: 2
-    }).format(amount);
-}
 
 // Panggil fungsi saat halaman dimuat
 document.addEventListener("DOMContentLoaded", loadRecommended);
@@ -181,16 +181,6 @@ async function loadWalletBalance() {
     }
 }
 
-// Fungsi format saldo ke format Rp xxx.xxx,xx
-function formatCurrencyy(amount) {
-    return new Intl.NumberFormat("id-ID", {
-        style: "decimal",
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-    }).format(amount);
-}
-
-
 
 // 5. Sidebar toggle untuk mobile
 const sidebar = document.querySelector(".sidebar");
@@ -298,7 +288,7 @@ function renderOrdersTable() {
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${order.transaction_id}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${order.seller_username}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${order.title}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatCurrencyy(order.amount)}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatCurrency(order.amount)}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${new Date(order.transaction_date).toLocaleString("id-ID")}</td>
             <td class="px-6 py-4 whitespace-nowrap">
                 <span class="${statusClass}">${order.payment_status}</span>
