@@ -11,11 +11,13 @@ module.exports = {
   // Module file extensions
   moduleFileExtensions: ['js', 'json'],
 
-  // Transform files (tidak perlu untuk vanilla JS)
-  transform: {},
+  // Transform files dengan Babel
+  transform: {
+    '^.+\\.js$': 'babel-jest',
+  },
 
   // Coverage configuration
-  collectCoverageFrom: ['src/**/*.js', '!src/**/*.test.js', '!src/**/*.spec.js'],
+  collectCoverageFrom: ['src/**/*.js', '!src/**/*.test.js', '!src/**/*.spec.js', '!src/output.css'],
 
   // Coverage thresholds
   coverageThreshold: {
@@ -30,11 +32,22 @@ module.exports = {
   // Module name mapping for absolute imports
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    // Handle CSS imports (jika ada)
+    '\\.(css|less|scss)$': 'identity-obj-proxy',
   },
 
   // Ignore patterns
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/'],
 
+  // Transform ignore patterns (untuk node_modules yang perlu di-transform)
+  transformIgnorePatterns: ['node_modules/(?!(.*\\.mjs$))'],
+
   // Verbose output
   verbose: true,
+
+  // Clear mocks between tests
+  clearMocks: true,
+
+  // Restore mocks after each test
+  restoreMocks: true,
 };
