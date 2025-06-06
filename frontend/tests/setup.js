@@ -1,7 +1,42 @@
-// Contoh untuk React Testing Library
-import '@testing-library/jest-dom'; // Menambahkan matcher jest-dom
+// Import Jest DOM matchers
+import '@testing-library/jest-dom';
 
-process.env.NODE_ENV = 'test';
+// Global test setup
+beforeEach(() => {
+  // Clean up DOM before each test
+  document.body.innerHTML = '';
 
-// Mock global lainnya jika perlu
-// global.someGlobalFunction = jest.fn();
+  // Reset any global variables if needed
+  // window.location = new URL('http://localhost:8080');
+});
+
+// Mock console methods untuk mengurangi noise di test output
+global.console = {
+  ...console,
+  // Uncomment to hide console.log in tests
+  // log: jest.fn(),
+  // warn: jest.fn(),
+  // error: jest.fn(),
+};
+
+// Mock window.fetch jika diperlukan untuk API calls
+global.fetch = jest.fn();
+
+// Setup untuk testing DOM manipulation
+Object.defineProperty(window, 'location', {
+  value: {
+    href: 'http://localhost:8080',
+    origin: 'http://localhost:8080',
+  },
+  writable: true,
+});
+
+// Mock localStorage dan sessionStorage
+const localStorageMock = {
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+  clear: jest.fn(),
+};
+global.localStorage = localStorageMock;
+global.sessionStorage = localStorageMock;
