@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', async function () {
   const selectedFilterContainer = document.querySelector('.selected-filters');
   const loadingScreen = document.getElementById('loading-screen');
 
+  const API_BASE_URL = 'http://localhost:5000';
+
   let paginationContainer = document.querySelector('.pagination-container');
   if (!paginationContainer) {
     paginationContainer = document.createElement('div');
@@ -20,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   async function fetchCourses() {
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/courses');
+      const response = await fetch('${API_BASE_URL}/api/courses');
       const courses = await response.json();
 
       filterMatkul.innerHTML = '<option value="">Mata Kuliah</option>';
@@ -52,7 +54,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       // Tampilkan loading
       loadingScreen.style.display = 'flex';
 
-      let apiUrl = `http://127.0.0.1:5000/api/materials?page=${currentPage}&limit=${productsPerPage}&course=${selectedCourse}&q=${searchQuery}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
+      let apiUrl = `${API_BASE_URL}/api/materials?page=${currentPage}&limit=${productsPerPage}&course=${selectedCourse}&q=${searchQuery}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
       const response = await fetch(apiUrl);
       const products = await response.json();
 
@@ -320,7 +322,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   async function fetchCourses() {
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/courses');
+      const response = await fetch('${API_BASE_URL}/api/courses');
       const courses = await response.json();
 
       filterMatkul.innerHTML = '<option value="">Mata Kuliah</option>';
