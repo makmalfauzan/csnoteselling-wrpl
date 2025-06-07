@@ -1,20 +1,39 @@
+# backend/app.py
+
 from flask import Flask, jsonify
 from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy      # <-- DITAMBAHKAN
+from flask_migrate import Migrate          # <-- DITAMBAHKAN
 from .db_connection import test_connection
 import os
 from dotenv import load_dotenv
+import traceback                           # Untuk debug error di terminal
 
 # Load environment variables
 load_dotenv()
 
+# --- DITAMBAHKAN: Inisialisasi ekstensi di luar factory ---
+db = SQLAlchemy()
+migrate = Migrate()
+# ---------------------------------------------------------
+
 def create_app(testing=False):
     app = Flask(__name__)
 
-    # Konfigurasi untuk testing
+    # --- DITAMBAHKAN: Konfigurasi dan inisialisasi ekstensi ---
     if testing:
+        # Konfigurasi khusus untuk testing
         app.config['TESTING'] = True
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
-        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:' # Pakai database sementara untuk tes
+    else:
+        # Konfigurasi untuk development/production
+        app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    
+    db.init_app(app)
+    migrate.init_app(app, db) # Baris ini yang membuat perintah 'flask db' ada
+    # -----------------------------------------------------------------
 
     # CORS configuration - allow all origins for development
     CORS(app, resources={
@@ -34,7 +53,7 @@ def create_app(testing=False):
         print(f"❌ Failed to import materials blueprint: {e}")
 
     try:
-        from .routes.auth import auth_bp  
+        from .routes.auth import auth_bp
         app.register_blueprint(auth_bp, url_prefix='/api')
         print("✅ Auth blueprint registered")
     except ImportError as e:
