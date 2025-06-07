@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   const loadingScreen = document.getElementById('loading-screen');
 
   // Gunakan URL yang benar untuk Docker
-  const API_BASE_URL = 'thorough-amazement-production.up.railway.app';
+  const API_BASE_URL = 'https://thorough-amazement-production.up.railway.app';
 
   async function fetchMaterials() {
     try {
