@@ -90,7 +90,7 @@ def create_app(testing=False):
         print(f"❌ Failed to import dbuyerrecommend blueprint: {e}")
 
     try:
-        from .routes.wallet import wallets_bp
+        from routes.wallet import wallets_bp
         app.register_blueprint(wallets_bp, url_prefix='/api/wallets')
         print("✅ Wallets blueprint registered")
     except ImportError as e:
