@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_cors import CORS
-from db_connection import get_db_connection
+from ..db_connection import get_db_connection
 import traceback  # Untuk debug error di terminal
 
 # Membuat Blueprint untuk auth

@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from db_connection import get_db_connection
+from ..db_connection import get_db_connection
 from flask_cors import CORS
 from datetime import datetime
 from decimal import Decimal

@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from db_connection import get_db_connection
+from ..db_connection import get_db_connection
 
 seller_products_bp = Blueprint("seller_products_bp", __name__)
 
