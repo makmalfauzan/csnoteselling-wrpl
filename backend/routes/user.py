@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from ..db_connection import get_db_connection
+from db_connection import get_db_connection
 from flask_cors import CORS
 
 user_bp = Blueprint('user', __name__, url_prefix='/api/user')

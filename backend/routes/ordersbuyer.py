@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from ..db_connection import get_db_connection  # Pastikan koneksi database sudah ada
+from db_connection import get_db_connection  # Pastikan koneksi database sudah ada
 
 orders_bp = Blueprint("orders", __name__)
 

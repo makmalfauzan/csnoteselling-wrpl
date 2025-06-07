@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from ..db_connection import get_db_connection
+from db_connection import get_db_connection
 from flask_cors import CORS
 
 # Membuat Blueprint untuk materials

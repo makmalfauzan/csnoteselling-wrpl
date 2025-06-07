@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_cors import CORS
 import datetime
 import mysql.connector
-from ..db_connection import get_db_connection
+from db_connection import get_db_connection
 
 uploadfile_bp = Blueprint('uploadfile', __name__)
 CORS(uploadfile_bp)
