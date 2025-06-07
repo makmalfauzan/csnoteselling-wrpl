@@ -36,7 +36,7 @@ def create_app(testing=False):
     # CORS configuration - allow all origins for development
     CORS(app, resources={
         r"/api/*": {
-            "origins": ["http://localhost:8080", "http://127.0.0.1:8080", "http://localhost:3000"],
+            "origins": ["http://localhost:8080", "http://127.0.0.1:8080", "http://localhost:3000", "https://csnoteselling-wrpl-production-d87d.up.railway.app"],
             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Authorization"]
         }
@@ -178,7 +178,7 @@ if __name__ == '__main__':
     
     app = create_app()
     app.run(
-        debug=True, 
-        port=int(os.getenv('FLASK_RUN_PORT', 5000)), 
+        debug=True,
+        port=int(os.getenv('PORT', 5000)),  # GANTI INI
         host='0.0.0.0'
     )
