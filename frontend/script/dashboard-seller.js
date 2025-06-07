@@ -24,7 +24,7 @@ async function loadWalletBalance() {
     const userId = localStorage.getItem('user_id');
     if (!userId) return;
 
-    const response = await fetch(`http://127.0.0.1:5000/api/wallets/${userId}`);
+    const response = await fetch(`https://thorough-amazement-production.up.railway.app/api/wallets/${userId}`);
     if (!response.ok) return;
 
     const data = await response.json();
@@ -59,7 +59,7 @@ async function fetchSellerProducts() {
     const loadingScreen = document.getElementById('loading-screen');
     // Tampilkan loading
     loadingScreen.style.display = 'flex';
-    let response = await fetch(`http://127.0.0.1:5000/api/materials/seller_products/${userId}`);
+    let response = await fetch(`https://thorough-amazement-production.up.railway.app/api/materials/seller_products/${userId}`);
 
     if (!response.ok) {
       let errorText = await response.text();
@@ -96,7 +96,7 @@ async function fetchSellerSales() {
   }
 
   try {
-    let response = await fetch(`http://127.0.0.1:5000/api/payment/seller_sales/${userId}`);
+    let response = await fetch(`https://thorough-amazement-production.up.railway.app/api/payment/seller_sales/${userId}`);
     if (!response.ok) {
       let errorText = await response.text();
       throw new Error(`Gagal mengambil riwayat penjualan: ${errorText}`);

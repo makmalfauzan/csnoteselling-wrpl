@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       loadingScreen.style.display = 'flex';
       console.log('Fetching product ID:', productId);
 
-      const response = await fetch(`http://127.0.0.1:5000/api/materials/${productId}`);
+      const response = await fetch(`https://thorough-amazement-production.up.railway.app/api/materials/${productId}`);
       const data = await response.json();
       console.log('API Data:', data);
 

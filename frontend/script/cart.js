@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     try {
       const materialIds = cartItems.map((item) => item.id).join(',');
-      const response = await fetch(`http://127.0.0.1:5000/api/materials/batch?ids=${materialIds}`);
+      const response = await fetch(`https://thorough-amazement-production.up.railway.app/api/materials/batch?ids=${materialIds}`);
 
       const materials = await response.json();
       let updatedCart = cartItems

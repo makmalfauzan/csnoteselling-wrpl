@@ -18,7 +18,7 @@ async function loadRecommended() {
     const loadingScreen = document.getElementById('loading-screen');
     // Tampilkan loading
     loadingScreen.style.display = 'flex';
-    const response = await fetch('http://127.0.0.1:5000/api/dbuyerrecommend/recommended');
+    const response = await fetch('https://thorough-amazement-production.up.railway.app/api/dbuyerrecommend/recommended');
     if (!response.ok) {
       throw new Error('Gagal mengambil data rekomendasi.');
     }
@@ -113,7 +113,7 @@ async function updateQuickStats() {
     }
 
     // Fetch data dari API Recent Orders
-    const response = await fetch(`http://127.0.0.1:5000/api/payment/buyer_orders/${buyerId}`);
+    const response = await fetch(`https://thorough-amazement-production.up.railway.app/api/payment/buyer_orders/${buyerId}`);
     if (!response.ok) {
       throw new Error('Gagal mengambil data recent orders.');
     }
@@ -151,7 +151,7 @@ async function loadWalletBalance() {
     const userId = localStorage.getItem('user_id');
     if (!userId) return;
 
-    const response = await fetch(`http://127.0.0.1:5000/api/wallets/${userId}`);
+    const response = await fetch(`https://thorough-amazement-production.up.railway.app/api/wallets/${userId}`);
     if (!response.ok) return;
 
     const data = await response.json();
@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      let response = await fetch('http://127.0.0.1:5000/api/wallets/topup', {
+      let response = await fetch('https://thorough-amazement-production.up.railway.app/api/wallets/topup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userId, amount: topupAmount }),
@@ -239,7 +239,7 @@ async function fetchBuyerOrders() {
   }
 
   try {
-    let response = await fetch(`http://127.0.0.1:5000/api/payment/buyer_orders/${userId}`);
+    let response = await fetch(`https://thorough-amazement-production.up.railway.app/api/payment/buyer_orders/${userId}`);
     if (!response.ok) {
       let errorText = await response.text();
       throw new Error(`Gagal mengambil riwayat pembelian: ${errorText}`);

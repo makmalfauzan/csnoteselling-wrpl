@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   const selectedFilterContainer = document.querySelector('.selected-filters');
   const loadingScreen = document.getElementById('loading-screen');
 
-  const API_BASE_URL = 'http://localhost:5000';
+  const API_BASE_URL = 'https://thorough-amazement-production.up.railway.app';
 
   let paginationContainer = document.querySelector('.pagination-container');
   if (!paginationContainer) {

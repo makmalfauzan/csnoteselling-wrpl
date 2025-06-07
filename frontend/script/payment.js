@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       const loadingScreen = document.getElementById('loading-screen');
       // Tampilkan loading
       loadingScreen.style.display = 'flex';
-      const response = await fetch(`http://127.0.0.1:5000/api/wallets/${userId}`);
+      const response = await fetch(`https://thorough-amazement-production.up.railway.app/api/wallets/${userId}`);
       if (!response.ok) throw new Error('Gagal mengambil saldo');
 
       const data = await response.json();
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     try {
       const materialIds = cartItems.map((item) => item.id).join(',');
-      const response = await fetch(`http://127.0.0.1:5000/api/materials/batch?ids=${materialIds}`);
+      const response = await fetch(`https://thorough-amazement-production.up.railway.app/api/materials/batch?ids=${materialIds}`);
       if (!response.ok) throw new Error('Gagal mengambil produk');
 
       const materials = await response.json();
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       // Tampilkan loading
       loadingScreen2.style.display = 'flex';
 
-      const response = await fetch('http://127.0.0.1:5000/api/checkout', {
+      const response = await fetch('https://thorough-amazement-production.up.railway.app/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   async function fetchSellerTransactions() {
     try {
-      let response = await fetch(`http://127.0.0.1:5000/api/seller_transactions/${userId}`);
+      let response = await fetch(`https://thorough-amazement-production.up.railway.app/api/seller_transactions/${userId}`);
       if (!response.ok) throw new Error('Gagal mengambil transaksi seller');
 
       let transactions = await response.json();
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     try {
-      let response = await fetch('http://127.0.0.1:5000/api/wallets/topup', {
+      let response = await fetch('https://thorough-amazement-production.up.railway.app/api/wallets/topup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userId, amount: topupAmount }),

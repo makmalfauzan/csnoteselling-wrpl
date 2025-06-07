@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   async function fetchUserData() {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/api/user/profile?user_id=${userId}`);
+      const response = await fetch(`https://thorough-amazement-production.up.railway.app/api/user/profile?user_id=${userId}`);
 
       if (!response.ok) {
         throw new Error(`Gagal mengambil data pengguna: ${response.status}`);
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       const loadingScreen = document.getElementById('loading-screen');
       // Tampilkan loading
       loadingScreen.style.display = 'flex';
-      const url = `http://127.0.0.1:5000/api/user/profile?user_id=${encodeURIComponent(userId)}`;
+      const url = `https://thorough-amazement-production.up.railway.app/api/user/profile?user_id=${encodeURIComponent(userId)}`;
       console.log('📡 Mengirim request ke:', url); // Debugging
 
       const response = await fetch(url);
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/user/update-profile', {
+      const response = await fetch('https://thorough-amazement-production.up.railway.app/api/user/update-profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

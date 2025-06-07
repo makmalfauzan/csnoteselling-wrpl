@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!userId) return alert('User ID tidak ditemukan.');
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/pay_pending_transactions', {
+      const response = await fetch('https://thorough-amazement-production.up.railway.app/api/pay_pending_transactions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userId }),
@@ -48,7 +48,7 @@ async function loadWalletBalance() {
     const loadingScreen = document.getElementById('loading-screen');
     loadingScreen.style.display = 'flex';
 
-    const response = await fetch(`http://127.0.0.1:5000/api/wallets/${userId}`);
+    const response = await fetch(`https://thorough-amazement-production.up.railway.app/api/wallets/${userId}`);
     if (!response.ok) return;
 
     const data = await response.json();
@@ -87,7 +87,7 @@ async function loadPendingTransactions() {
   if (!userId) return;
 
   try {
-    const response = await fetch(`http://127.0.0.1:5000/pending-transactions?user_id=${userId}`);
+    const response = await fetch(`https://thorough-amazement-production.up.railway.app/pending-transactions?user_id=${userId}`);
     const text = await response.text();
     const transactions = JSON.parse(text);
 
@@ -121,7 +121,7 @@ async function payNowSingle(transactionId) {
   if (!userId) return alert('User ID tidak ditemukan.');
 
   try {
-    const response = await fetch('http://127.0.0.1:5000/api/pay_pending_transactions', {
+    const response = await fetch('https://thorough-amazement-production.up.railway.app/api/pay_pending_transactions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: userId, transaction_id: transactionId }), // Kirim spesifik ID
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      let response = await fetch('http://127.0.0.1:5000/api/wallets/topup', {
+      let response = await fetch('https://thorough-amazement-production.up.railway.app/api/wallets/topup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: userId, amount: topupAmount }),

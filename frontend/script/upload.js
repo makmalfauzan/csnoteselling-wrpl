@@ -7,7 +7,7 @@ async function loadWalletBalance() {
     const userId = localStorage.getItem('user_id');
     if (!userId) return;
 
-    const response = await fetch(`http://127.0.0.1:5000/api/wallets/${userId}`);
+    const response = await fetch(`https://thorough-amazement-production.up.railway.app/api/wallets/${userId}`);
     if (!response.ok) return;
 
     const data = await response.json();
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const loadingScreen = document.getElementById('loading-screen');
       // Tampilkan loading
       loadingScreen.style.display = 'flex';
-      const response = await fetch('http://127.0.0.1:5000/api/courses');
+      const response = await fetch('https://thorough-amazement-production.up.railway.app/api/courses');
       const courses = await response.json();
 
       courseDropdown.innerHTML = '<option value="">Pilih Mata Kuliah</option>';
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/uploadfile/upload', {
+      const response = await fetch('https://thorough-amazement-production.up.railway.app/api/uploadfile/upload', {
         method: 'POST',
         body: formData,
       });

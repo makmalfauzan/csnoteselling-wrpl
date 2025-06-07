@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const filterMatkul = document.getElementById('filter-matkul');
 
   // Gunakan URL yang sama
-  const API_BASE_URL = 'http://localhost:5000';
+  const API_BASE_URL = 'https://thorough-amazement-production.up.railway.app';
 
   // Ambil daftar course dari database
   async function fetchCourses() {
