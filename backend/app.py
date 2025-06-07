@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy      # <-- DITAMBAHKAN
 from flask_migrate import Migrate          # <-- DITAMBAHKAN
-from .db_connection import test_connection
+from db_connection import test_connection
 import os
 from dotenv import load_dotenv
 import traceback                           # Untuk debug error di terminal
