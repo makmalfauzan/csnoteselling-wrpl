@@ -27,14 +27,14 @@ def create_app(testing=False):
 
     # Import blueprints dengan error handling
     try:
-        from routes.materials import materials_bp
+        from .routes.materials import materials_bp
         app.register_blueprint(materials_bp, url_prefix='/api')
         print("✅ Materials blueprint registered")
     except ImportError as e:
         print(f"❌ Failed to import materials blueprint: {e}")
 
     try:
-        from routes.auth import auth_bp  
+        from .routes.auth import auth_bp  
         app.register_blueprint(auth_bp, url_prefix='/api')
         print("✅ Auth blueprint registered")
     except ImportError as e:
@@ -43,72 +43,72 @@ def create_app(testing=False):
     try:
         # Coba import course.py atau courses.py
         try:
-            from routes.course import courses_bp
+            from .routes.course import courses_bp
         except ImportError:
-            from routes.courses import courses_bp
+            from .routes.courses import courses_bp
         app.register_blueprint(courses_bp, url_prefix='/api')
         print("✅ Courses blueprint registered")
     except ImportError as e:
         print(f"❌ Failed to import courses blueprint: {e}")
 
     try:
-        from routes.user import user_bp
+        from .routes.user import user_bp
         app.register_blueprint(user_bp, url_prefix='/api/user')
         print("✅ User blueprint registered")
     except ImportError as e:
         print(f"❌ Failed to import user blueprint: {e}")
 
     try:
-        from routes.payment import payment_bp
+        from .routes.payment import payment_bp
         app.register_blueprint(payment_bp, url_prefix='/api')
         print("✅ Payment blueprint registered")
     except ImportError as e:
         print(f"❌ Failed to import payment blueprint: {e}")
 
     try:
-        from routes.dbuyerrecommend import dbuyerrecommend_bp
+        from .routes.dbuyerrecommend import dbuyerrecommend_bp
         app.register_blueprint(dbuyerrecommend_bp, url_prefix='/api/dbuyerrecommend')
         print("✅ Buyer recommend blueprint registered")
     except ImportError as e:
         print(f"❌ Failed to import dbuyerrecommend blueprint: {e}")
 
     try:
-        from routes.wallet import wallets_bp
+        from .routes.wallet import wallets_bp
         app.register_blueprint(wallets_bp, url_prefix='/api/wallets')
         print("✅ Wallets blueprint registered")
     except ImportError as e:
         print(f"❌ Failed to import wallets blueprint: {e}")
 
     try:
-        from routes.uploadfile import uploadfile_bp
+        from .routes.uploadfile import uploadfile_bp
         app.register_blueprint(uploadfile_bp, url_prefix='/api/uploadfile')
         print("✅ Upload file blueprint registered")
     except ImportError as e:
         print(f"❌ Failed to import uploadfile blueprint: {e}")
 
     try:
-        from routes.ordersbuyer import orders_bp
+        from .routes.ordersbuyer import orders_bp
         app.register_blueprint(orders_bp)
         print("✅ Orders blueprint registered")
     except ImportError as e:
         print(f"❌ Failed to import orders blueprint: {e}")
 
     try:
-        from routes.seller_ttlproduct import seller_bp
+        from .routes.seller_ttlproduct import seller_bp
         app.register_blueprint(seller_bp)
         print("✅ Seller blueprint registered")
     except ImportError as e:
         print(f"❌ Failed to import seller_ttlproduct blueprint: {e}")
 
     try:
-        from routes.seller_products import seller_products_bp
+        from .routes.seller_products import seller_products_bp
         app.register_blueprint(seller_products_bp)
         print("✅ Seller products blueprint registered")
     except ImportError as e:
         print(f"❌ Failed to import seller_products blueprint: {e}")
 
     try:
-        from routes.pending_payment import pendingPay_bp
+        from .routes.pending_payment import pendingPay_bp
         app.register_blueprint(pendingPay_bp)
         print("✅ Pending payment blueprint registered")
     except ImportError as e:
