@@ -182,3 +182,5 @@ if __name__ == '__main__':
         port=int(os.getenv('PORT', 5000)),  # GANTI INI
         host='0.0.0.0'
     )
+    print("📌 Routes terdaftar:")
+    print(app.url_map)
