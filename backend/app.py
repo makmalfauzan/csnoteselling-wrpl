@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
-from db_connection import test_connection
+from .db_connection import test_connection
 import os
 from dotenv import load_dotenv
 
